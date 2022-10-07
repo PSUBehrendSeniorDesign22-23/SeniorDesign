@@ -10,6 +10,7 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
     id 'checkstyle'
+    id 'org.openjfx.javafxplugin' version "0.0.13"
 }
 
 repositories {
@@ -33,6 +34,11 @@ application {
 checkstyle {
     toolVersion '10.3.4'
     configFile = file("../config/checkstyle/checkstyle.xml")
+}
+
+javafx {
+    version = '17.0.2'
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
 }
 
 tasks.named('test') {
