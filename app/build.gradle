@@ -9,6 +9,7 @@
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
+    id 'checkstyle'
 }
 
 repositories {
@@ -27,6 +28,11 @@ dependencies {
 application {
     // Define the main class for the application.
     mainClass = 'seniordesign.App'
+}
+
+checkstyle {
+    toolVersion '10.3.4'
+    configFile = file("../config/checkstyle/checkstyle.xml")
 }
 
 tasks.named('test') {
