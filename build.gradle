@@ -21,7 +21,7 @@ dependencies {
 
 checkstyle {
     toolVersion '10.3.4'
-    configFile = file("../config/checkstyle/checkstyle.xml")
+    configFile = file("config/checkstyle/checkstyle.xml")
 }
 
 tasks.named('test') {
