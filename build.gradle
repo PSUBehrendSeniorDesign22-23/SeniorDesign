@@ -1,0 +1,29 @@
+plugins {
+	id 'org.springframework.boot' version '2.7.5'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'java'
+    id 'checkstyle'
+}
+
+group = 'com.behrend'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	runtimeOnly 'org.postgresql:postgresql'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+checkstyle {
+    toolVersion '10.3.4'
+    configFile = file("../config/checkstyle/checkstyle.xml")
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
