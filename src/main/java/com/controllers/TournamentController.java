@@ -20,11 +20,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.behrend.contestmanager.models.Tournament;
+import com.repositories.TournamentRepository;
 
 @Controller
+@RequestMapping("/tournament")
 public class TournamentController {
 
     @Autowired
-    TournamentController tournamentController;
+    TournamentRepository tournamentRepo;
+
+    @GetMapping("/create")
+    public String createTournament(Tournament tournament){
+        return "processesTournament";
+    }
+
     
 }
