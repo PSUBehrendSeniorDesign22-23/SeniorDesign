@@ -23,7 +23,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env: 
-      AZ_POSTGRES_USERNAME: github
+      AZ_POSTGRES_USERNAME: ${{ secrets.AZ_POSTGRES_USERNAME }}
       AZ_POSTGRES_PASSWORD: ${{ secrets.AZ_POSTGRES_PASSWORD }}
     
     steps:
