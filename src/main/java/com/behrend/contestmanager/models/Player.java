@@ -7,13 +7,13 @@ import javax.persistence.*;
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long playerID;
+    private long playerId;
 
     @Column(nullable = false, length = 64)
     private String firstName;
 
-    public long getPlayerID() {
-        return playerID;
+    public long getPlayerId() {
+        return playerId;
     }
 
     

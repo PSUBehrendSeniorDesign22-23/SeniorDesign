@@ -11,8 +11,8 @@ import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 
 import com.behrend.contestmanager.models.Player;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @DataJpaTest
 @Sql(scripts = "/create-player-data.sql")
@@ -24,19 +24,34 @@ public class PlayerRepositoryTests {
     private PlayerRepository playerRepository;
 
     @Test
-    void findPlayerByID()
+    void findAllPlayers()
     {
-        long id = 4;
-        Optional<Player> player = playerRepository.findById(id);
-        Assertions.assertEquals(player.get().getPlayerID(), id);
+        Iterable<Player> players = playerRepository.findAll();
+        for (Player player : players)
+        {
+            System.out.printf("%d | %s | %s | %s | %d | %s | %s\n", player.getPlayerId(), player.getFirstName(), player.getLastName(), player.getSkipperName(), player.getRank(), player.getEmail(), player.getPhoneNum());
+        }
+    }
+
+    @Test
+    void findPlayerById()
+    {
+        ArrayList<Long> ids = new ArrayList<>();
+        ids.add(12L);
+        Iterable<Player> players = playerRepository.findAllById(ids);
+        for (Player player : players)
+        {
+            Assertions.assertEquals(player.getPlayerId(), ids.get(0));
+        }
     }
 
     @Test
     void findPlayerThatDoesNotExist()
     {
-        long id = 10;
-        Optional<Player> player = playerRepository.findById(id);
-        Assertions.assertFalse(player.isPresent());
+         ArrayList<Long> ids = new ArrayList<>();
+        ids.add(5L);
+        ArrayList<Player> players = (ArrayList<Player>) playerRepository.findAllById(ids);
+        Assertions.assertTrue(players.size() == 0);
     }
 
     @Test
