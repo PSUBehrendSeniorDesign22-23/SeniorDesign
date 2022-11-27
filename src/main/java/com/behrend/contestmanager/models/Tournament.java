@@ -3,8 +3,10 @@ package com.behrend.contestmanager.models;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "Tournament")
 public class Tournament {
     
     @Id

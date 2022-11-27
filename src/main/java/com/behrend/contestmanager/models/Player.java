@@ -3,8 +3,10 @@ package com.behrend.contestmanager.models;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "Player")
 public class Player {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long playerID;
 
     @Column(nullable = false, length = 64)
