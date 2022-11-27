@@ -7,5 +7,7 @@ import com.behrend.contestmanager.models.Rule;
 
 @Repository
 public interface RuleRepository extends CrudRepository<Rule, Long> {
+    
+    Rule findRuleByName(String name);
 
 }

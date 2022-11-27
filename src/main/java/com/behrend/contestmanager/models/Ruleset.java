@@ -9,10 +9,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import java.util.ArrayList;
+import java.util.Set;
 @Entity
 @Table(name = "Ruleset")
 public class Ruleset {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long rulesetId;
@@ -25,5 +26,25 @@ public class Ruleset {
 
     @ManyToMany
     @JoinColumn(referencedColumnName = "rule_id")
-    private ArrayList<Rule> rules;
-}
+    private Set<Rule> rules;
+
+    public long getRulesetId() {
+        return this.rulesetId;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getOrigin() {
+        return this.origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+}   

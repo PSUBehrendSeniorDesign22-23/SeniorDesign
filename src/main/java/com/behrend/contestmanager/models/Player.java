@@ -12,6 +12,21 @@ public class Player {
     @Column(nullable = false, length = 64)
     private String firstName;
 
+    @Column(nullable = false, length = 64)
+    private String lastName;
+
+    @Column(length = 64)
+    private String skipperName;
+
+    @Column
+    private Integer rank = 1000;
+
+    @Column(nullable = false, unique = true, length = 64)
+    private String email;
+
+    @Column(nullable = false, length = 11)
+    private String phoneNum;
+
     public long getPlayerId() {
         return playerId;
     }
@@ -64,20 +79,4 @@ public class Player {
     public void setPhoneNum(String phoneNum) {
         this.phoneNum = phoneNum;
     }
-
-    @Column(nullable = false, length = 64)
-    private String lastName;
-
-    @Column(length = 64)
-    private String skipperName;
-
-    @Column
-    private Integer rank = 1000;
-
-    @Column(nullable = false, unique = true, length = 64)
-    private String email;
-
-    @Column(nullable = false, length = 11)
-    private String phoneNum;
-
 }

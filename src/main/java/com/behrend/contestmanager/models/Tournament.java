@@ -29,7 +29,7 @@ public class Tournament {
     private Date date;
 
     @ManyToOne(optional = false)
-    @JoinColumn(nullable = false, referencedColumnName = "ruleset_id")
+    @JoinColumn(nullable = false, referencedColumnName = "rulesetId")
     private Ruleset ruleset;
 
     public long getTournamentId() {

@@ -10,6 +10,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "Rule")
 public class Rule {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ruleId;
@@ -25,4 +26,40 @@ public class Rule {
 
     @Column
     private String attributeThree;
+
+    public long getRuleId() {
+        return ruleId;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAttributeOne() {
+        return attributeOne;
+    }
+
+    public void setAttributeOne(String attribute) {
+        this.attributeOne = attribute;
+    }
+
+    public String getAttributeTwo() {
+        return attributeTwo;
+    }
+
+    public void setAttributeTwo(String attribute) {
+        this.attributeTwo = attribute;
+    }
+
+    public String getAttributeThree() {
+        return attributeThree;
+    }
+
+    public void setAttributeThree(String attribute) {
+        this.attributeThree = attribute;
+    }
 }
