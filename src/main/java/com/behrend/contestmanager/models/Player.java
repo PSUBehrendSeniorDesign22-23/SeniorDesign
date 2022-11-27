@@ -1,4 +1,4 @@
-package com.models;
+package com.behrend.contestmanager.models;
 
 import javax.persistence.*;
 
