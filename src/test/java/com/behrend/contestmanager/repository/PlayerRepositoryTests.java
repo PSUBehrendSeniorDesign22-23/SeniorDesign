@@ -82,4 +82,51 @@ public class PlayerRepositoryTests {
         Assertions.assertNotNull(player);
     }
 
+
+    @Test
+    void addPlayers()
+    {
+        ArrayList<Player> players = new ArrayList<>();
+
+        Player playerOne = new Player();
+        playerOne.setFirstName("FirstNameOne");
+        playerOne.setLastName("LastNameOne");
+        playerOne.setSkipperName("OneOne");
+        playerOne.setEmail("one.one@example.com");
+        playerOne.setRank(1000);
+        playerOne.setPhoneNum("09998887777");
+
+        Player playerTwo = new Player();
+        playerTwo.setFirstName("FirstNameTwo");
+        playerTwo.setLastName("LastNameTwo");
+        playerTwo.setSkipperName("TwoTwo");
+        playerTwo.setEmail("two.two@example.com");
+        playerTwo.setRank(1000);
+        playerTwo.setPhoneNum("08887776666");
+
+        players.add(playerOne);
+        players.add(playerTwo);
+
+        playerRepository.saveAll(players);
+
+        ArrayList<Player> playersInDb = (ArrayList<Player>) playerRepository.findAll();
+
+        boolean playerOneFound = false;
+        boolean playerTwoFound = false;
+
+        for (Player player : playersInDb)
+        {
+            if (playerOne.getEmail() == player.getEmail())
+            {
+                playerOneFound = true;
+            }
+            if (playerTwo.getEmail() == player.getEmail())
+            {
+                playerTwoFound = true;
+            }
+        }
+
+        Assertions.assertTrue(playerOneFound);
+        Assertions.assertTrue(playerTwoFound);
+    }
 }

@@ -72,7 +72,7 @@ public class Player {
     private String skipperName;
 
     @Column
-    private Integer rank;
+    private Integer rank = 1000;
 
     @Column(nullable = false, unique = true, length = 64)
     private String email;
