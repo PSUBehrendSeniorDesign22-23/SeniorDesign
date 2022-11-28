@@ -1,17 +1,39 @@
 package com.behrend.contestmanager.models;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
+@Table(name = "Player")
 public class Player {
     @Id
-    private long playerID;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long playerId;
 
     @Column(nullable = false, length = 64)
     private String firstName;
 
-    public long getPlayerID() {
-        return playerID;
+    @Column(nullable = false, length = 64)
+    private String lastName;
+
+    @Column(length = 64)
+    private String skipperName;
+
+    @Column
+    private Integer rank = 1000;
+
+    @Column(nullable = false, unique = true, length = 64)
+    private String email;
+
+    @Column(nullable = false, length = 11)
+    private String phoneNum;
+
+    @ManyToMany(mappedBy = "players")
+    private List<Tournament> tournaments;
+
+    public long getPlayerId() {
+        return playerId;
     }
 
     
@@ -62,20 +84,4 @@ public class Player {
     public void setPhoneNum(String phoneNum) {
         this.phoneNum = phoneNum;
     }
-
-    @Column(nullable = false, length = 64)
-    private String lastName;
-
-    @Column(length = 64)
-    private String skipperName;
-
-    @Column
-    private Integer rank;
-
-    @Column(nullable = false, unique = true, length = 64)
-    private String email;
-
-    @Column(nullable = false, length = 11)
-    private String phoneNum;
-
 }
