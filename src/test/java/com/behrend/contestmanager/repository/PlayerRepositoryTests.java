@@ -26,11 +26,12 @@ public class PlayerRepositoryTests {
     @Test
     void findAllPlayers()
     {
-        Iterable<Player> players = playerRepository.findAll();
+        ArrayList<Player> players = (ArrayList<Player>) playerRepository.findAll();
         for (Player player : players)
         {
             System.out.printf("%d | %s | %s | %s | %d | %s | %s\n", player.getPlayerId(), player.getFirstName(), player.getLastName(), player.getSkipperName(), player.getRank(), player.getEmail(), player.getPhoneNum());
         }
+        Assertions.assertEquals(5, players.size());
     }
 
     @Test

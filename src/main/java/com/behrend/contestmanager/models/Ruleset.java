@@ -6,10 +6,11 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import java.util.Set;
+import java.util.List;
 @Entity
 @Table(name = "Ruleset")
 public class Ruleset {
@@ -25,8 +26,10 @@ public class Ruleset {
     private String origin;
 
     @ManyToMany
-    @JoinColumn(referencedColumnName = "rule_id")
-    private Set<Rule> rules;
+    @JoinTable(name = "RULESET_RULE",
+                joinColumns = @JoinColumn(name = "RULESET_ID", referencedColumnName = "rulesetId"),
+                inverseJoinColumns = @JoinColumn(name = "RULE_ID", referencedColumnName = "ruleId"))
+    private List<Rule> rules;
 
     public long getRulesetId() {
         return this.rulesetId;

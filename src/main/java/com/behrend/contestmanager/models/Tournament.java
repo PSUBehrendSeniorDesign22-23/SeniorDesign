@@ -1,6 +1,7 @@
 package com.behrend.contestmanager.models;
 
 import java.sql.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -29,8 +32,14 @@ public class Tournament {
     private Date date;
 
     @ManyToOne(optional = false)
-    @JoinColumn(nullable = false, referencedColumnName = "rulesetId")
+    @JoinColumn(nullable = false, referencedColumnName = "rulesetId", name="RULESET_ID")
     private Ruleset ruleset;
+
+    @ManyToMany
+    @JoinTable(name = "TOURNAMENT_PLAYER", 
+                joinColumns = @JoinColumn(name = "TOURNAMENT_ID", referencedColumnName = "tournamentId"),
+                inverseJoinColumns = @JoinColumn(name = "PLAYER_ID", referencedColumnName = "playerId"))
+    private List<Player> players;
 
     public long getTournamentId() {
         return this.tournamentId;
@@ -45,7 +54,7 @@ public class Tournament {
     }
 
     public String getLocation() {
-        return this.name;
+        return this.location;
     }
 
     public void setLocation(String location) {

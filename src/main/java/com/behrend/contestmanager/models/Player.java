@@ -1,5 +1,7 @@
 package com.behrend.contestmanager.models;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -26,6 +28,9 @@ public class Player {
 
     @Column(nullable = false, length = 11)
     private String phoneNum;
+
+    @ManyToMany(mappedBy = "players")
+    private List<Tournament> tournaments;
 
     public long getPlayerId() {
         return playerId;

@@ -18,11 +18,11 @@ public class Match {
     private long matchId;
 
     @ManyToOne(optional = false)
-    @JoinColumn(nullable = false, referencedColumnName = "playerId")
+    @JoinColumn(name = "PLAYER_ONE_ID", nullable = false, referencedColumnName = "playerId")
     private Player playerOne;
 
     @ManyToOne(optional = false)
-    @JoinColumn(nullable = false, referencedColumnName = "playerId")
+    @JoinColumn(name = "PLAYER_TWO_ID", nullable = false, referencedColumnName = "playerId")
     private Player playerTwo;
 
     @Column(nullable = false)
@@ -32,7 +32,7 @@ public class Match {
     private int playerTwoScore;
 
     @ManyToOne(optional = true)
-    @JoinColumn(referencedColumnName = "tournamentId")
+    @JoinColumn(name = "TOURNAMENT_ID", referencedColumnName = "tournamentId")
     private Tournament tournament;
 
     public long getMatchId() {
