@@ -1,20 +1,48 @@
 <!DOCTYPE html>
 <html>
 <title>Online HTML Editor</title>
-<link rel="stylesheet" href="Senior_Design.css">
+<link rel="stylesheet" href="mystyle.css">
 <head>
     <div class="textBox">
-    	<h1 class="primaryText", align="center">Welcome COORDINATOR NAME</h1>
+      <h1 class="primaryText", align="center">Welcome COORDINATOR NAME</h1>
     </div>
     
 </head>
 
 <body class="mainBody">
     <h1 class ="primaryText", align="center">Online HTML Editor</h1>
-    <div>This is real time online HTML Editor</div>
-    <button class="button">Add Player</button>
-    <button class="button">Create Tournament</button>
-    <button class="button">Create Ruleset</button>
+    <div style="text-align:center;">
+      <button class="button" id="playerAddButton" onclick="toggleAddView(this.id)">Add Player</button>
+      <button class="button" id="tournamentAddButton" onclick="toggleAddView(this.id)">Create Tournament</button>
+      <button class="button" id="rulesetAddButton" onclick="toggleAddView(this.id)">Create Ruleset</button>
+    </div>
+      <div class="hiddenTextBox" id="playerAdd">
+      <form action="/action_page.php">
+        <label for="fname">First Name: </label>
+        <input type="text" id="fname" name="fname"><br><br>
+        <label for="lname">Last Name: </label>
+        <input type="text" id="lname" name="lname"><br><br>
+        <label for="eadd">Email: </label>
+        <input type="text" id="eadd" name="eadd"><br><br>
+        <label for="ssname">Stone Skipping Name: </label>
+        <input type="text" id="ssname" name="ssname"><br><br>
+        <input type="submit" value="Submit" class="button" style="position:relative; left: 40%;">
+      </form>
+      </div>
+      <div class="hiddenTextBox" id="tournamentAdd">
+      <form action="/action_page.php">
+        <label for="tname">Tournament Name: </label>
+        <input type="text" id="tname" name="tname"><br><br>
+        <input type="submit" value="Submit" class="button" style="position:relative; left: 40%;">
+      </form>
+      </div>
+      <div class="hiddenTextBox" id="rulesetAdd">
+      <form action="/action_page.php">
+        <label for="rname">Ruleset Name: </label>
+        <input type="text" id="rname" name="rname"><br><br>
+        <input type="submit" value="Submit" class="button" style="position:relative; left: 40%;">
+      </form>
+      </div>
 </body>
 
 </html>
