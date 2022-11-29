@@ -15,12 +15,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Tournament")
+@Table(name = "tournament")
 public class Tournament {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long tournamentId;
+    @Column(name = "tournament_id")
+    private long id;
 
     @Column(nullable = false, length = 64)
     private String name;
@@ -32,17 +33,17 @@ public class Tournament {
     private Date date;
 
     @ManyToOne(optional = false)
-    @JoinColumn(nullable = false, referencedColumnName = "rulesetId", name="RULESET_ID")
+    @JoinColumn(nullable = false, referencedColumnName = "ruleset_id", name="RULESET_ID")
     private Ruleset ruleset;
 
     @ManyToMany
-    @JoinTable(name = "TOURNAMENT_PLAYER", 
-                joinColumns = @JoinColumn(name = "TOURNAMENT_ID", referencedColumnName = "tournamentId"),
-                inverseJoinColumns = @JoinColumn(name = "PLAYER_ID", referencedColumnName = "playerId"))
+    @JoinTable(name = "tournament_player", 
+                joinColumns = @JoinColumn(name = "tournament_id", referencedColumnName = "tournament_id"),
+                inverseJoinColumns = @JoinColumn(name = "player_id", referencedColumnName = "player_id"))
     private List<Player> players;
 
     public long getTournamentId() {
-        return this.tournamentId;
+        return this.id;
     }
 
     public String getName() {

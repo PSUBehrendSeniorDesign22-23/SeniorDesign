@@ -1,21 +1,24 @@
 package com.behrend.contestmanager.repository;
 
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.behrend.contestmanager.models.Match;
-import com.behrend.contestmanager.models.Tournament;
-import com.behrend.contestmanager.models.Player;
 
 import java.util.List;
 
 @Repository
 public interface MatchRepository extends CrudRepository<Match, Long> {
 
-    List<Match> findAllByPlayerOne(Player playerOne);
+    @EntityGraph(value = "match.playerOne", type = EntityGraphType.FETCH)
+    List<Match> findAllByPlayerOneId(long playerId);
 
-    List<Match> findAllByPlayerTwo(Player playerTwo);
+    @EntityGraph(value = "match.playerTwo", type = EntityGraphType.FETCH)
+    List<Match> findAllByPlayerTwoId(long playerId);
 
-    List<Match> findAllByTournament(Tournament tournament);
+    @EntityGraph(value = "match.tournament", type = EntityGraphType.FETCH)
+    List<Match> findAllByTournamentId(long tournamentId);
     
 }

@@ -11,18 +11,19 @@ import javax.persistence.Table;
 
 
 @Entity
-@Table(name = "Match")
+@Table(name = "match")
 public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long matchId;
+    @Column(name = "match_id")
+    private long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "PLAYER_ONE_ID", nullable = false, referencedColumnName = "playerId")
+    @JoinColumn(name = "player_one_id", nullable = false, referencedColumnName = "player_id")
     private Player playerOne;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "PLAYER_TWO_ID", nullable = false, referencedColumnName = "playerId")
+    @JoinColumn(name = "player_two_id", nullable = false, referencedColumnName = "player_id")
     private Player playerTwo;
 
     @Column(nullable = false)
@@ -32,11 +33,11 @@ public class Match {
     private int playerTwoScore;
 
     @ManyToOne(optional = true)
-    @JoinColumn(name = "TOURNAMENT_ID", referencedColumnName = "tournamentId")
+    @JoinColumn(name = "tournament_id", referencedColumnName = "tournament_id")
     private Tournament tournament;
 
     public long getMatchId() {
-        return this.matchId;
+        return this.id;
     }
 
     public Player getPlayerOne() {

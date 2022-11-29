@@ -1,10 +1,11 @@
 package com.behrend.contestmanager.repository;
 
+import org.springframework.data.jpa.repository.EntityGraph;
+import org.springframework.data.jpa.repository.EntityGraph.EntityGraphType;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import com.behrend.contestmanager.models.Tournament;
-import com.behrend.contestmanager.models.Ruleset;
 
 import java.util.List;
 import java.sql.Date;
@@ -18,6 +19,7 @@ public interface TournamentRepository extends CrudRepository<Tournament, Long> {
 
     List<Tournament> findTournamentsByDate(Date date);
 
-    List<Tournament> findTournamentsByRuleset(Ruleset ruleset);
+    @EntityGraph(value = "tournament.ruleset", type = EntityGraphType.FETCH)
+    List<Tournament> findTournamentsByRulesetId(long rulesetId);
 
 }

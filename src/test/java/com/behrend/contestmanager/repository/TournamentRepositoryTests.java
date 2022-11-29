@@ -70,4 +70,10 @@ public class TournamentRepositoryTests {
             Assertions.assertEquals(date, tournament.getDate());
         }
     }
+
+    @Test
+    void findTournamentsByRuleset()
+    {
+        
+    }
 }
