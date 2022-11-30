@@ -8,12 +8,23 @@
   background-color: var(--backgroundColor);
 }
 
-.primaryText {
+.primaryTextCenter {
   color: var(--primaryTextColor);
   text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
+  text-align: center;
+}
+
+.primaryTextLeft {
+  color: var(--primaryTextColor);
+  text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
+  text-align: left;
 }
 
 .button {
+  text-align: center;
+}
+
+.formButton {
   background-color: var(--primaryColor); /* Blue-Green */
   border: none;
   color: var(--primaryTextColor);
@@ -24,13 +35,14 @@
   display: inline-block;
   font-size: 16px;
 }
-.button:hover {
+.formButton:hover {
   opacity: 1!important;
   }
 
 .hiddenTextBox {
   background: #F4A261;
   font-size: 20px;
+  text-align: center;
   padding: 10px;
   border: 1px solid lightgray;
   border-radius: 10px;
