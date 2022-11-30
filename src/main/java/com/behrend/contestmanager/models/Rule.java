@@ -8,15 +8,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "Rule")
 public class Rule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long ruleId;
+    @Column(name = "rule_id")
+    private long id;
 
     @Column
     private String name;
@@ -34,7 +33,7 @@ public class Rule {
     private List<Ruleset> rulesets;
 
     public long getRuleId() {
-        return ruleId;
+        return id;
     }
 
     public String getName() {

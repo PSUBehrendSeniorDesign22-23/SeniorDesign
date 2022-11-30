@@ -8,16 +8,15 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.Table;
 
 import java.util.List;
 @Entity
-@Table(name = "Ruleset")
 public class Ruleset {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long rulesetId;
+    @Column(name = "ruleset_id")
+    private long id;
 
     @Column
     private String name;
@@ -26,13 +25,13 @@ public class Ruleset {
     private String origin;
 
     @ManyToMany
-    @JoinTable(name = "RULESET_RULE",
-                joinColumns = @JoinColumn(name = "RULESET_ID", referencedColumnName = "rulesetId"),
-                inverseJoinColumns = @JoinColumn(name = "RULE_ID", referencedColumnName = "ruleId"))
+    @JoinTable(name = "ruleset_rule",
+                joinColumns = @JoinColumn(name = "ruleset_id", referencedColumnName = "ruleset_id"),
+                inverseJoinColumns = @JoinColumn(name = "rule_id", referencedColumnName = "rule_id"))
     private List<Rule> rules;
 
     public long getRulesetId() {
-        return this.rulesetId;
+        return this.id;
     }
 
     public String getName() {

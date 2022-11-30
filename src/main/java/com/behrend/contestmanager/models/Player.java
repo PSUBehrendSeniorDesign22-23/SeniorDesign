@@ -5,11 +5,11 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Player")
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long playerId;
+    @Column(name = "player_id")
+    private long id;
 
     @Column(nullable = false, length = 64)
     private String firstName;
@@ -32,8 +32,14 @@ public class Player {
     @ManyToMany(mappedBy = "players")
     private List<Tournament> tournaments;
 
+    @OneToMany(mappedBy = "playerOne")
+    private List<Match> matchesOne;
+
+    @OneToMany(mappedBy = "playerTwo")
+    private List<Match> matchesTwo;
+
     public long getPlayerId() {
-        return playerId;
+        return id;
     }
 
     

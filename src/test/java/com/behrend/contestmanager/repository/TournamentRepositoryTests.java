@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 
+import com.behrend.contestmanager.models.Ruleset;
 import com.behrend.contestmanager.models.Tournament;
 
 import java.sql.Date;
@@ -24,6 +25,9 @@ public class TournamentRepositoryTests {
     
     @Autowired
     private TournamentRepository tournamentRepository;
+
+    @Autowired
+    private RulesetRepository rulesetRepository;
 
     @Test
     void findAllTournaments() {
@@ -69,5 +73,44 @@ public class TournamentRepositoryTests {
         {
             Assertions.assertEquals(date, tournament.getDate());
         }
+    }
+
+    @Test
+    void findTournamentsByRulesetId()
+    {
+        
+    }
+
+    @Test
+    void createTournament() {
+
+        Tournament tournament = new Tournament();
+        Ruleset ruleset = new Ruleset();
+
+        ruleset.setName("TestRuleset");
+        ruleset.setOrigin("North America");
+
+        ruleset = rulesetRepository.save(ruleset);
+
+        tournament.setName("TestTournament");
+        tournament.setLocation("North America");
+        tournament.setDate(Date.valueOf(LocalDate.of(2012, 12, 12)));
+        tournament.setRuleset(ruleset);
+
+        tournament = tournamentRepository.save(tournament);
+
+        List<Tournament> tournamentsInDb = (List<Tournament>) tournamentRepository.findAll();
+
+        boolean tournamentFound = false;
+
+        for (Tournament t : tournamentsInDb)
+        {
+            if (t.getTournamentId() == tournament.getTournamentId())
+            {
+                tournamentFound = true;
+            }
+        }
+
+        Assertions.assertTrue(tournamentFound);
     }
 }
