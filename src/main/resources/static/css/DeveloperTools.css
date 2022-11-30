@@ -1,0 +1,66 @@
+:root {
+  --backgroundColor: #264653;
+  --primaryColor: #2a9d8f;
+  --primaryTextColor: #ffffff;
+}
+
+.mainBody {
+  background-color: var(--backgroundColor);
+}
+
+.primaryTextCenter {
+  color: var(--primaryTextColor);
+  text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
+  text-align: center;
+}
+
+.primaryTextLeft {
+  color: var(--primaryTextColor);
+  text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
+  text-align: left;
+}
+
+.button {
+  text-align: center;
+}
+
+.formButton {
+  background-color: var(--primaryColor); /* Blue-Green */
+  border: none;
+  color: var(--primaryTextColor);
+  opacity: 0.6;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+.formButton:hover {
+  opacity: 1!important;
+  }
+
+.hiddenTextBox {
+  background: #F4A261;
+  font-size: 20px;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  margin: 10px;
+  display: none;
+}
+
+.textBox {
+  background: #F4A261;
+  font-size: 20px;
+  padding: 10px;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+label{
+display: inline-block;
+width: 200px;
+text-align: right;
+}
