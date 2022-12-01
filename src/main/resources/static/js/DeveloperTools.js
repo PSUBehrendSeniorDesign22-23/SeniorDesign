@@ -124,7 +124,7 @@ function playerSearch() {
         if (data[i] != null)
         {
           child = document.createElement('p')
-          child.innerText = JSON.stringify(data)
+          child.innerText = JSON.stringify(data[i])
           resultsContainer.appendChild(child)
         }
       }
@@ -152,7 +152,7 @@ function tournamentSearch() {
         if (data[i] != null)
         {
           child = document.createElement('p')
-          child.innerText = JSON.stringify(data)
+          child.innerText = JSON.stringify(data[i])
           resultsContainer.appendChild(child)
         }
       }
@@ -181,7 +181,7 @@ function rulesetSearch() {
         if (data[i] != null)
         {
           child = document.createElement('p')
-          child.innerText = JSON.stringify(data)
+          child.innerText = JSON.stringify(data[i])
           resultsContainer.appendChild(child)
         }
       }
