@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
   <title>Online HTML Editor</title>
-  <link rel="stylesheet" href="DeveloperTools.css">
+  <link rel="stylesheet" th:href="@{/css/DeveloperTools.css}">
+  <script type="text/javascript" th:src="@{/js/DeveloperTools.js}" defer></script>
 
   <head>
     <div class="textBox">
@@ -18,7 +19,7 @@
       <button class="formButton" id="rulesetAddButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Create Ruleset</button>
     </div>
     <div class="hiddenTextBox" id="playerAdd">
-      <form action="/action_page.php">
+      <form id=playerAddForm method="post">
         <label for="addfname">First Name: </label>
         <input type="text" id="addfname" name="addfname"><br><br>
         <label for="addlname">Last Name: </label>
@@ -29,11 +30,11 @@
         <input type="email" id="addeadd" name="addeadd"><br><br>
         <label for="addpnum">Phone Number: </label>
         <input type="tel" placeholder="+1 (555) 123-4567" id="addpnum" name="addpnum"><br><br>
-        <input type="submit" value="Submit" class="button">
+        <input type="submit" value="Submit" class="button" onclick="addPlayer()">
       </form>
     </div>
     <div class="hiddenTextBox" id="tournamentAdd">
-      <form action="/action_page.php">
+      <form id=tournamentAddForm method="post">
         <label for="addtname">Tournament Name: </label>
         <input type="text" id="addtname" name="addtname"><br><br>
         <label for="addtloc">Tournament Location: </label>
@@ -42,16 +43,16 @@
         <input type="date" id="addtdate" name="addtdate"><br><br>
         <label for="addtrule">Tournament Ruleset: </label>
         <input type="text" id="addtrule" name="addtrule"><br><br>
-        <input type="submit" value="Submit" class="button">
+        <input type="submit" value="Submit" class="button" onclick="addTournament()">
       </form>
     </div>
     <div class="hiddenTextBox" id="rulesetAdd">
-      <form action="/action_page.php">
+      <form id=rulesetAddForm method="post">
         <label for="addrname">Ruleset Name: </label>
         <input type="text" id="addrname" name="addrname"><br><br>
         <label for="addrorigin">Ruleset Origin: </label>
-        <input type="text" id="addrorigin" name="addorigin"><br><br>
-        <input type="submit" value="Submit" class="button">
+        <input type="text" id="addrorigin" name="addrorigin"><br><br>
+        <input type="submit" value="Submit" class="button" onclick="addRuleset()">
       </form>
     </div>
 
@@ -71,7 +72,7 @@
       <br>
       <label for="playerSearchFilter">Filter: </label>
       <input type="text" id="playerSearchFilter" name="pfilter"><br><br>
-      <input type="submit" value="Submit" class="button">
+      <input type="submit" value="Submit" class="button" onclick="playerSearch()">
     </div>
     <div class="hiddenTextBox" id="tournamentSearch">
       <label for="tournament-search-options">Choose a search criteria:</label>
@@ -83,7 +84,7 @@
       <br>
       <label for="tournamentSearchFilter">Filter: </label>
       <input type="text" id="tournamentSearchFilter" name="tfilter"><br><br>
-      <input type="submit" value="Submit" class="button">
+      <input type="submit" value="Submit" class="button" onclick="tournamentSearch()">
     </div>
     <div class="hiddenTextBox" id="rulesetSearch">
       <label for="ruleset-search-options">Choose a search criteria:</label>
@@ -94,15 +95,15 @@
       <br>
       <label for="rulesetSearchFilter">Filter: </label>
       <input type="text" id="rulesetSearchFilter" name="rfilter"><br><br>
-      <input type="submit" value="Submit" class="button">
+      <input type="submit" value="Submit" class="button" onclick="rulesetSearch()">
     </div>
     <div class="textBox" id="searchResults">
       <h1 class="primaryTextLeft">
         Search Results
       </h1>
-      <p class="primaryTextLeft">
-        Results
-      </p>
+      <div id="results-container">
+        
+      </div>
     </div>
   </body>
 
