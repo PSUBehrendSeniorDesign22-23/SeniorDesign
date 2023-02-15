@@ -1,0 +1,143 @@
+:root {
+  --backgroundColor: #4b514a;
+  --primaryColor: #b2d4b6;
+  --primaryTextColor: #ffffff;
+  --secondaryColor: #728370;
+}
+
+body,
+html {
+  height: 100%;
+}
+
+.mainBody {
+  background-color: var(--backgroundColor);
+}
+
+.parallax {
+  /* The image used */
+  background-image: url("https://images.squarespace-cdn.com/content/5592dfa8e4b08369d0200646/1632945392215-FI39FTNWMZAROS3Q7WNJ/2021-10-stone-skipping-01B-1500px.jpg?format=1500w&content-type=image%2Fjpeg");
+
+  /* Set a specific height */
+  height: 100%;
+
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.primaryTextCenter {
+  color: var(--primaryTextColor);
+  text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
+  text-align: center;
+}
+
+.primaryTextLeft {
+  color: var(--primaryTextColor);
+  text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
+  text-align: left;
+}
+
+button {
+  background-color: var(--backgroundColor);
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.6;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
+button:hover {
+  opacity: 1;
+}
+
+.textBox {
+  background: var(--secondaryColor);
+  font-size: 20px;
+  padding: 10px;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  margin: 10px;
+}
+
+label {
+  display: inline-block;
+  width: 200px;
+  text-align: left;
+}
+
+{
+  box-sizing: border-box;
+}
+
+/* Full-width input fields */
+input[type=text],
+input[type=password] {
+  width: 95%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+/* Add a background color when the inputs get focus */
+input[type=text]:focus,
+input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* The Modal (background) */
+.modal {
+  display: none;
+
+  /* Hidden by default */
+
+  position: fixed;
+
+  /* Stay in place */
+  z-index: 1;
+
+  /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%;
+
+  /* Full width */
+  height: 100%;
+
+  /* Full height */
+  overflow: auto;
+
+  /* Enable scroll if needed */
+  background: rgba(75, 81, 74, .6);
+  padding-top: 50px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: var(--backgroundColor);
+  margin: 5% auto 15% auto;
+
+  /* 5% from the top, 15% from the bottom and centered */
+  border: 1px solid #888;
+  width: 80%;
+
+  /* Could be more or less, depending on screen size */
+}
+
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
