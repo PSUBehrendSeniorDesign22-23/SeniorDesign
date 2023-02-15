@@ -19,7 +19,7 @@ html {
   background-image: url("https://images.squarespace-cdn.com/content/5592dfa8e4b08369d0200646/1632945392215-FI39FTNWMZAROS3Q7WNJ/2021-10-stone-skipping-01B-1500px.jpg?format=1500w&content-type=image%2Fjpeg");
 
   /* Set a specific height */
-  height: 100%;
+  height: 50%;
 
   /* Create the parallax scrolling effect */
   background-attachment: fixed;
