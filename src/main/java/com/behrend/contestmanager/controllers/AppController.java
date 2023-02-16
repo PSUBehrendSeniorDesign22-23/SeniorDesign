@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.behrend.contestmanager.models.User;
+import com.behrend.contestmanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,9 +33,17 @@ public class AppController {
     @Autowired
     RulesetRepository ruleSetRepo;
 
+    @Autowired
+    UserRepository userRepo;
+
     @GetMapping(value = "/")
     public String index() {
         return "DeveloperTools";
+    }
+
+    @GetMapping("/login")
+    public String signUpPage(User user) {
+        return "LogIn";
     }
 
     @GetMapping(value = "/players/search", params = {"searchType", "searchFilter"})

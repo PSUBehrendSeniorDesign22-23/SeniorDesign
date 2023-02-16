@@ -1,5 +1,5 @@
 package com.behrend.contestmanager.models;
-
+import com.behrend.contestmanager.models.Roles;
 import java.util.List;
 
 import javax.persistence.*;
@@ -31,5 +31,6 @@ public class User {
     @Column(nullable = false, length = 64)
     private String password;
 
-    private List<Roles> roles;
+
+
 }
