@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <title>Online HTML Editor</title>
+  <link rel="stylesheet" href="mystyle.css">
+
+  <head>
+    <div class="textBox">
+      <h1 class="primaryTextCenter">Welcome to Mountain Man's Millstone</h1>
+    </div>
+  </head>
+
+  <body class="mainBody">
+    <div class="parallax"></div>
+    <div class="textBox">
+      <p class="primaryTextCenter" style="font-size:36px">
+        <!-- Button to open the modal -->
+        <button onclick="document.getElementById('idLog').style.display='block'" class="button">Login</button>
+        <button onclick="document.getElementById('idSign').style.display='block'" class="button">Sign Up</button>
+        <!-- The Modal (contains the Sign Up form) -->
+        <div id="idLog" class="modal">
+          <span onclick="document.getElementById('idLog').style.display='none'" title="Close Modal"></span>
+          <form class="modal-content" action="/action_page.php">
+            <div class="textBox">
+              <h1 class="primaryTextCenter">Login</h1>
+              <p class="primaryTextLeft">Please fill in this form login to your account.</p>
+              <hr>
+              <label for="email"><b>Email</b></label>
+              <input type="text" placeholder="Enter Email" name="email" required>
+
+              <label for="psw"><b>Password</b></label>
+              <input type="password" placeholder="Enter Password" name="psw" required>
+
+              <label>
+                <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
+              </label>
+
+              <div class="clearfix">
+                <button type="submit" class="button" style="background-color: #008000;">Login</button>
+                <button type="button" onclick="document.getElementById('idLog').style.display='none'" style="background-color: #f44336;" class="formButton">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- The Modal (contains the Sign Up form) -->
+        <div id="idSign" class="modal">
+          <span onclick="document.getElementById('idSign').style.display='none'" title="Close Modal"></span>
+          <form class="modal-content" action="/action_page.php">
+            <div class="textBox">
+              <h1 class="primaryTextCenter">Sign Up</h1>
+              <p class="primaryTextLeft">Please fill in this form to create an account.</p>
+              <hr>
+              <label for="email"><b>Email</b></label>
+              <input type="text" placeholder="Enter Email" name="email" required>
+
+              <label for="psw"><b>Password</b></label>
+              <input type="password" placeholder="Enter Password" name="psw" required>
+
+              <label for="psw-repeat"><b>Repeat Password</b></label>
+              <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+
+              <label>
+                <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
+              </label>
+
+              <p class="primaryTextCenter">By creating an account you agree to our <a href="#" class="primaryTextCenter" style="color:dodgerblue">Terms & Privacy</a>.</p>
+
+              <div class="clearfix">
+                <button type="submit" class="button" style="background-color: #008000;">Sign Up</button>
+                <button type="button" onclick="document.getElementById('idSign').style.display='none'" style="background-color: #f44336;" class="formButton">Cancel</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </p>
+    </div>
+    <div class="parallax"></div>
+  </body>
+
+</html>
+
+<script>
+  // Get the modal
+  var logModal = document.getElementById('idLog');
+  var signModal = document.getElementById('idSign');
+
+  // When the user clicks anywhere outside of the modal, close it
+  window.onclick = function(event) {
+    if (event.target == logModal) {
+      logModal.style.display = "none";
+    } else if (event.target == signModal)
+      signModal.style.display = "none";
+  }
+
+</script>
