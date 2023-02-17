@@ -1,5 +1,5 @@
 package com.behrend.contestmanager.service;
 
-public class TournamentService {
+public interface TournamentService {
     
 }
