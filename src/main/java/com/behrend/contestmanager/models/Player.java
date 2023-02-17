@@ -20,8 +20,14 @@ public class Player {
     @Column(length = 64)
     private String skipperName;
 
+    // True default value is 1000
+    // This is set prior to saving a player to the database
+    // It is set to null for the sake of update operations
+    // When rank is null, an update operation knows to skip
+    // updating this field, and a creation operation knows to
+    // set the value to 1000
     @Column
-    private Integer rank = 1000;
+    private Integer rank = null;
 
     @Column(nullable = false, unique = true, length = 64)
     private String email;
