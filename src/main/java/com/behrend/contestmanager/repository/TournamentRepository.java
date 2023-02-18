@@ -11,7 +11,7 @@ import java.sql.Date;
 @Repository
 public interface TournamentRepository extends CrudRepository<Tournament, Long> {
 
-    Tournament findTournamentByName(String name);
+    List<Tournament> findTournamentsByName(String name);
 
     List<Tournament> findTournamentsByLocation(String location);
 

@@ -63,7 +63,7 @@ public class AppController {
         
         if (type.equals("tname"))
         {
-            tournaments.add(tourRepo.findTournamentByName(filter));
+            tournaments.addAll(tourRepo.findTournamentsByName(filter));
         }
         if (type.equals("tlocation"))
         {

@@ -28,7 +28,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     // Read
     @Override
-    public List<Player> getAllPlayers() {
+    public List<Player> findAllPlayers() {
         return (List<Player>) playerRepository.findAll();
     }
 

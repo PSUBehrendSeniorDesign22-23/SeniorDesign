@@ -10,7 +10,7 @@ public interface PlayerService {
     Player savePlayer(Player player);
 
     // Read
-    List<Player> getAllPlayers();
+    List<Player> findAllPlayers();
 
     List<Player> findPlayerByFirstName(String firstName);
 
