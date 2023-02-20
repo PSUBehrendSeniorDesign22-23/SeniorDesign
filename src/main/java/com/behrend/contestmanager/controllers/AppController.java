@@ -50,7 +50,7 @@ public class AppController {
         }
         if (type.equals("pssname"))
         {
-            players.add(playerRepo.findBySkipperName(filter));
+            players.addAll(playerRepo.findBySkipperName(filter));
         }
 
         return players;
@@ -92,7 +92,7 @@ public class AppController {
         
         if (type.equals("rname"))
         {
-            rulesets.add(ruleSetRepo.findRulesetByName(filter));
+            rulesets.addAll(ruleSetRepo.findRulesetsByName(filter));
         }
         if (type.equals("rorigin"))
         {
@@ -149,7 +149,7 @@ public class AppController {
             tournament.setDate(date);
         }
         if(ruleSetName != null){
-            Ruleset ruleSet = ruleSetRepo.findRulesetByName(ruleSetName);
+            Ruleset ruleSet = ruleSetRepo.findRulesetsByName(ruleSetName).get(0);
             if( ruleSet == null){
                 return ResponseEntity.status(HttpStatus.valueOf(400)).body("{\"operation\": \"failure\", \"message\": \"Ruleset not found\"}");
             }else{

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.behrend.contestmanager.models.Tournament;
 import com.behrend.contestmanager.models.Ruleset;
+import com.behrend.contestmanager.models.Player;
 import com.behrend.contestmanager.repository.TournamentRepository;
 
 import java.util.ArrayList;
@@ -55,7 +56,40 @@ public class TournamentServiceImpl implements TournamentService {
     public Tournament updateTournament(Tournament tournament, long tournamentId) {
         Tournament currentTournament = tournamentRepository.findById(tournament.getTournamentId()).get();
 
-        return currentTournament;
+        if (!"".equalsIgnoreCase(tournament.getName())) {
+            currentTournament.setName(tournament.getName());
+        }
+
+        if (!"".equalsIgnoreCase(tournament.getLocation())) {
+            currentTournament.setLocation(tournament.getLocation());
+        }
+
+        if (!tournament.getDate().toString().equals(currentTournament.getDate().toString())) {
+            currentTournament.setDate(tournament.getDate());
+        }
+
+        if (tournament.getRuleset() != null) {
+            currentTournament.setRuleset(tournament.getRuleset());
+        }
+
+        if (!tournament.getPlayers().equals(currentTournament.getPlayers())) {
+            currentTournament.setPlayers(currentTournament.getPlayers());
+        }
+
+        return tournamentRepository.save(currentTournament);
+    }
+
+    public Tournament addPlayerToTournament(Tournament tournament, Player player) {
+        
+        Tournament updatedTournament = tournamentRepository.findById(tournament.getTournamentId()).get();
+
+        if (!updatedTournament.getPlayers().contains(player)) {
+            ArrayList<Player> playerList = (ArrayList<Player>) updatedTournament.getPlayers();
+            playerList.add(player);
+            updatedTournament.setPlayers(playerList);
+        }
+
+        return tournamentRepository.save(updatedTournament);
     }
 
     // Delete

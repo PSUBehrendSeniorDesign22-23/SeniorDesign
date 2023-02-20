@@ -2,6 +2,7 @@ package com.behrend.contestmanager.service;
 
 import com.behrend.contestmanager.models.Tournament;
 import com.behrend.contestmanager.models.Ruleset;
+import com.behrend.contestmanager.models.Player;
 
 import java.util.List;
 import java.sql.Date;
@@ -25,6 +26,8 @@ public interface TournamentService {
 
     // Update
     Tournament updateTournament(Tournament tournament, long tournamentId);
+
+    Tournament addPlayerToTournament(Tournament tournament, Player player);
 
     // Delete
     void deleteTournamentById(long tournamentId);

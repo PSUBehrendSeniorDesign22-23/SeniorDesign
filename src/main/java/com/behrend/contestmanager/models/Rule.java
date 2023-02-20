@@ -21,13 +21,7 @@ public class Rule {
     private String name;
 
     @Column
-    private String attributeOne;
-
-    @Column
-    private String attributeTwo;
-
-    @Column
-    private String attributeThree;
+    private String attribute;
 
     @ManyToMany(mappedBy = "rules")
     private List<Ruleset> rulesets;
@@ -44,27 +38,11 @@ public class Rule {
         this.name = name;
     }
 
-    public String getAttributeOne() {
-        return attributeOne;
+    public String getAttribute() {
+        return attribute;
     }
 
-    public void setAttributeOne(String attribute) {
-        this.attributeOne = attribute;
-    }
-
-    public String getAttributeTwo() {
-        return attributeTwo;
-    }
-
-    public void setAttributeTwo(String attribute) {
-        this.attributeTwo = attribute;
-    }
-
-    public String getAttributeThree() {
-        return attributeThree;
-    }
-
-    public void setAttributeThree(String attribute) {
-        this.attributeThree = attribute;
+    public void setAttribute(String attribute) {
+        this.attribute = attribute;
     }
 }

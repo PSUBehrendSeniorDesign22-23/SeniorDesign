@@ -42,7 +42,7 @@ public class RulesetRepositoryTests {
     @Test
     void findRulesetByName() {
         String name = "RulesetOne";
-        Ruleset ruleset = rulesetRepository.findRulesetByName(name);
+        Ruleset ruleset = rulesetRepository.findRulesetsByName(name).get(0);
         Assertions.assertEquals(name, ruleset.getName());
     }
 
