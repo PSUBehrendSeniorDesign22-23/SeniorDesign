@@ -15,17 +15,14 @@ public class SecurityConfig {
     public BCryptPasswordEncoder passwordEncoder(){return new BCryptPasswordEncoder();}
 
 
-    @Bean
+   @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http
-                .csrf(csrf -> csrf.disable())//security measure for CSRF attacks and excludes username/password from HTTP requests
-                .authorizeRequests(auth -> {
-                        auth.antMatchers().permitAll();
+                //.csrf(csrf -> csrf.disable())//security measure for CSRF attacks and excludes username/password from HTTP requests
+                .authorizeRequests().antMatchers("Landing", "DevelopmentTools").permitAll()
                         //permissions need more tweaking
                         //auth.antMatchers("/DevelopmentTools").hasRole("USER");
-                }
-                        )
-                .formLogin()
+                .and().formLogin()
                 .loginPage("/Landing")
                 .failureUrl("/LoginFailed")
                 .and()
