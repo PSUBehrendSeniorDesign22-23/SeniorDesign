@@ -7,3 +7,6 @@ bin
 
 # Ignore vscode settings directory
 .vscode
+
+# Ignore IntelliJ directory
+.idea

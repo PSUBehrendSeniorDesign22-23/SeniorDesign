@@ -4,11 +4,18 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.behrend.contestmanager.models.*;
+import com.behrend.contestmanager.repository.UserRepository;
+import com.behrend.contestmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +24,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.behrend.contestmanager.models.*;
 import com.behrend.contestmanager.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import javax.management.relation.Role;
 
 @Controller
 public class AppController {
@@ -32,9 +41,39 @@ public class AppController {
     @Autowired
     RuleService ruleService = new RuleServiceImpl();
 
+    @Autowired
+    UserRepository userRepo;
+
     @GetMapping(value = "/")
-    public String index() {
-        return "DeveloperTools";
+    public String index(Model model) {
+        return "Landing";
+    }
+
+    @PostMapping("/login")
+    public String UserLogin(User user) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        User acc = userRepo.findByEmail(user.getEmail());
+        if(acc==null){return "redirect:/LoginFailed";}
+        if(encoder.matches(user.getPassword(),acc.getPassword())){
+            UserService.setLoggedIn(acc.getId());
+            return "redirect:/DevelopmentTools";
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping("/registerUser")
+    public String registerUser(User user){
+        if(userRepo.findByEmail(user.getEmail()) != null){
+            return "redirect:/";
+        }
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encryptedPass =encoder.encode(user.getPassword());
+        user.setPassword(encryptedPass);
+        //Roles role = new Roles();
+        //role.setName("USER");
+        userRepo.save(user);
+        UserService.setLoggedIn(user.getId());
+        return "redirect:/DevelopmentTools";
     }
 
     @GetMapping(value = "/players/search", params = {"searchType", "searchFilter"})
