@@ -56,7 +56,12 @@ public class TournamentServiceImpl implements TournamentService {
 
     // Update
     public Tournament updateTournament(Tournament tournament, long tournamentId) {
-        Tournament currentTournament = tournamentRepository.findById(tournament.getTournamentId()).get();
+        Tournament currentTournament = tournamentRepository.findById(tournament.getTournamentId()).orElse(null);
+
+        if (currentTournament == null)
+        {
+            return null;
+        }
 
         if (!"".equalsIgnoreCase(tournament.getName())) {
             currentTournament.setName(tournament.getName());

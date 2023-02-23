@@ -56,7 +56,11 @@ public class MatchServiceImpl implements MatchService{
     @Override
     public Match updateMatch(Match match, long matchId) {
        
-        Match currentMatch = matchRepository.findById(matchId).get();
+        Match currentMatch = matchRepository.findById(matchId).orElse(null);
+
+        if (currentMatch == null) {
+            return null;
+        }
 
         if (match.getPlayerOne() != null) {
             currentMatch.setPlayerOne(match.getPlayerOne());

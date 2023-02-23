@@ -55,7 +55,11 @@ public class PlayerServiceImpl implements PlayerService {
     // Update
     @Override
     public Player updatePlayer(Player player, long playerId) {
-        Player currentPlayer = playerRepository.findById(playerId).get();
+        Player currentPlayer = playerRepository.findById(playerId).orElse(null);
+
+        if (currentPlayer == null) {
+            return null;
+        }
 
         if (player.getFirstName() != null && !"".equalsIgnoreCase(player.getFirstName())) {
             currentPlayer.setFirstName(player.getFirstName());

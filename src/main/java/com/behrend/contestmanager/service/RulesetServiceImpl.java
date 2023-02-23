@@ -23,7 +23,7 @@ public class RulesetServiceImpl implements RulesetService {
     // Read
     @Override
     public Ruleset findRulesetById(long rulesetId) {
-        return rulesetRepository.findById(rulesetId).get();
+        return rulesetRepository.findById(rulesetId).orElse(null);
     }
 
     @Override
@@ -43,7 +43,11 @@ public class RulesetServiceImpl implements RulesetService {
 
     // Update
     public Ruleset updateRuleset(Ruleset ruleset, long rulesetId) {
-        Ruleset currentRuleset = rulesetRepository.findById(rulesetId).get();
+        Ruleset currentRuleset = rulesetRepository.findById(rulesetId).orElse(null);
+
+        if (currentRuleset == null) {
+            return null;
+        }
 
         if (!"".equalsIgnoreCase(ruleset.getName())) {
             currentRuleset.setName(ruleset.getName());

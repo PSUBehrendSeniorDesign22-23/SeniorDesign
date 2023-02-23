@@ -39,7 +39,11 @@ public class RuleServiceImpl implements RuleService {
     // Update
     @Override
     public Rule updateRule(Rule rule, long ruleId) {
-        Rule currentRule = ruleRepository.findById(ruleId).get();
+        Rule currentRule = ruleRepository.findById(ruleId).orElse(null);
+
+        if (currentRule == null) {
+            return null;
+        }
 
         if (!"".equals(rule.getName())) {
             currentRule.setName(rule.getName());
