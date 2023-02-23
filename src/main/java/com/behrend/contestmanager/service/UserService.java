@@ -1,5 +1,6 @@
 package com.behrend.contestmanager.service;
 
+import com.behrend.contestmanager.models.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -8,6 +9,29 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.Collection;
 
 public class UserService implements UserDetails, UserDetailsService {
+
+    private String firstName;
+    private String lastName;
+    private String phoneNum;
+
+
+
+    private String email;
+    private String address;
+    private String password;
+
+    private static long loggedIn = 0;
+
+    public UserService(User user) {
+        this.firstName = user.getFirstName();
+        this.lastName = user.getLastName();
+        this.phoneNum = user.getPhoneNum();
+        this.email = user.getEmail();
+        this.address = user.getAddress();
+        this.password = user.getPassword();
+    }
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;
@@ -47,4 +71,28 @@ public class UserService implements UserDetails, UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return null;
     }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+   public String getFirstName() {
+        return firstName;
+    }
+
+    public String getPhoneNum() {
+        return phoneNum;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+    public static void setLoggedIn(long userID) {
+        loggedIn = userID;
+    }
+
 }

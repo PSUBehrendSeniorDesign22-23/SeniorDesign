@@ -17,12 +17,12 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())//security measure for CSRF attacks and excludes username/password from HTTP requests
                 .authorizeRequests(auth -> {
                         auth.antMatchers("/").permitAll();
-                        auth.antMatchers("/dashboard").hasRole("USER");
+                        auth.antMatchers("/DevelopmentTools").hasRole("USER");
                 }
                         )
                 .formLogin()
-                .loginPage("/login")
-                .failureUrl("/login?failed")
+                .loginPage("/Landing")
+                .failureUrl("/LoginFailed")
                 .and()
                 .logout().permitAll()
                 .and()
