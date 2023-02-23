@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.behrend.contestmanager.models.User;
+import com.behrend.contestmanager.models.*;
 import com.behrend.contestmanager.repository.UserRepository;
 import com.behrend.contestmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +20,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.behrend.contestmanager.models.Player;
-import com.behrend.contestmanager.models.Ruleset;
-import com.behrend.contestmanager.models.Tournament;
 import com.behrend.contestmanager.repository.PlayerRepository;
 import com.behrend.contestmanager.repository.RulesetRepository;
 import com.behrend.contestmanager.repository.TournamentRepository;
+
+import javax.management.relation.Role;
 
 @Controller
 public class AppController {
@@ -66,6 +65,8 @@ public class AppController {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encryptedPass =encoder.encode(user.getPassword());
         user.setPassword(encryptedPass);
+        //Roles role = new Roles();
+        //role.setName("USER");
         userRepo.save(user);
         UserService.setLoggedIn(user.getId());
         return "redirect:/DevelopmentTools";

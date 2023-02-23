@@ -14,4 +14,8 @@ public class Roles {
     @Column(nullable = false, length = 45)
     private String name;
 
+    public void setName(String rName){
+        this.name = rName;
+    }
+
 }

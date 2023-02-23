@@ -1,21 +1,25 @@
 package com.behrend.contestmanager.models;
-import com.behrend.contestmanager.models.Roles;
+import com.behrend.contestmanager.service.UserService;
+
+import java.util.Collection;
 import java.util.List;
 
+import javax.management.relation.Role;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
 
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "player_id")
+    @Column(name = "user_id")
     private long id;
 
-
+    //This will be modified for the table in the future
+    public Role roles;
 
     @Column(nullable = false, length = 64)
     private String firstName;
@@ -34,6 +38,10 @@ public class User {
 
     @Column(nullable = false, length = 64)
     private String password;
+
+    public void setRoles(Role r){
+        roles = r;
+    }
 
     public String getFirstName() {
         return firstName;

@@ -15,20 +15,12 @@ public class UserService implements UserDetails, UserDetailsService {
     private String phoneNum;
 
 
-
-    private String email;
-    private String address;
-    private String password;
-
     private static long loggedIn = 0;
 
     public UserService(User user) {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.phoneNum = user.getPhoneNum();
-        this.email = user.getEmail();
-        this.address = user.getAddress();
-        this.password = user.getPassword();
     }
 
 
@@ -84,13 +76,6 @@ public class UserService implements UserDetails, UserDetailsService {
         return phoneNum;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
     public static void setLoggedIn(long userID) {
         loggedIn = userID;
     }

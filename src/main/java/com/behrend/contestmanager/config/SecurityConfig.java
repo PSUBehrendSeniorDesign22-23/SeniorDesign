@@ -20,8 +20,9 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())//security measure for CSRF attacks and excludes username/password from HTTP requests
                 .authorizeRequests(auth -> {
-                        auth.antMatchers("/").permitAll();
-                        auth.antMatchers("/DevelopmentTools").hasRole("USER");
+                        auth.antMatchers().permitAll();
+                        //permissions need more tweaking
+                        //auth.antMatchers("/DevelopmentTools").hasRole("USER");
                 }
                         )
                 .formLogin()
