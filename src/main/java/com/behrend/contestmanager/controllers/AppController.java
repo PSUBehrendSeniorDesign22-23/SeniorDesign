@@ -58,6 +58,19 @@ public class AppController {
         return "redirect:/";
     }
 
+    @PostMapping("/registerUser")
+    public String registerUser(User user){
+        if(userRepo.findByEmail(user.getEmail()) != null){
+            return "redirect:/";
+        }
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String encryptedPass =encoder.encode(user.getPassword());
+        user.setPassword(encryptedPass);
+        userRepo.save(user);
+        UserService.setLoggedIn(user.getId());
+        return "redirect:/DevelopmentTools";
+    }
+
     @GetMapping(value = "/players/search", params = {"searchType", "searchFilter"})
     @ResponseBody
     public List<Player> searchPlayer(@RequestParam(name = "searchType") String type, @RequestParam(name = "searchFilter") String filter) {
