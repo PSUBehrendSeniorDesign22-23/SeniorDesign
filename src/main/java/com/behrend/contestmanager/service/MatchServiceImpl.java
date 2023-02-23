@@ -2,6 +2,7 @@ package com.behrend.contestmanager.service;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.behrend.contestmanager.repository.MatchRepository;
 import com.behrend.contestmanager.models.Match;
@@ -10,7 +11,7 @@ import com.behrend.contestmanager.models.Tournament;
 
 import java.util.ArrayList;
 
-
+@Service
 public class MatchServiceImpl implements MatchService{
     
     @Autowired

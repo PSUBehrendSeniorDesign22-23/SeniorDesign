@@ -1,6 +1,7 @@
 package com.behrend.contestmanager.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.behrend.contestmanager.models.Tournament;
 import com.behrend.contestmanager.models.Ruleset;
@@ -10,6 +11,7 @@ import com.behrend.contestmanager.repository.TournamentRepository;
 import java.util.ArrayList;
 import java.sql.Date;
 
+@Service
 public class TournamentServiceImpl implements TournamentService {
     
     @Autowired

@@ -4,9 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.behrend.contestmanager.models.*;
 import com.behrend.contestmanager.repository.UserRepository;
-import com.behrend.contestmanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,8 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.behrend.contestmanager.models.*;
 import com.behrend.contestmanager.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import javax.management.relation.Role;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 @Controller
 public class AppController {
@@ -76,7 +73,7 @@ public class AppController {
         return "redirect:/DevelopmentTools";
     }
 
-    @GetMapping(value = "/players/search", params = {"searchType", "searchFilter"})
+    @GetMapping(value = "/player/search", params = {"searchType", "searchFilter"})
     @ResponseBody
     public List<Player> searchPlayer(@RequestParam(name = "searchType") String type,
                                      @RequestParam(name = "searchFilter") String filter) {
@@ -103,6 +100,18 @@ public class AppController {
                                              @RequestParam(name = "searchFilter") String filter) {
         ArrayList<Tournament> tournaments = new ArrayList<Tournament>();
         
+        if (type.equals("all")) {
+            tournaments.addAll(tournamentService.findAllTournaments());
+        }
+        if (type.equals("id")) {
+            try {
+                long tournamentId = Long.parseLong(filter);
+                tournaments.add(tournamentService.findTournamentById(tournamentId));
+            }
+            catch (Exception e) {
+                return null;
+            }
+        }
         if (type.equals("tname"))
         {
             tournaments.addAll(tournamentService.findTournamentsByName(filter));
@@ -144,8 +153,101 @@ public class AppController {
 
         return rulesets;
     }
+
+    @GetMapping(value = "/rule/search", params = {"searchType", "searchFilter"})
+    @ResponseBody
+    public ResponseEntity<String> searchRule(@RequestParam(name = "searchType") String type,
+                                             @RequestParam(name = "searchFilter") String filter) {
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        if (type.equals("all")) {
+            List<Rule> rules = ruleService.findAllRules();
+            try {
+                String ruleListAsJson = mapper.writeValueAsString(rules);
+                return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(ruleListAsJson);
+            }
+            catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error finding rule, please try again");
+            }
+        }
+        if (type.equals("id")) {
+            try {
+                long ruleId = Long.parseLong(filter);
+                Rule rule = ruleService.findRuleById(ruleId);
+                String ruleAsJson = mapper.writeValueAsString(rule);
+                return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(ruleAsJson);
+            }
+            catch (NumberFormatException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID provided is not a number");
+            }
+            catch (JsonProcessingException e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error finding rule, please try again");
+            }
+        }
+        if (type.equals("ruleName")) {
+            try {
+                Rule rule = ruleService.findRuleByName(filter);
+                String ruleAsJson = mapper.writeValueAsString(rule);
+                return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(ruleAsJson);
+            }
+            catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error finding rule, please try again");
+            }
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid search type");
+    }
     
-    @PostMapping(value = "/players/create", params = {"addfname","addlname","addssname","addeadd","addpnum"})
+    @GetMapping(value = "/match/search", params={"playerOneId, playerTwoId, tournamentId"})
+    @ResponseBody
+    public ResponseEntity<String> searchMatch(@RequestParam(name = "searchType") String type,
+                                              @RequestParam(name = "searchFilter") String filter) {
+        ArrayList<Match> matches = new ArrayList<>();
+        ObjectMapper mapper = new ObjectMapper();
+
+        if (type.equals("playerId")) {
+            long playerId;
+            try {
+                playerId = Long.parseLong(filter);
+            }
+            catch (NumberFormatException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID provided is not a number");
+            }
+
+            Player player = playerService.findPlayerById(playerId);
+            matches.addAll(matchService.getMatchesByPlayer(player));
+            String matchesAsJson;
+            try {
+                matchesAsJson = mapper.writeValueAsString(matches);
+            }
+            catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error finding matches, please try again");
+            }
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(matchesAsJson);
+        }
+        if (type.equals("tournamentId")) {
+            long tournamentId;
+            try {
+                tournamentId = Long.parseLong(filter);
+            }
+            catch (NumberFormatException e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("ID provided is not a number");
+            }
+
+            Tournament tournament = tournamentService.findTournamentById(tournamentId);
+            String tournamentAsJson;
+            try {
+                tournamentAsJson = mapper.writeValueAsString(tournament);
+            }
+            catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error finding matches, please try again");
+            }
+            return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(tournamentAsJson);
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid search type");
+    }
+    
+    @PostMapping(value = "/player/create", params = {"addfname","addlname","addssname","addeadd","addpnum"})
     @ResponseBody
     public ResponseEntity<String> createPlayer(@RequestParam(name = "addfname") String firstName, 
                                                 @RequestParam(name = "addlname") String lastName, 
@@ -291,5 +393,11 @@ public class AppController {
 
         ruleService.saveRule(rule);
         return ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON).body(ruleAsJson);
+    }
+
+    // General utility function to replace the frequently repeated lines above
+    // Needs further implementation
+    private ResponseEntity<String> responseGenerator(HttpStatus status, String body) {
+        return ResponseEntity.status(status).body(body);
     }
 }
