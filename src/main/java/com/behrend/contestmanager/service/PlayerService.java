@@ -10,6 +10,8 @@ public interface PlayerService {
     Player savePlayer(Player player);
 
     // Read
+    Player findPlayerById(long playerId);
+
     List<Player> findAllPlayers();
 
     List<Player> findPlayerByFirstName(String firstName);
