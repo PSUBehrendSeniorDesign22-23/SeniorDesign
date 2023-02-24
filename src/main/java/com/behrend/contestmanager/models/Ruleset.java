@@ -49,4 +49,12 @@ public class Ruleset {
     public void setOrigin(String origin) {
         this.origin = origin;
     }
+
+    public List<Rule> getRules() {
+        return this.rules;
+    }
+
+    public void setRules(List<Rule> rules) {
+        this.rules = rules;
+    }
 }   
