@@ -18,7 +18,7 @@ import com.behrend.contestmanager.repository.PlayerRepository;
 import com.behrend.contestmanager.models.Player;
 
 @ExtendWith(MockitoExtension.class)
-public class PlayerServiceTests {
+public class PlayerServiceUnitTests {
     
     @Mock
     private PlayerRepository playerRepository;
