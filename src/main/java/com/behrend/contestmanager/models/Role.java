@@ -3,8 +3,8 @@ package com.behrend.contestmanager.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "roles")
-public class Roles {
+@Table(name = "role")
+public class Role {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
