@@ -24,13 +24,17 @@ public class Match {
     @JoinColumn(name = "player_two_id", nullable = false, referencedColumnName = "player_id")
     private Player playerTwo;
 
-    @Column(nullable = false)
-    private int playerOneScore;
+
+    // Player scores default to -1 on object instantiation
+    // This value is set prior to saving to the database
 
     @Column(nullable = false)
-    private int playerTwoScore;
+    private int playerOneScore = -1;
 
-    @ManyToOne(optional = true)
+    @Column(nullable = false)
+    private int playerTwoScore = -1;
+
+    @ManyToOne(optional = false)
     @JoinColumn(name = "tournament_id", referencedColumnName = "tournament_id")
     private Tournament tournament;
 
@@ -72,5 +76,9 @@ public class Match {
 
     public Tournament getTournament() {
         return this.tournament;
+    }
+
+    public void setTournament(Tournament tournament) {
+        this.tournament = tournament;
     }
 }

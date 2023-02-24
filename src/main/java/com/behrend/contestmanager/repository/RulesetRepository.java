@@ -10,8 +10,8 @@ import java.util.List;
 @Repository
 public interface RulesetRepository extends CrudRepository<Ruleset, Long> {
 
-    Ruleset findRulesetByName(String name);
+    List<Ruleset> findRulesetsByName(String name);
 
     List<Ruleset> findRulesetsByOrigin(String origin);
-    
+
 }
