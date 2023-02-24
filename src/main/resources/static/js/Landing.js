@@ -24,3 +24,23 @@ function logIn() {
         addDiv.appendChild(para)
     })
 }
+
+function signUp() {
+
+    var form = document.getElementById("signUpForm")
+
+    const formData = new FormData(form)
+
+    fetch("/registerUser", {
+        method: "POST",
+        body:   formData
+    })
+        .then(res => res.json()).then(data => {
+        var para = document.createElement('appUser')
+        var addDiv = document.getElementById("idSign")
+
+        para.innerText = data["operation"]
+
+        addDiv.appendChild(para)
+    })
+}
