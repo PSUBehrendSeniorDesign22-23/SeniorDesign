@@ -19,16 +19,16 @@
         <!-- The Modal (contains the Log In form) -->
         <div id="idLog" class="modal">
           <span onclick="document.getElementById('idLog').style.display='none'" title="Close Modal"></span>
-          <form class="modal-content" th:action="@{/login}" th:object="@{user}" method="post">
+          <form class="modal-content" id="logInForm"  method="post">
             <div class="textBox">
               <h1 class="primaryTextCenter">Login</h1>
               <p class="primaryTextLeft">Please fill in this form login to your account.</p>
               <hr>
               <label for="email"><b>Email</b></label>
-              <input type="text" placeholder="Enter Email" th:field="*{email}" required="required">
+              <input type="text" placeholder="Enter Email" id="email" name="email" required="required">
 
               <label for="psw"><b>Password</b></label>
-              <input type="password" placeholder="Enter Password" th:field="*{password}" required="required">
+              <input type="password" placeholder="Enter Password" id="psw" name="psw" required="required">
 
               <label>
                 <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
@@ -36,7 +36,7 @@
 
               <div class="clearfix">
                 <button type="submit" class="button" style="background-color: #008000;">Login</button>
-                <button type="button" onclick="document.getElementById('idLog').style.display='none'" style="background-color: #f44336;" class="formButton">Cancel</button>
+                <button type="button" onclick="logIn()" style="background-color: #f44336;" class="formButton">Cancel</button>
               </div>
             </div>
           </form>

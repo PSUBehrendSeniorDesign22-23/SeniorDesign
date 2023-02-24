@@ -57,7 +57,8 @@ public class AppController {
         return "redirect:/";
     }
 
-    @PostMapping("/registerUser")
+    @PostMapping(value="/registerUser")
+    @ResponseBody
     public String registerUser(User user){
         if(userRepo.findByEmail(user.getEmail()) != null){
             return "redirect:/";
