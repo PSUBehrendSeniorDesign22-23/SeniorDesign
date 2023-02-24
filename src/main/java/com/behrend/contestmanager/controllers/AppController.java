@@ -17,7 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -54,7 +53,7 @@ public class AppController {
         User acc = userRepo.findByEmail(user.getEmail());
         if(acc==null){return "redirect:/LoginFailed";}
         if(encoder.matches(user.getPassword(),acc.getPassword())){
-            UserService.setLoggedIn(acc.getId());
+            UserService.setLoggedIn(acc.getUserId());
             return "redirect:/DevelopmentTools";
         }
         return "redirect:/";
@@ -71,7 +70,7 @@ public class AppController {
         //Roles role = new Roles();
         //role.setName("USER");
         userRepo.save(user);
-        UserService.setLoggedIn(user.getId());
+        UserService.setLoggedIn(user.getUserId());
         return "redirect:/DevelopmentTools";
     }
 

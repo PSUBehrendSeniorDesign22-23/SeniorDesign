@@ -1,10 +1,10 @@
 package com.behrend.contestmanager.models;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "roles")
-public class Roles {
+public class Role {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,6 +13,9 @@ public class Roles {
 
     @Column(nullable = false, length = 45)
     private String name;
+
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users;
 
     public void setName(String rName){
         this.name = rName;

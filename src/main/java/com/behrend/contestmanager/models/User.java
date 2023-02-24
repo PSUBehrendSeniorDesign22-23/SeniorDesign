@@ -1,25 +1,31 @@
 package com.behrend.contestmanager.models;
-import com.behrend.contestmanager.service.UserService;
 
-import java.util.Collection;
 import java.util.List;
 
-import javax.management.relation.Role;
-import javax.persistence.*;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Entity;
+import javax.persistence.Column;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.GenerationType;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user_account")
 public class User {
-
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private long id;
 
-    //This will be modified for the table in the future
-    public Role roles;
+    @ManyToMany
+    @JoinTable(name = "user_role",
+                joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "user_id"),
+                inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "role_id"))
+    public List<Role> roles;
 
     @Column(nullable = false, length = 64)
     private String firstName;
@@ -39,8 +45,12 @@ public class User {
     @Column(nullable = false, length = 64)
     private String password;
 
-    public void setRoles(Role r){
-        roles = r;
+    public List<Role> getRoles() {
+        return this.roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 
     public String getFirstName() {
@@ -90,5 +100,5 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
-    public long getId() { return id;}
+    public long getUserId() { return id;}
 }
