@@ -36,7 +36,7 @@ function signUp() {
         body:   formData
     })
         .then(res => res.json()).then(data => {
-        var para = document.createElement('appUser')
+        var para = document.createElement('newUser')
         var addDiv = document.getElementById("idSign")
 
         para.innerText = data["operation"]
