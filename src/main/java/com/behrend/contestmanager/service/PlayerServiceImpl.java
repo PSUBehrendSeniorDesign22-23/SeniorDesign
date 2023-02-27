@@ -38,12 +38,12 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public List<Player> findPlayerByFirstName(String firstName) {
+    public List<Player> findPlayersByFirstName(String firstName) {
         return (List<Player>) playerRepository.findAllByFirstName(firstName);
     }
 
     @Override
-    public List<Player> findPlayerByLastName(String lastName) {
+    public List<Player> findPlayersByLastName(String lastName) {
         return (List<Player>) playerRepository.findAllByLastName(lastName);
     }
 

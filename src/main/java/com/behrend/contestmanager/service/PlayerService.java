@@ -14,9 +14,9 @@ public interface PlayerService {
 
     List<Player> findAllPlayers();
 
-    List<Player> findPlayerByFirstName(String firstName);
+    List<Player> findPlayersByFirstName(String firstName);
 
-    List<Player> findPlayerByLastName(String lastName);
+    List<Player> findPlayersByLastName(String lastName);
 
     List<Player> findPlayersBySkipperName(String skipperName);
 

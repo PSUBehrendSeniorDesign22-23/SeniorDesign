@@ -85,7 +85,7 @@ public class AppController {
         if (type.equals("pname"))
         {
             System.out.println("Test");
-            players.addAll(playerService.findPlayerByFirstName(filter));
+            players.addAll(playerService.findPlayersByFirstName(filter));
         }
         if (type.equals("pssname"))
         {
