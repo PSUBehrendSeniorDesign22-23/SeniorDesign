@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Entity;
 import javax.persistence.Column;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
@@ -20,6 +21,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private long id;
+
+    @OneToOne(optional = true, mappedBy = "user")
+    private Player player;
 
     @ManyToMany
     @JoinTable(name = "user_role",
@@ -39,10 +43,7 @@ public class User {
     @Column(nullable = false, length = 11)
     private String phoneNum;
 
-    @Column(nullable = false, length = 64)
-    private String address;
-
-    @Column(nullable = false, length = 64)
+    @Column(nullable = true, length = 64)
     private String password;
 
     public List<Role> getRoles() {
@@ -83,14 +84,6 @@ public class User {
 
     public void setPhoneNum(String phoneNum) {
         this.phoneNum = phoneNum;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
     }
 
     public String getPassword() {

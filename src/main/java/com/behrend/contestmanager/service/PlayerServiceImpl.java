@@ -38,18 +38,8 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
-    public List<Player> findPlayersByFirstName(String firstName) {
-        return (List<Player>) playerRepository.findAllByFirstName(firstName);
-    }
-
-    @Override
-    public List<Player> findPlayersByLastName(String lastName) {
-        return (List<Player>) playerRepository.findAllByLastName(lastName);
-    }
-
-    @Override
     public List<Player> findPlayersBySkipperName(String skipperName) {
-        return (List<Player>) playerRepository.findBySkipperName(skipperName);
+        return (List<Player>) playerRepository.findAllBySkipperName(skipperName);
     }
 
     // Update
@@ -59,14 +49,6 @@ public class PlayerServiceImpl implements PlayerService {
 
         if (currentPlayer == null) {
             return null;
-        }
-
-        if (player.getFirstName() != null && !"".equalsIgnoreCase(player.getFirstName())) {
-            currentPlayer.setFirstName(player.getFirstName());
-        }
-
-        if (player.getLastName() != null && !"".equalsIgnoreCase(player.getLastName())) {
-            currentPlayer.setLastName(player.getLastName());
         }
 
         if (player.getSkipperName() != null && !"".equalsIgnoreCase(player.getSkipperName())) {

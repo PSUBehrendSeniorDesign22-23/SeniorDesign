@@ -7,16 +7,13 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 
 import com.behrend.contestmanager.models.Player;
 
 import java.util.ArrayList;
-import java.util.List;
 
 @DataJpaTest
 @Sql(scripts = "/create-player-data.sql")
-@Sql(scripts = "/cleanup-player-data.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class PlayerRepositoryTests {
     
@@ -27,10 +24,6 @@ public class PlayerRepositoryTests {
     void findAllPlayers()
     {
         ArrayList<Player> players = (ArrayList<Player>) playerRepository.findAll();
-        for (Player player : players)
-        {
-            System.out.printf("%d | %s | %s | %s | %d | %s | %s\n", player.getPlayerId(), player.getFirstName(), player.getLastName(), player.getSkipperName(), player.getRank(), player.getEmail(), player.getPhoneNum());
-        }
         Assertions.assertEquals(5, players.size());
     }
 
@@ -56,33 +49,11 @@ public class PlayerRepositoryTests {
     }
 
     @Test
-    void findPlayersByFirstName()
-    {
-        List<Player> players = playerRepository.findAllByFirstName("John");
-        Assertions.assertEquals(players.size(), 2);
-    }
-
-    @Test
-    void findPlayersByLastName()
-    {
-        List<Player> players = playerRepository.findAllByLastName("Doe");
-        Assertions.assertEquals(players.size(), 2);
-    }
-
-    @Test
     void findPlayerBySkipperName()
     {
-        Player player = playerRepository.findBySkipperName("SkipperMan").get(0);
+        Player player = playerRepository.findAllBySkipperName("SkipperMan").get(0);
         Assertions.assertNotNull(player);
     }
-
-    @Test
-    void findPlayerByEmail()
-    {
-        Player player = playerRepository.findByEmail("john.doe@example.com");
-        Assertions.assertNotNull(player);
-    }
-
 
     @Test
     void addPlayers()
@@ -90,20 +61,12 @@ public class PlayerRepositoryTests {
         ArrayList<Player> players = new ArrayList<>();
 
         Player playerOne = new Player();
-        playerOne.setFirstName("FirstNameOne");
-        playerOne.setLastName("LastNameOne");
         playerOne.setSkipperName("OneOne");
-        playerOne.setEmail("one.one@example.com");
         playerOne.setRank(1000);
-        playerOne.setPhoneNum("09998887777");
 
         Player playerTwo = new Player();
-        playerTwo.setFirstName("FirstNameTwo");
-        playerTwo.setLastName("LastNameTwo");
         playerTwo.setSkipperName("TwoTwo");
-        playerTwo.setEmail("two.two@example.com");
         playerTwo.setRank(1000);
-        playerTwo.setPhoneNum("08887776666");
 
         players.add(playerOne);
         players.add(playerTwo);
@@ -117,11 +80,11 @@ public class PlayerRepositoryTests {
 
         for (Player player : playersInDb)
         {
-            if (playerOne.getEmail() == player.getEmail())
+            if (playerOne.getPlayerId() == player.getPlayerId())
             {
                 playerOneFound = true;
             }
-            if (playerTwo.getEmail() == player.getEmail())
+            if (playerTwo.getPlayerId() == player.getPlayerId())
             {
                 playerTwoFound = true;
             }

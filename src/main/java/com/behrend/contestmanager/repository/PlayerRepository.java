@@ -9,11 +9,5 @@ import java.util.List;
 @Repository
 public interface PlayerRepository extends CrudRepository<Player, Long> {
 
-    List<Player> findAllByFirstName(String firstName);
-
-    List<Player> findAllByLastName(String lastName);
-
-    List<Player> findBySkipperName(String skipperName);
-
-    Player findByEmail(String email);
+    List<Player> findAllBySkipperName(String skipperName);
 }

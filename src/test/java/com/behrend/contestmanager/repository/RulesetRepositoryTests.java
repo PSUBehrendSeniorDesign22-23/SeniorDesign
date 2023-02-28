@@ -7,7 +7,6 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 
 import com.behrend.contestmanager.models.Ruleset;
 
@@ -16,7 +15,6 @@ import java.util.List;
 
 @DataJpaTest
 @Sql(scripts = "/create-ruleset-data.sql")
-@Sql(scripts = "/cleanup-ruleset-data.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class RulesetRepositoryTests {
     @Autowired

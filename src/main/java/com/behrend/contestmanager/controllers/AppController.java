@@ -82,11 +82,6 @@ public class AppController {
         
         System.out.printf("%s  |  %s", type, filter);
 
-        if (type.equals("pname"))
-        {
-            System.out.println("Test");
-            players.addAll(playerService.findPlayersByFirstName(filter));
-        }
         if (type.equals("pssname"))
         {
             players.addAll(playerService.findPlayersBySkipperName(filter));
@@ -250,28 +245,13 @@ public class AppController {
     
     @PostMapping(value = "/player/create", params = {"addfname","addlname","addssname","addeadd","addpnum"})
     @ResponseBody
-    public ResponseEntity<String> createPlayer(@RequestParam(name = "addfname") String firstName, 
-                                                @RequestParam(name = "addlname") String lastName, 
-                                                @RequestParam(name = "addssname") String skipperName, 
-                                                @RequestParam(name = "addeadd") String email, 
-                                                @RequestParam(name = "addpnum") String phoneNum){
+    public ResponseEntity<String> createPlayer(@RequestParam(name = "userId") long userId, 
+                                               @RequestParam(name = "skipperName") String skipperName){
         
         Player player = new Player();
 
-        if(firstName != null){
-            player.setFirstName(firstName);
-        }
-        if(lastName != null){
-            player.setLastName(lastName);
-        }
         if(skipperName != null){
             player.setSkipperName(skipperName);
-        }
-        if(email != null){
-            player.setEmail(email);
-        }
-        if(phoneNum != null){
-            player.setPhoneNum(phoneNum);
         }
         
         playerService.savePlayer(player);

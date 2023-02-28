@@ -13,6 +13,7 @@ import static org.mockito.Mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.behrend.contestmanager.repository.PlayerRepository;
 import com.behrend.contestmanager.models.Player;
@@ -31,10 +32,6 @@ public class PlayerServiceUnitTests {
     @BeforeEach
     public void setup() {
         player = new Player();
-        player.setEmail("player1@test.org");
-        player.setFirstName("FirstOne");
-        player.setLastName("LastOne");
-        player.setPhoneNum("1115551111");
         player.setRank(1000);
         player.setSkipperName("SkipOne");
     }
@@ -58,10 +55,6 @@ public class PlayerServiceUnitTests {
         
         // given
         Player player2 = new Player();
-        player2.setEmail("player2@test.org");
-        player2.setFirstName("FirstTwo");
-        player2.setLastName("LastTwo");
-        player2.setPhoneNum("2225552222");
         player2.setRank(1000);
         player2.setSkipperName("SkipTwo");
 
@@ -73,6 +66,50 @@ public class PlayerServiceUnitTests {
         // then
         Assertions.assertNotNull(playerList);
         Assertions.assertEquals(2, playerList.size());
+    }
+
+    // Get by skipper name
+    @Test
+    public void givenPlayers_whenGetBySkipperName_thenReturnPlayersWithSkipperName() {
+
+        // Given
+        String testSkipperName = "SkipOne";
+
+        Player player2 = new Player();
+        player2.setRank(1000);
+        player2.setSkipperName("SkipOne");
+
+        given(playerRepository.findAllBySkipperName(testSkipperName)).willReturn(List.of(player, player2));
+
+        // When
+        List<Player> playerList = playerService.findPlayersBySkipperName(testSkipperName);
+
+        Assertions.assertNotNull(playerList);
+        Assertions.assertEquals(2, playerList.size());
+        Assertions.assertEquals(testSkipperName, playerList.get(0).getSkipperName());
+        Assertions.assertEquals(testSkipperName, playerList.get(1).getSkipperName());
+    }
+
+    // Update test
+    @Test
+    public void givenPlayerObject_whenUpdatePlayer_thenReturnUpdatedPlayer() {
+        
+        // Given
+        Player playerUpdate = new Player();
+        playerUpdate.setRank(1500);
+        playerUpdate.setSkipperName("updateSkipper");
+
+        given(playerRepository.findById(player.getPlayerId())).willReturn(Optional.of(player));
+        given(playerRepository.save(player)).willReturn(player);
+
+        // When
+        Player updatedPlayer = playerService.updatePlayer(playerUpdate, player.getPlayerId());
+
+        // Then
+        Assertions.assertNotNull(updatedPlayer);
+        Assertions.assertEquals(player.getPlayerId(), updatedPlayer.getPlayerId());
+        Assertions.assertEquals(playerUpdate.getRank(), updatedPlayer.getRank());
+        Assertions.assertEquals(playerUpdate.getSkipperName(), updatedPlayer.getSkipperName());
     }
 
     // Delete test

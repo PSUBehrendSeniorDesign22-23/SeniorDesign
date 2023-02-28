@@ -10,13 +10,11 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
-import org.springframework.test.context.jdbc.Sql.ExecutionPhase;
 
 import com.behrend.contestmanager.models.Match;
 
 @DataJpaTest
 @Sql(scripts = "/create-match-data.sql")
-@Sql(scripts = "/cleanup-match-data.sql", executionPhase = ExecutionPhase.AFTER_TEST_METHOD)
 @AutoConfigureTestDatabase(replace = Replace.NONE)
 public class MatchRepositoryTests {
     
