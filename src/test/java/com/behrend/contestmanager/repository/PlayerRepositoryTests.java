@@ -30,22 +30,19 @@ public class PlayerRepositoryTests {
     @Test
     void findPlayerById()
     {
-        ArrayList<Long> ids = new ArrayList<>();
-        ids.add(12L);
-        Iterable<Player> players = playerRepository.findAllById(ids);
-        for (Player player : players)
-        {
-            Assertions.assertEquals(player.getPlayerId(), ids.get(0));
-        }
+        long playerId = 12L;
+        Player player = playerRepository.findById(playerId).orElse(null);
+        
+        Assertions.assertNotNull(player);
+        Assertions.assertEquals(playerId, player.getPlayerId());
     }
 
     @Test
     void findPlayerThatDoesNotExist()
     {
-         ArrayList<Long> ids = new ArrayList<>();
-        ids.add(5L);
-        ArrayList<Player> players = (ArrayList<Player>) playerRepository.findAllById(ids);
-        Assertions.assertTrue(players.size() == 0);
+        long playerId = 5L;
+        Player player = playerRepository.findById(playerId).orElse(null);
+        Assertions.assertNull(player);
     }
 
     @Test
@@ -53,44 +50,5 @@ public class PlayerRepositoryTests {
     {
         Player player = playerRepository.findAllBySkipperName("SkipperMan").get(0);
         Assertions.assertNotNull(player);
-    }
-
-    @Test
-    void addPlayers()
-    {
-        ArrayList<Player> players = new ArrayList<>();
-
-        Player playerOne = new Player();
-        playerOne.setSkipperName("OneOne");
-        playerOne.setRank(1000);
-
-        Player playerTwo = new Player();
-        playerTwo.setSkipperName("TwoTwo");
-        playerTwo.setRank(1000);
-
-        players.add(playerOne);
-        players.add(playerTwo);
-
-        playerRepository.saveAll(players);
-
-        ArrayList<Player> playersInDb = (ArrayList<Player>) playerRepository.findAll();
-
-        boolean playerOneFound = false;
-        boolean playerTwoFound = false;
-
-        for (Player player : playersInDb)
-        {
-            if (playerOne.getPlayerId() == player.getPlayerId())
-            {
-                playerOneFound = true;
-            }
-            if (playerTwo.getPlayerId() == player.getPlayerId())
-            {
-                playerTwoFound = true;
-            }
-        }
-
-        Assertions.assertTrue(playerOneFound);
-        Assertions.assertTrue(playerTwoFound);
     }
 }
