@@ -1,14 +1,15 @@
 package com.behrend.contestmanager.models;
+import com.behrend.contestmanager.models.Role;
 import com.behrend.contestmanager.service.UserService;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
-import javax.management.relation.Role;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user_account")
 public class User {
 
 
@@ -19,7 +20,11 @@ public class User {
     private long id;
 
     //This will be modified for the table in the future
-    public Role roles;
+    @ManyToMany
+    @JoinTable(name = "user_role",
+    joinColumns = {@JoinColumn(name = "user_id")},
+    inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    private Set<Role> roles;
 
     @Column(nullable = false, length = 64)
     private String firstName;
@@ -38,10 +43,6 @@ public class User {
 
     @Column(nullable = false, length = 64)
     private String password;
-
-    public void setRoles(Role r){
-        roles = r;
-    }
 
     public String getFirstName() {
         return firstName;
