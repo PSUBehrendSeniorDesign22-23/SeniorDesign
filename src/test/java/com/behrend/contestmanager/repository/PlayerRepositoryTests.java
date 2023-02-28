@@ -72,7 +72,7 @@ public class PlayerRepositoryTests {
     @Test
     void findPlayerBySkipperName()
     {
-        Player player = playerRepository.findBySkipperName("SkipperMan");
+        Player player = playerRepository.findBySkipperName("SkipperMan").get(0);
         Assertions.assertNotNull(player);
     }
 

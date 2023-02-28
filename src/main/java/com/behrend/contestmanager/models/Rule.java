@@ -45,5 +45,4 @@ public class Rule {
     public void setAttribute(String attribute) {
         this.attribute = attribute;
     }
-
 }

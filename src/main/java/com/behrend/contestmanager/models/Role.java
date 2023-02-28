@@ -3,8 +3,9 @@ package com.behrend.contestmanager.models;
 import javax.persistence.*;
 import java.util.Set;
 
+import java.util.List;
+
 @Entity
-@Table(name = "role")
 public class Role {
     
     @Id
@@ -16,10 +17,13 @@ public class Role {
     private String name;
 
     @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
-
+    private List<User> users;
+    
     public void setName(String rName){
         this.name = rName;
     }
 
+    public void setName(String ruleName){
+        this.name = ruleName;
+    }
 }

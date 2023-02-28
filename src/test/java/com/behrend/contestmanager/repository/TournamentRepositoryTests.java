@@ -49,7 +49,7 @@ public class TournamentRepositoryTests {
     @Test
     void findTournamentByName() {
         String name = "TournamentOne";
-        Tournament tournament = tournamentRepository.findTournamentByName(name);
+        Tournament tournament = tournamentRepository.findTournamentsByName(name).get(0);
         Assertions.assertEquals(name, tournament.getName());
     }
 

@@ -13,7 +13,7 @@ public interface PlayerRepository extends CrudRepository<Player, Long> {
 
     List<Player> findAllByLastName(String lastName);
 
-    Player findBySkipperName(String skipperName);
+    List<Player> findBySkipperName(String skipperName);
 
     Player findByEmail(String email);
 }

@@ -75,4 +75,12 @@ public class Tournament {
     public void setRuleset(Ruleset ruleset) {
         this.ruleset = ruleset;
     }
+
+    public List<Player> getPlayers() {
+        return this.players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
 }
