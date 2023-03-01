@@ -1,7 +1,6 @@
 package com.behrend.contestmanager.models;
 
 import javax.persistence.*;
-import java.util.Set;
 
 import java.util.List;
 

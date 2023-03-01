@@ -1,7 +1,5 @@
 package com.behrend.contestmanager.models;
 
-import com.behrend.contestmanager.models.Role;
-
 import java.util.List;
 
 import javax.persistence.Id;
