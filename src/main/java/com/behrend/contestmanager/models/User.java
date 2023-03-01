@@ -45,6 +45,9 @@ public class User {
     @Column(nullable = false, length = 11)
     private String phoneNum;
 
+    @Column(nullable = true, length = 128)
+    private String address;
+
     @Column(nullable = true, length = 64)
     private String password;
 
@@ -86,6 +89,14 @@ public class User {
 
     public void setPhoneNum(String phoneNum) {
         this.phoneNum = phoneNum;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public String getPassword() {

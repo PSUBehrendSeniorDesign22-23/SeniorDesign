@@ -19,11 +19,7 @@ public class Role {
     @ManyToMany(mappedBy = "roles")
     private List<User> users;
     
-    public void setName(String rName){
-        this.name = rName;
-    }
-
-    public void setName(String ruleName){
-        this.name = ruleName;
+    public void setName(String roleName){
+        this.name = roleName;
     }
 }
