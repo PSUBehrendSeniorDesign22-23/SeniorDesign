@@ -47,25 +47,38 @@ public class AppController {
         return "Landing";
     }
 
-    @PostMapping("/login")
-    public String UserLogin(User user) {
+    @PostMapping(value = "/login", params = {"email", "psw"})
+    public String UserLogin(@RequestParam(name = "email") String email,
+                            @RequestParam(name = "psw") String password) {
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        User acc = userRepo.findByEmail(user.getEmail());
+        User acc = userRepo.findByEmail(email);
         if(acc==null){return "redirect:/LoginFailed";}
-        if(encoder.matches(user.getPassword(),acc.getPassword())){
+        if(encoder.matches(password,acc.getPassword())){
             UserService.setLoggedIn(acc.getUserId());
             return "redirect:/DevelopmentTools";
         }
         return "redirect:/";
     }
 
-    @PostMapping("/registerUser")
-    public String registerUser(User user){
-        if(userRepo.findByEmail(user.getEmail()) != null){
+    @PostMapping(value="/registerUser", params = {"firstName", "lastName", "emailSU","phonrNum","address","pswSU"})
+    @ResponseBody
+    public String registerUser(@RequestParam(name = "firstName") String firstName,
+                               @RequestParam(name = "lastName") String lastName,
+                               @RequestParam(name = "emailSU") String email,
+                               @RequestParam(name = "phonrNum") String phoneNum,
+                               @RequestParam(name = "address") String address,
+                               @RequestParam(name = "pswSU") String password){
+        User user = new User();
+        if(userRepo.findByEmail(email) != null){
             return "redirect:/";
         }
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encryptedPass =encoder.encode(user.getPassword());
+        String encryptedPass =encoder.encode(password);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPhoneNum(phoneNum);
+        user.setAddress(address);
         user.setPassword(encryptedPass);
         //Roles role = new Roles();
         //role.setName("USER");
@@ -82,11 +95,6 @@ public class AppController {
         
         System.out.printf("%s  |  %s", type, filter);
 
-        if (type.equals("pname"))
-        {
-            System.out.println("Test");
-            players.addAll(playerService.findPlayerByFirstName(filter));
-        }
         if (type.equals("pssname"))
         {
             players.addAll(playerService.findPlayersBySkipperName(filter));
@@ -250,28 +258,13 @@ public class AppController {
     
     @PostMapping(value = "/player/create", params = {"addfname","addlname","addssname","addeadd","addpnum"})
     @ResponseBody
-    public ResponseEntity<String> createPlayer(@RequestParam(name = "addfname") String firstName, 
-                                                @RequestParam(name = "addlname") String lastName, 
-                                                @RequestParam(name = "addssname") String skipperName, 
-                                                @RequestParam(name = "addeadd") String email, 
-                                                @RequestParam(name = "addpnum") String phoneNum){
+    public ResponseEntity<String> createPlayer(@RequestParam(name = "userId") long userId, 
+                                               @RequestParam(name = "skipperName") String skipperName){
         
         Player player = new Player();
 
-        if(firstName != null){
-            player.setFirstName(firstName);
-        }
-        if(lastName != null){
-            player.setLastName(lastName);
-        }
         if(skipperName != null){
             player.setSkipperName(skipperName);
-        }
-        if(email != null){
-            player.setEmail(email);
-        }
-        if(phoneNum != null){
-            player.setPhoneNum(phoneNum);
         }
         
         playerService.savePlayer(player);

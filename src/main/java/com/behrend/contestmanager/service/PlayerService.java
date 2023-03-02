@@ -13,11 +13,6 @@ public interface PlayerService {
     Player findPlayerById(long playerId);
 
     List<Player> findAllPlayers();
-
-    List<Player> findPlayerByFirstName(String firstName);
-
-    List<Player> findPlayerByLastName(String lastName);
-
     List<Player> findPlayersBySkipperName(String skipperName);
 
     // Update
