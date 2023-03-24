@@ -51,7 +51,9 @@ div + div {
   padding: 10px;
   border: 1px solid lightgray;
   border-radius: 10px;
-  margin: 10px;
+  margin-top: 10px;
+  margin: auto;
+  width: 55%;
   display: none;
 }
 
@@ -61,7 +63,8 @@ div + div {
   padding: 10px;
   border: 1px solid lightgray;
   border-radius: 10px;
-  margin: 10px;
+  margin: auto;
+  width: 45%;
 }
 
 label{
