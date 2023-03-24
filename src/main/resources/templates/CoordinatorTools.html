@@ -4,19 +4,19 @@
   <link rel="stylesheet" th:href="@{/css/dbBrowsing.css}">
   <script type="text/javascript" th:src="@{/js/dbBrowsing.js}" defer></script>
 
-  <head>
+    <head>
   </head>
 
-  <body class="mainBody">
-    <div class="textBox">
+  <body class="parallax">
+    <br>
+    <div class="textBox" style="width: 95%">
       <h1 class="primaryTextCenter">Tournament Coordinator Tools</h1>
     </div>
-    <div class="parallax"></div>
-    
+    <br>
     <div class="textBox">
       <h2 class="primaryTextCenter">Creation Tools</h2>
     </div>
-    
+
     <div class="textBox">
       <div style="text-align:center;">
         <button class="formButton" id="playerAddButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Create Player</button>
@@ -24,6 +24,8 @@
         <button class="formButton" id="rulesetAddButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Create Ruleset</button>
       </div>
     </div>
+    <br>
+
     <div class="hiddenTextBox" id="playerAdd">
       <form action="/action_page.php">
         <label for="addfname">First Name: </label>
@@ -61,12 +63,12 @@
         <input type="submit" value="Submit" class="formButton">
       </form>
     </div>
-    <div class="parallax"></div>
-    
+    <br>
+
     <div class="textBox">
       <h2 class="primaryTextCenter">Edit Tools</h2>
     </div>
-    
+
     <div class="textBox">
       <div style="text-align:center;">
         <button class="formButton" id="playerEditButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Edit Player</button>
@@ -74,6 +76,7 @@
         <button class="formButton" id="rulesetEditButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Edit Ruleset</button>
       </div>
     </div>
+    <br>
 
     <div class="hiddenTextBox" id="playerEdit">
       <form action="/action_page.php">
@@ -112,12 +115,12 @@
         <input type="submit" value="Submit" class="formButton">
       </form>
     </div>
-    <div class="parallax"></div>
-    
+    <br>
+
     <div class="textBox">
       <h2 class="primaryTextCenter">Search Tools</h2>
     </div>
-    
+
     <div class="textBox">
       <div style="text-align:center;">
         <button class="formButton" id="playerSearchButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Find Player</button>
@@ -125,6 +128,7 @@
         <button class="formButton" id="rulesetSearchButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Find Ruleset</button>
       </div>
     </div>
+    <br>
     <div class="hiddenTextBox" id="playerSearch">
       <label for="player-search-options">Choose a search criteria:</label>
       <select name="player-search" id="player-search">
@@ -159,6 +163,7 @@
       <input type="text" id="rulesetSearchFilter" name="rfilter"><br><br>
       <input type="submit" value="Submit" class="formButton" onclick="showSearchResults()">
     </div>
+    <br>
     <div class="hiddenTextBox" id="searchResults">
       <h1 class="primaryTextCenter">
         Search Results
@@ -167,7 +172,7 @@
         Results
       </p>
     </div>
-    <div class="parallax"></div>
+    <br>
   </body>
 
 </html>
