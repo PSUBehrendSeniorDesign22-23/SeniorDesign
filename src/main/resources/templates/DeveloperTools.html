@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <title>Online HTML Editor</title>
-  <link rel="stylesheet" th:href="@{/css/DeveloperTools.css}">
-  <script type="text/javascript" th:src="@{/js/DeveloperTools.js}" defer></script>
-
+  
   <head>
+    <title>Online HTML Editor</title>
+    <link rel="stylesheet" th:href="@{/css/DeveloperTools.css}">
+  </head>
+  
+  <body class="mainBody">
+    <script type="text/javascript" th:src="@{/js/DeveloperTools.js}" defer></script>
     <div class="textBox">
       <h1 class="primaryTextCenter">Welcome COORDINATOR NAME</h1>
     </div>
-
-  </head>
-
-  <body class="mainBody">
     <h1 class="primaryTextCenter">Developer Tools</h1>
     <div style="text-align:center;">
       <button class="formButton" id="playerAddButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Create Player</button>

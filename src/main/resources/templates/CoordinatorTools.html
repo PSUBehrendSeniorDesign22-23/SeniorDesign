@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+      <title>Coordinator Tools - Mountain Man's Millstone</title>
+      <link rel="stylesheet" th:href="@{/css/dbBrowsing.css}">
+      <script type="text/javascript" th:src="@{/js/dbBrowsing.js}" defer></script>
+  </head>
+
+  <body class="parallax">
+    <br>
+    <div class="textBox" style="width: 95%">
+      <h1 class="primaryTextCenter">Tournament Coordinator Tools</h1>
+    </div>
+    <br>
+    <div class="textBox">
+      <h2 class="primaryTextCenter">Creation Tools</h2>
+    </div>
+
+    <div class="textBox">
+      <div style="text-align:center;">
+        <button class="formButton" id="playerAddButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Create Player</button>
+        <button class="formButton" id="tournamentAddButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Create Tournament</button>
+        <button class="formButton" id="rulesetAddButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Create Ruleset</button>
+      </div>
+    </div>
+    <br>
+
+    <div class="hiddenTextBox" id="playerAdd">
+      <form action="/action_page.php">
+        <label for="addfname">First Name: </label>
+        <input type="text" id="addfname" name="addfname"><br><br>
+        <label for="addlname">Last Name: </label>
+        <input type="text" id="addlname" name="addlname"><br><br>
+        <label for="addssname">Stone Skipping Name: </label>
+        <input type="text" id="addssname" name="addssname"><br><br>
+        <label for="addeadd">Email: </label>
+        <input type="email" id="addeadd" name="addeadd"><br><br>
+        <label for="addpnum">Phone Number: </label>
+        <input type="tel" placeholder="+1 (555) 123-4567" id="addpnum" name="addpnum"><br><br>
+        <input type="submit" value="Submit" class="formButton">
+      </form>
+    </div>
+    <div class="hiddenTextBox" id="tournamentAdd">
+      <form action="/action_page.php">
+        <label for="addtname">Tournament Name: </label>
+        <input type="text" id="addtname" name="addtname"><br><br>
+        <label for="addtloc">Tournament Location: </label>
+        <input type="text" id="addtloc" name="addtloc"><br><br>
+        <label for="addtdate">Tournament Date: </label>
+        <input type="date" id="addtdate" name="addtdate"><br><br>
+        <label for="addtrule">Tournament Ruleset: </label>
+        <input type="text" id="addtrule" name="addtrule"><br><br>
+        <input type="submit" value="Submit" class="formButton">
+      </form>
+    </div>
+    <div class="hiddenTextBox" id="rulesetAdd">
+      <form action="/action_page.php">
+        <label for="addrname">Ruleset Name: </label>
+        <input type="text" id="addrname" name="addrname"><br><br>
+        <label for="addrorigin">Ruleset Origin: </label>
+        <input type="text" id="addrorigin" name="addorigin"><br><br>
+        <input type="submit" value="Submit" class="formButton">
+      </form>
+    </div>
+    <br>
+
+    <div class="textBox">
+      <h2 class="primaryTextCenter">Edit Tools</h2>
+    </div>
+
+    <div class="textBox">
+      <div style="text-align:center;">
+        <button class="formButton" id="playerEditButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Edit Player</button>
+        <button class="formButton" id="tournamentEditButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Edit Tournament</button>
+        <button class="formButton" id="rulesetEditButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Edit Ruleset</button>
+      </div>
+    </div>
+    <br>
+
+    <div class="hiddenTextBox" id="playerEdit">
+      <form action="/action_page.php">
+        <label for="editfname">First Name: </label>
+        <input type="text" id="editfname" name="editfname"><br><br>
+        <label for="editlname">Last Name: </label>
+        <input type="text" id="editlname" name="editlname"><br><br>
+        <label for="editssname">Stone Skipping Name: </label>
+        <input type="text" id="editssname" name="editssname"><br><br>
+        <label for="editeadd">Email: </label>
+        <input type="email" id="editeadd" name="editeadd"><br><br>
+        <label for="editpnum">Phone Number: </label>
+        <input type="tel" placeholder="+1 (555) 123-4567" id="editpnum" name="editpnum"><br><br>
+        <input type="submit" value="Submit" class="formButton">
+      </form>
+    </div>
+    <div class="hiddenTextBox" id="tournamentEdit">
+      <form action="/action_page.php">
+        <label for="edittname">Tournament Name: </label>
+        <input type="text" id="edittname" name="edittname"><br><br>
+        <label for="edittloc">Tournament Location: </label>
+        <input type="text" id="edittloc" name="edittloc"><br><br>
+        <label for="edittdate">Tournament Date: </label>
+        <input type="date" id="edittdate" name="edittdate"><br><br>
+        <label for="edittrule">Tournament Ruleset: </label>
+        <input type="text" id="edittrule" name="edittrule"><br><br>
+        <input type="submit" value="Submit" class="formButton">
+      </form>
+    </div>
+    <div class="hiddenTextBox" id="rulesetEdit">
+      <form action="/action_page.php">
+        <label for="editrname">Ruleset Name: </label>
+        <input type="text" id="editrname" name="editrname"><br><br>
+        <label for="editrorigin">Ruleset Origin: </label>
+        <input type="text" id="editrorigin" name="editorigin"><br><br>
+        <input type="submit" value="Submit" class="formButton">
+      </form>
+    </div>
+    <br>
+
+    <div class="textBox">
+      <h2 class="primaryTextCenter">Search Tools</h2>
+    </div>
+
+    <div class="textBox">
+      <div style="text-align:center;">
+        <button class="formButton" id="playerSearchButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Find Player</button>
+        <button class="formButton" id="tournamentSearchButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Find Tournament</button>
+        <button class="formButton" id="rulesetSearchButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Find Ruleset</button>
+      </div>
+    </div>
+    <br>
+    <div class="hiddenTextBox" id="playerSearch">
+      <label for="player-search-options">Choose a search criteria:</label>
+      <select name="player-search" id="player-search">
+        <option value="pname">Player Name</option>
+        <option value="pssname">Stone Skipper Name</option>
+      </select>
+      <br>
+      <label for="playerSearchFilter">Filter: </label>
+      <input type="text" id="playerSearchFilter" name="pfilter"><br><br>
+      <input type="submit" value="Submit" class="formButton" onclick="showSearchResults()">
+    </div>
+    <div class="hiddenTextBox" id="tournamentSearch">
+      <label for="tournament-search-options">Choose a search criteria:</label>
+      <select name="tournament-search" id="tournament-search" onchange="tournamentSearchInputChange()">
+        <option value="tname">Tournament Name</option>
+        <option value="tlocation">Tournament Location</option>
+        <option value="tdate">Tournament Date</option>
+      </select>
+      <br>
+      <label for="tournamentSearchFilter">Filter: </label>
+      <input type="text" id="tournamentSearchFilter" name="tfilter"><br><br>
+      <input type="submit" value="Submit" class="formButton" onclick="showSearchResults()">
+    </div>
+    <div class="hiddenTextBox" id="rulesetSearch">
+      <label for="ruleset-search-options">Choose a search criteria:</label>
+      <select name="ruleset-search" id="ruleset-search">
+        <option value="rname">Ruleset Name</option>
+        <option value="rorigin">Ruleset Origin</option>
+      </select>
+      <br>
+      <label for="rulesetSearchFilter">Filter: </label>
+      <input type="text" id="rulesetSearchFilter" name="rfilter"><br><br>
+      <input type="submit" value="Submit" class="formButton" onclick="showSearchResults()">
+    </div>
+    <br>
+    <div class="hiddenTextBox" id="searchResults">
+      <h1 class="primaryTextCenter">
+        Search Results
+      </h1>
+      <p class="primaryTextLeft">
+        Results
+      </p>
+    </div>
+    <br>
+  </body>
+
+</html>
