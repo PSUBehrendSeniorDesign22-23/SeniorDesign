@@ -23,6 +23,10 @@ public class UserService implements UserDetails, UserDetailsService {
         this.phoneNum = user.getPhoneNum();
     }
 
+    public UserService() {
+
+    }
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
