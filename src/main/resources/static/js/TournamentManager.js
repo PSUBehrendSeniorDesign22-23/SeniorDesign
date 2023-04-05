@@ -16,6 +16,10 @@ function generatePlayerOrder(players) {
     
 }
 
+function runMatch(defender, challenger, rules) {
+
+}
+
 async function retrieveTournamentInformation() {
     // TODO: Get tournament selection from user
 
@@ -59,6 +63,53 @@ function runTournament() {
 
             // TODO: Render tournament state to user
 
+            // Append runtime attributes to each player
+            for (let player in playerOrder) {
+                player.stones = tournamentInfo.rules.StartingStones
+                player.chips = 0
+            }
+            let matches = []
+            let knockoutList = []
             
+            do {
+                // Pull first player as defender
+                let defender = playerOrder.shift()
+                // Pull second player as challenger
+                let challenger = playerOrder.shift()
+
+                // EDGE CASE: If defender has already faced challenger
+                if (true) {
+
+                }
+
+                // Run a match, returns a completed match object
+                let match = runMatch(defender, challenger, tournamentInfo.rules)
+                matches.append(match)
+
+                // Update overall tournament status
+
+                // Return challenger to turn order
+                playerOrder.unshift(challenger)
+                // Return defender to turn order
+                playerOrder.unshift(defender)
+
+
+                // NOTE: Perform initial rotation, then check for knockouts and adjust accordingly
+
+                // Check for knockouts
+                if (defender.stones == 0 && defender.chips == 0) {
+                    knockoutList.append(defender)
+                    // Remove defender from turn order
+                    playerOrder.splice(0, 1)
+                }
+                if (challenger.stones == 0 && challenger.chips == 0) {
+                    knockoutList.append(challenger)
+                    // Remove challenger from turn order
+                    playerOrder.splice(playerOrder.indexOf(challenger), 1)
+                }
+
+                // TODO: Update UI
+
+            } while(playerOrder.length > 1)
     })
 }
