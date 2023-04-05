@@ -6,6 +6,8 @@ import com.behrend.contestmanager.repository.RoleRepository;
 import com.behrend.contestmanager.repository.UserRepository;
 import com.behrend.contestmanager.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,22 +50,24 @@ public class PageController {
         if(acc==null){return "redirect:/LoginFailed";}
         if(encoder.matches(password,acc.getPassword())){
             UserService.setLoggedIn(acc.getUserId());
-            return "redirect:/PublicBrowse";
+            return "redirect:PublicBrowse";
         }
         return "redirect:/";
     }
 
-    @PostMapping(value="/registerUser", params = {"firstName", "lastName", "emailSU","phonrNum","address","pswSU"})
+    @PostMapping(value="/registerUser", params = {"firstName", "lastName", "emailSU","phoneNum","address","pswSU","psw-repeat", "remember"})
     @ResponseBody
-    public String registerUser(@RequestParam(name = "firstName") String firstName,
-                               @RequestParam(name = "lastName") String lastName,
-                               @RequestParam(name = "emailSU") String email,
-                               @RequestParam(name = "phonrNum") String phoneNum,
-                               @RequestParam(name = "address") String address,
-                               @RequestParam(name = "pswSU") String password){
+    public ResponseEntity<String> registerUser(@RequestParam(name = "firstName") String firstName,
+                                       @RequestParam(name = "lastName") String lastName,
+                                       @RequestParam(name = "emailSU") String email,
+                                       @RequestParam(name = "phoneNum") String phoneNum,
+                                       @RequestParam(name = "address") String address,
+                                       @RequestParam(name = "pswSU") String password,
+                                       @RequestParam(name = "psw-repeat") String pswRep,
+                                       @RequestParam(name = "remember") String rem){
         User user = new User();
         if(userRepo.findByEmail(email) != null){
-            return "redirect:/";
+            return new ResponseEntity<>("An account with this email already exists", HttpStatus.BAD_REQUEST);
         }
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encryptedPass =encoder.encode(password);
@@ -78,7 +82,7 @@ public class PageController {
         user.roles.add(roleRepo.findRoleByName("USER"));
         userRepo.save(user);
         UserService.setLoggedIn(user.getUserId());
-        return "redirect:PublicBrowse";
+        return ResponseEntity.ok("{\"operation\": \"success\"}");
     }
 
     @GetMapping(value="/PublicBrowse", produces = "application/json")

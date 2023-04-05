@@ -25,11 +25,13 @@ function logIn() {
     })
 }
 
-function signUp() {
+function signUp(e) {
+    e.preventDefault();
 
     var form = document.getElementById("signUpForm")
 
     const formData = new FormData(form)
+
 
     fetch("/registerUser", {
         method: "POST",
