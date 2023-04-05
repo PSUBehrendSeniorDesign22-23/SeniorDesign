@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,31 +39,46 @@ public class PageController {
         return "Landing";
     }
 
-    @PostMapping("/login")
-    public String UserLogin(User user) {
+    @PostMapping(value = "/login", params = {"email", "psw"})
+    public String UserLogin(@RequestParam(name = "email") String email,
+                            @RequestParam(name = "psw") String password) {
         //create endpoints for redirects
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        User acc = userRepo.findByEmail(user.getEmail());
-        if(acc==null){return "redirect:/";}
-        if(encoder.matches(user.getPassword(),acc.getPassword())){
+        User acc = userRepo.findByEmail(email);
+        if(acc==null){return "redirect:/LoginFailed";}
+        if(encoder.matches(password,acc.getPassword())){
             UserService.setLoggedIn(acc.getUserId());
             return "redirect:/PublicBrowse";
         }
         return "redirect:/";
     }
 
-    @PostMapping("/registerUser")
-    public String registerUser(User user){
-        if(userRepo.findByEmail(user.getEmail()) != null){
+    @PostMapping(value="/registerUser", params = {"firstName", "lastName", "emailSU","phonrNum","address","pswSU"})
+    @ResponseBody
+    public String registerUser(@RequestParam(name = "firstName") String firstName,
+                               @RequestParam(name = "lastName") String lastName,
+                               @RequestParam(name = "emailSU") String email,
+                               @RequestParam(name = "phonrNum") String phoneNum,
+                               @RequestParam(name = "address") String address,
+                               @RequestParam(name = "pswSU") String password){
+        User user = new User();
+        if(userRepo.findByEmail(email) != null){
             return "redirect:/";
         }
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String encryptedPass =encoder.encode(user.getPassword());
+        String encryptedPass =encoder.encode(password);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setEmail(email);
+        user.setPhoneNum(phoneNum);
+        user.setAddress(address);
+        user.setPassword(encryptedPass);
+        UserService.setLoggedIn(user.getUserId());
         user.setPassword(encryptedPass);
         user.roles.add(roleRepo.findRoleByName("USER"));
         userRepo.save(user);
         UserService.setLoggedIn(user.getUserId());
-        return "redirect:/PublicBrowse";
+        return "redirect:PublicBrowse";
     }
 
     @GetMapping(value="/PublicBrowse", produces = "application/json")
