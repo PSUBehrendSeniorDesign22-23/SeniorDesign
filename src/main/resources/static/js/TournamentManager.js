@@ -12,14 +12,24 @@ Steps to run a tournament
 
 */
 
-// Base variables
+
+/*
+    MATCH SCHEMA:
+    defender : player
+    challenger : player
+    defenderScore : int
+    challengerScore : int
+    tournament : tournament
+*/
+
+// Tournament information
 let tournament
 let players
 let ruleset
 let rules
 
 // Generated
-let matches = []
+let completeMatches = []
 let activeMatch
 
 // Runtime variables
@@ -28,12 +38,76 @@ let knockoutList = []
 let defender
 let challenger
 
-function rotateTurnOrder() {
+let stoneConflictFlag = false // Used to indicate and force resolution of stone count
+
+function defenderRoundWin() {
+    if (stoneConflictFlag) {
+        alertStoneConflict()
+        return
+    }
+    activeMatch.defenderScore++
+    // Decrement stones
+    defender.stones--
+    challenger.stones--
+    // Award chip for winning throw
+    defender.chips++   
+    
+    if (isMatchComplete()) {
+        finalizeMatch()
+    }
+    updateDisplay()
+}
+
+function challengerRoundWin() {
+    if (stoneConflictFlag) {
+        alertStoneConflict()
+        return
+    }
+    activeMatch.challengerScore++
+    // Decrement stones
+    defender.stones--
+    challenger.stones--
+    // Award chip for winning throw
+    challenger.chips++   
+
+    if (isMatchComplete()) {
+        finalizeMatch()
+    }
+}
+
+function isMatchComplete() {
+    let maxRoundWins = Math.ceil(rules.BestOf)
+    if (activeMatch.defenderScore >= maxRoundWins || activeMatch.challengerScore >= maxRoundWins) {
+        return true
+    }
+
+    if (defender.stones == 0 || challenger.stones == 0) { // One player out of stones
+        stoneConflictFlag = true
+    }
+    
+    return false
+}
+
+function finalizeMatch() {
+
+}
+
+function startNextMatch() {
+
+}
+
+function rotatePlayers() {
 
 }
 
 function createMatch() {
-    
+    return {
+        defender : defender,
+        challenger : challenger,
+        defenderScore : 0,
+        challengerScore : 0,
+        tournament : tournament
+    }
 }
 
 function generatePlayerOrder() {
@@ -74,7 +148,7 @@ async function retrieveTournamentInformation() {
 }
 
 function initializeTournament() {
-    // TODO: Pull tournament selection from user
+    // TODO: Get tournament selection from user
 
     // Get all required information from database
     retrieveTournamentInformation().then((tournamentInfo) => {
@@ -92,12 +166,14 @@ function initializeTournament() {
 
             // Set initial defender and challenger
             // Pull first player as defender
-            let defender = playerOrder.shift()
+            defender = playerOrder.shift()
             // Pull second player as challenger
-            let challenger = playerOrder.shift()
+            challenger = playerOrder.shift()
 
-            // TODO: Render initial tournament state to user
-
+            // Create first match
+            activeMatch = createMatch()
+            // Initialize display to user
+            initializeDisplay()
             
             do {
 
@@ -151,4 +227,16 @@ function initializeTournament() {
 
             } while(playerOrder.length > 1) // Do until 1 or fewer players remain to run more matches
     })
+}
+
+function initializeDisplay() {
+
+}
+
+function updateDisplay() {
+
+}
+
+function alertStoneConflict() {
+
 }
