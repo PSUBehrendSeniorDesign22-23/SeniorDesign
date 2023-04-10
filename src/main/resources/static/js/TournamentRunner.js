@@ -12,16 +12,6 @@ Steps to run a tournament
 
 */
 
-
-/*
-    MATCH SCHEMA:
-    defender : player
-    challenger : player
-    defenderScore : int
-    challengerScore : int
-    tournament : tournament
-*/
-
 // Tournament information
 let tournament
 let players
@@ -81,10 +71,10 @@ function isMatchComplete() {
         return true
     }
 
-    if (defender.stones == 0 || challenger.stones == 0) { // One player out of stones
+    if (defender.stones == 0 || challenger.stones == 0) { // At least one player out of stones, and the match is incomplete
         stoneConflictFlag = true
     }
-    
+
     return false
 }
 
@@ -175,68 +165,85 @@ function initializeTournament() {
             // Initialize display to user
             initializeDisplay()
             
-            do {
+            // do {
 
-                // EDGE CASE: If defender has already faced challenger
-                let duplicateMatch = false
+            //     // EDGE CASE: If defender has already faced challenger
+            //     let duplicateMatch = false
 
-                // Iterate through matches and check if the upcoming players already had a match
-                for (match in matches) {
-                    if (match.defender == defender && match.challenger == challenger) {
-                        duplicateMatch = true
-                    }
-                    if (match.challenger == defender && match.defender == challenger) {
-                        duplicateMatch = true
-                    }
-                }
+            //     // Iterate through matches and check if the upcoming players already had a match
+            //     for (match in matches) {
+            //         if (match.defender == defender && match.challenger == challenger) {
+            //             duplicateMatch = true
+            //         }
+            //         if (match.challenger == defender && match.defender == challenger) {
+            //             duplicateMatch = true
+            //         }
+            //     }
 
-                // When the match is a duplicate
-                if (duplicateMatch) {
+            //     // When the match is a duplicate
+            //     if (duplicateMatch) {
 
-                }
+            //     }
 
-                // Run a match, returns a completed match object
-                let match = createMatch(defender, challenger, tournamentInfo.rules)
-                matches.append(match)
+            //     // Run a match, returns a completed match object
+            //     let match = createMatch(defender, challenger, tournamentInfo.rules)
+            //     matches.append(match)
 
-                // Update overall tournament status
+            //     // Update overall tournament status
 
-                // Check for challenger knockout
-                if (challenger.stones == 0 && challenger.chips == 0) {
-                    knockoutList.append(challenger)
-                    // Do not return challenger to turn rotation
-                }
-                else {
-                    // Return challenger to turn order
-                    playerOrder.unshift(challenger)
-                }
+            //     // Check for challenger knockout
+            //     if (challenger.stones == 0 && challenger.chips == 0) {
+            //         knockoutList.append(challenger)
+            //         // Do not return challenger to turn rotation
+            //     }
+            //     else {
+            //         // Return challenger to turn order
+            //         playerOrder.unshift(challenger)
+            //     }
                 
-                // Check for defender knockout
-                if (defender.stones == 0 && defender.chips == 0) {
-                    knockoutList.append(defender)
-                    // Do not return defender to turn rotation
-                }
-                else {
-                    // Return defender to turn order
-                    playerOrder.unshift(defender)
-                }
+            //     // Check for defender knockout
+            //     if (defender.stones == 0 && defender.chips == 0) {
+            //         knockoutList.append(defender)
+            //         // Do not return defender to turn rotation
+            //     }
+            //     else {
+            //         // Return defender to turn order
+            //         playerOrder.unshift(defender)
+            //     }
 
-                // Turn order should now be ready for next match
+            //     // Turn order should now be ready for next match
 
-                // TODO: Update UI
+            //     // TODO: Update UI
 
-            } while(playerOrder.length > 1) // Do until 1 or fewer players remain to run more matches
+            // } while(playerOrder.length > 1) // Do until 1 or fewer players remain to run more matches
     })
 }
 
 function initializeDisplay() {
-
+    // Reconstruct DOM for running tournament
 }
 
 function updateDisplay() {
-
+    // Update DOM to reflect tournament state
 }
 
 function alertStoneConflict() {
+    // Display an alert to the user
+    // Prompt for resolution by user 
 
+    // Will have to determine options based on:
+    // who is out of stones
+    // if chips are available for conversion
+    // what the current match score is
+    // rules from the ruleset (e.g. is conversion from 1 chip allowed?)
+    // etc.
+
+    // THIS FUNCTION IS FOR CONSTRUCTING OPTIONS TO DISPLAY TO THE USER ONLY
+}
+
+function resolveStoneConflict() {
+    // Resolve based on selection from alert
+    // This function can do anything, as long as it resolves conflict.
+    // It also could be broken into multiple functions for different resolutions
+    // It may edit stone counts, perform chip conversions, edit and finalize a match, etc.
 }
