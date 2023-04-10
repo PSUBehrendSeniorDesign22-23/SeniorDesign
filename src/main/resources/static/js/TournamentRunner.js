@@ -44,6 +44,8 @@ function defenderRoundWin() {
     
     if (isMatchComplete()) {
         finalizeMatch()
+        rotatePlayers()
+        startNextMatch()
     }
     updateDisplay()
 }
@@ -61,12 +63,15 @@ function challengerRoundWin() {
     challenger.chips++   
 
     if (isMatchComplete()) {
-        finalizeMatch()
+        completeMatches.push(activeMatch)
+        rotatePlayers()
+        startNextMatch()
     }
+    updateDisplay()
 }
 
 function isMatchComplete() {
-    let maxRoundWins = Math.ceil(rules.BestOf)
+    let maxRoundWins = Math.ceil(rules.BestOf / 2)
     if (activeMatch.defenderScore >= maxRoundWins || activeMatch.challengerScore >= maxRoundWins) {
         return true
     }
@@ -78,16 +83,76 @@ function isMatchComplete() {
     return false
 }
 
-function finalizeMatch() {
+function rotatePlayers() {
+    let defenderKnockoutFlag = false
+    let challengerKnockoutFlag = false
 
+    // Check for challenger knockout
+    if (challenger.stones == 0 && challenger.chips == 0) {
+        knockoutList.push(challenger)
+        challengerKnockoutFlag = true
+    }
+    else {
+        // Return challenger to turn order
+        playerOrder.unshift(challenger)
+    }
+    // Check for defender knockout
+    if (defender.stones == 0 && defender.chips == 0) {
+        knockoutList.push(defender)
+        defenderKnockoutFlag = true
+    }
+    else {
+        // Return defender to turn order
+        playerOrder.unshift(defender)
+    }
+
+    if (defenderKnockoutFlag != challengerKnockoutFlag) { // One and only one player was knocked out (XOR)
+        // Turn order should already be correct
+        return
+    }
+
+    if (defenderKnockoutFlag == challengerKnockoutFlag && defenderKnockoutFlag == true) { // Both defender and challenger were knocked out
+        // Turn order should already be correct
+        return
+    }
+
+    // Neither player was knocked out
+    // Rotate based on match winner
+    let playerHolder
+    if (activeMatch.defenderScore < activeMatch.challengerScore) { // If challenger wins
+        // Shift defender out of list
+        playerHolder = playerOrder.shift()
+    }
+    else { // defender wins
+        // Remove challenger from list
+        playerHolder = playerOrder.splice(1,1)
+    }
+    playerOrder.push(playerHolder)
 }
 
 function startNextMatch() {
+    // Grab defender and challenger
+    defender = playerOrder.shift()
+    challenger = playerOrder.shift()
+    
+    // EDGE CASE: If defender has already faced challenger
+    let duplicateMatch = false
 
-}
+    // NEED TO HANDLE DUPLICATE MATCH UPS SOMEHOW
+    // Iterate through matches and check if the upcoming players already had a match
+    for (match in matches) {
+        if (match.defender == defender && match.challenger == challenger) {
+            duplicateMatch = true
+        }
+        if (match.challenger == defender && match.defender == challenger) {
+            duplicateMatch = true
+        }
+    }
 
-function rotatePlayers() {
+    // When the match is a duplicate
+    if (duplicateMatch) {
 
+    }
 }
 
 function createMatch() {
@@ -164,58 +229,6 @@ function initializeTournament() {
             activeMatch = createMatch()
             // Initialize display to user
             initializeDisplay()
-            
-            // do {
-
-            //     // EDGE CASE: If defender has already faced challenger
-            //     let duplicateMatch = false
-
-            //     // Iterate through matches and check if the upcoming players already had a match
-            //     for (match in matches) {
-            //         if (match.defender == defender && match.challenger == challenger) {
-            //             duplicateMatch = true
-            //         }
-            //         if (match.challenger == defender && match.defender == challenger) {
-            //             duplicateMatch = true
-            //         }
-            //     }
-
-            //     // When the match is a duplicate
-            //     if (duplicateMatch) {
-
-            //     }
-
-            //     // Run a match, returns a completed match object
-            //     let match = createMatch(defender, challenger, tournamentInfo.rules)
-            //     matches.append(match)
-
-            //     // Update overall tournament status
-
-            //     // Check for challenger knockout
-            //     if (challenger.stones == 0 && challenger.chips == 0) {
-            //         knockoutList.append(challenger)
-            //         // Do not return challenger to turn rotation
-            //     }
-            //     else {
-            //         // Return challenger to turn order
-            //         playerOrder.unshift(challenger)
-            //     }
-                
-            //     // Check for defender knockout
-            //     if (defender.stones == 0 && defender.chips == 0) {
-            //         knockoutList.append(defender)
-            //         // Do not return defender to turn rotation
-            //     }
-            //     else {
-            //         // Return defender to turn order
-            //         playerOrder.unshift(defender)
-            //     }
-
-            //     // Turn order should now be ready for next match
-
-            //     // TODO: Update UI
-
-            // } while(playerOrder.length > 1) // Do until 1 or fewer players remain to run more matches
     })
 }
 
