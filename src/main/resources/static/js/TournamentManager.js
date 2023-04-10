@@ -12,17 +12,35 @@ Steps to run a tournament
 
 */
 
-function generatePlayerOrder(players) {
+// Base variables
+let tournament
+let players
+let ruleset
+let rules
+
+// Generated
+let matches = []
+let activeMatch
+
+// Runtime variables
+let playerOrder = []
+let knockoutList = []
+let defender
+let challenger
+
+function rotateTurnOrder() {
+
+}
+
+function createMatch() {
     
 }
 
-function runMatch(defender, challenger, rules) {
-
+function generatePlayerOrder() {
+    
 }
 
 async function retrieveTournamentInformation() {
-    // TODO: Get tournament selection from user
-
     // Get tournament
     const tournamentSearchParams = new URLSearchParams()
     tournamentSearchParams.append("searchType", searchType)
@@ -55,27 +73,33 @@ async function retrieveTournamentInformation() {
     return {tournament: tournament, players: await players, ruleset: ruleset, rules: await rules}
 }
 
-function runTournament() {
-    // Get all the needed information from database
+function initializeTournament() {
+    // TODO: Pull tournament selection from user
+
+    // Get all required information from database
     retrieveTournamentInformation().then((tournamentInfo) => {
-            let playerOrder = generatePlayerOrder(tournamentInfo.players) // List of players
-            // Begin tournament process
-
-            // TODO: Render tournament state to user
-
+            tournament = tournamentInfo.tournament
+            players = tournamentInfo.players
+            ruleset = tournamentInfo.ruleset
+            rules = tournamentInfo.rules
+            playerOrder = generatePlayerOrder(tournamentInfo.players) // List of players
+            
             // Append runtime attributes to each player
             for (let player in playerOrder) {
                 player.stones = tournamentInfo.rules.StartingStones
                 player.chips = 0
             }
-            let matches = []
-            let knockoutList = []
+
+            // Set initial defender and challenger
+            // Pull first player as defender
+            let defender = playerOrder.shift()
+            // Pull second player as challenger
+            let challenger = playerOrder.shift()
+
+            // TODO: Render initial tournament state to user
+
             
             do {
-                // Pull first player as defender
-                let defender = playerOrder.shift()
-                // Pull second player as challenger
-                let challenger = playerOrder.shift()
 
                 // EDGE CASE: If defender has already faced challenger
                 let duplicateMatch = false
@@ -90,13 +114,13 @@ function runTournament() {
                     }
                 }
 
-                // 
+                // When the match is a duplicate
                 if (duplicateMatch) {
 
                 }
 
                 // Run a match, returns a completed match object
-                let match = runMatch(defender, challenger, tournamentInfo.rules)
+                let match = createMatch(defender, challenger, tournamentInfo.rules)
                 matches.append(match)
 
                 // Update overall tournament status

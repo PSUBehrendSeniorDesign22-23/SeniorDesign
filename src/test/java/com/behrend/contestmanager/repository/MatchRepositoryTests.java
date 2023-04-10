@@ -49,7 +49,7 @@ public class MatchRepositoryTests {
 
         for (Match match : matchesOne)
         {
-            if (match.getPlayerOne().getPlayerId() == playerId)
+            if (match.getDefender().getPlayerId() == playerId)
             {
                 matchPlayerOneFound = true;
             }
@@ -60,7 +60,7 @@ public class MatchRepositoryTests {
 
         for (Match match : matchesTwo)
         {
-            if (match.getPlayerTwo().getPlayerId() == playerId) 
+            if (match.getChallenger().getPlayerId() == playerId) 
             {
                 matchPlayerTwoFound = true;
             }
