@@ -235,7 +235,7 @@ function alertStoneConflict() {
     // who is out of stones
     // if chips are available for conversion
     // what the current match score is
-    // rules from the ruleset (e.g. is conversion from 1 chip allowed?)
+    // rules from the ruleset
     // etc.
 
     // THIS FUNCTION IS FOR CONSTRUCTING OPTIONS TO DISPLAY TO THE USER ONLY
@@ -246,4 +246,19 @@ function resolveStoneConflict() {
     // This function can do anything, as long as it resolves conflict.
     // It also could be broken into multiple functions for different resolutions
     // It may edit stone counts, perform chip conversions, edit and finalize a match, etc.
+}
+
+function convertChips(player) {
+    let chipsPerStone = rules.ChipsPerStone
+    if (player.chips >= chipsPerStone) {
+        player.chips -= chipsPerStone
+        player.stones++
+    }
+    else {
+        alertNotEnoughChips()
+    }
+}
+
+function alertNotEnoughChips() {
+    // Visual alert when there are not enough chips to convert to a stone
 }
