@@ -3,7 +3,7 @@ package com.behrend.contestmanager.service;
 import com.behrend.contestmanager.repository.RulesetRepository;
 import com.behrend.contestmanager.models.Ruleset;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,18 +27,18 @@ public class RulesetServiceImpl implements RulesetService {
     }
 
     @Override
-    public ArrayList<Ruleset> findAllRulesets() {
-        return (ArrayList<Ruleset>) rulesetRepository.findAll();
+    public List<Ruleset> findAllRulesets() {
+        return (List<Ruleset>) rulesetRepository.findAll();
     }
 
     @Override
-    public ArrayList<Ruleset> findRulesetsByName(String name) {
-        return (ArrayList<Ruleset>) rulesetRepository.findRulesetsByName(name);
+    public List<Ruleset> findRulesetsByName(String name) {
+        return (List<Ruleset>) rulesetRepository.findRulesetsByName(name);
     }
 
     @Override
-    public ArrayList<Ruleset> findRulesetsByOrigin(String origin) {
-        return (ArrayList<Ruleset>) rulesetRepository.findRulesetsByOrigin(origin);
+    public List<Ruleset> findRulesetsByOrigin(String origin) {
+        return (List<Ruleset>) rulesetRepository.findRulesetsByOrigin(origin);
     }
 
     // Update
@@ -57,7 +57,7 @@ public class RulesetServiceImpl implements RulesetService {
             currentRuleset.setOrigin(ruleset.getOrigin());
         }
 
-        if (!ruleset.getRules().equals(currentRuleset.getRules())) {
+        if (ruleset.getRules() != null && !ruleset.getRules().equals(currentRuleset.getRules())) {
             currentRuleset.setRules(ruleset.getRules());
         }
 

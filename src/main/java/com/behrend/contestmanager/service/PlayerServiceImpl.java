@@ -39,7 +39,7 @@ public class PlayerServiceImpl implements PlayerService {
 
     @Override
     public List<Player> findPlayersBySkipperName(String skipperName) {
-        return (List<Player>) playerRepository.findAllBySkipperName(skipperName);
+        return playerRepository.findAllBySkipperName(skipperName);
     }
 
     // Update

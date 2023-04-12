@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.behrend.contestmanager.models.Rule;
 import com.behrend.contestmanager.repository.RuleRepository;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RuleServiceImpl implements RuleService {
@@ -22,8 +22,8 @@ public class RuleServiceImpl implements RuleService {
 
     // Read
     @Override
-    public ArrayList<Rule> findAllRules() {
-        return (ArrayList<Rule>) ruleRepository.findAll();
+    public List<Rule> findAllRules() {
+        return (List<Rule>) ruleRepository.findAll();
     }
 
     @Override
