@@ -1,13 +1,11 @@
 package com.behrend.contestmanager.controllers;
 
-import com.behrend.contestmanager.models.Role;
+import com.behrend.contestmanager.models.ERole;
 import com.behrend.contestmanager.models.User;
 import com.behrend.contestmanager.repository.RoleRepository;
 import com.behrend.contestmanager.repository.UserRepository;
 import com.behrend.contestmanager.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
+import static com.behrend.contestmanager.models.ERole.USER;
 
 @Controller
 public class PageController {
@@ -55,19 +56,31 @@ public class PageController {
         return "redirect:/";
     }
 
-    @PostMapping(value="/registerUser", params = {"firstName", "lastName", "emailSU","phoneNum","address","pswSU","psw-repeat", "remember"})
-    @ResponseBody
-    public ResponseEntity<String> registerUser(@RequestParam(name = "firstName") String firstName,
-                                       @RequestParam(name = "lastName") String lastName,
-                                       @RequestParam(name = "emailSU") String email,
-                                       @RequestParam(name = "phoneNum") String phoneNum,
-                                       @RequestParam(name = "address") String address,
-                                       @RequestParam(name = "pswSU") String password,
-                                       @RequestParam(name = "psw-repeat") String pswRep,
-                                       @RequestParam(name = "remember") String rem){
+    /*@RequestParam(name = "firstName") String firstName,
+            @RequestParam(name = "lastName") String lastName,
+            @RequestParam(name = "emailSU") String email,
+            @RequestParam(name = "phoneNum") String phoneNum,
+            @RequestParam(name = "address") String address,
+            @RequestParam(name = "pswSU") String password,
+            @RequestParam(name = "psw-repeat") String pswRep,
+            @RequestParam(name = "remember") String rem*/
+
+    @PostMapping(value="/registerUser")
+    public String registerUser(@RequestBody Map<String, Object> request) {
         User user = new User();
+        String firstName = (String) request.get("firstName");
+        String lastName = (String) request.get("lastName");
+        String email = (String) request.get("emailSU");
+        String phoneNum = (String) request.get("phoneNum");
+        String address = (String) request.get("address");
+        String password = (String) request.get("pswSU");
+        String pswRep = (String) request.get("psw-repeat");
+        String rem = (String) request.get("remember");
+
+        //"firstName", "lastName", "emailSU","phoneNum","address","pswSU","psw-repeat", "remember"
         if(userRepo.findByEmail(email) != null){
-            return new ResponseEntity<>("An account with this email already exists", HttpStatus.BAD_REQUEST);
+            //new ResponseEntity<>("An account with this email already exists", HttpStatus.BAD_REQUEST)
+            return "redirect:/";
         }
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         String encryptedPass =encoder.encode(password);
@@ -79,16 +92,19 @@ public class PageController {
         user.setPassword(encryptedPass);
         UserService.setLoggedIn(user.getUserId());
         user.setPassword(encryptedPass);
-        user.roles.add(roleRepo.findRoleByName("USER"));
+
+        ArrayList<ERole> roles = new ArrayList<>();
+        roles.add(USER);
+        user.setRoles(roles);
         userRepo.save(user);
         UserService.setLoggedIn(user.getUserId());
-        return ResponseEntity.ok("{\"operation\": \"success\"}");
+        return "redirect:/PublicBrowse";
     }
 
     @GetMapping(value="/PublicBrowse", produces = "application/json")
     public String publicBrowse(Model model){return "PublicBrowse";}
 
-    @GetMapping(value = "/LoginFaled", produces = "application/json")
+    @GetMapping(value = "/LoginFailed", produces = "application/json")
     public String loginFailed(){return "LoginFailed";}
 
     @GetMapping(value = "/CoordinatorTools", produces = "application/json")

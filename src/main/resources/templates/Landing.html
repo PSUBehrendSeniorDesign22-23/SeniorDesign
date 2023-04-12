@@ -19,7 +19,7 @@
         <!-- The Modal (contains the Log In form) -->
         <div id="idLog" class="modal">
           <span onclick="document.getElementById('idLog').style.display='none'" title="Close Modal"></span>
-          <form class="modal-content" id="logInForm"  method="post">
+          <form class="modal-content" id="logInForm" onsubmit="return logIn()" method="post">
             <div class="textBox">
               <h1 class="primaryTextCenter">Login</h1>
               <p class="primaryTextLeft">Please fill in this form login to your account.</p>
@@ -35,8 +35,8 @@
               </label>
 
               <div class="clearfix">
-                <button type="submit" class="button" style="background-color: #008000;">Login</button>
-                <button type="button" onclick="logIn()" style="background-color: #f44336;" class="formButton">Cancel</button>
+                <button type="submit"  class="button" style="background-color: #008000;">Login</button>
+                <button type="button" style="background-color: #f44336;" class="formButton">Cancel</button>
               </div>
             </div>
           </form>
@@ -44,7 +44,7 @@
         <!-- The Modal (contains the Sign Up form) -->
         <div id="idSign" class="modal">
           <span onclick="document.getElementById('idSign').style.display='none'" title="Close Modal"></span>
-          <form class="modal-content" id="signUpForm" method="post">
+          <form class="modal-content" id="signUpForm" action="/registerUser" enctype="applcation/json" onsubmit="return signUp()" method="post">
             <div class="textBox">
               <h1 class="primaryTextCenter">Sign Up</h1>
               <p class="primaryTextLeft">Please fill in this form to create an account.</p>
@@ -78,7 +78,7 @@
 
               <div class="clearfix">
                 <button type="submit" class="button" style="background-color: #008000;">Sign Up</button>
-                <button type="button" onclick="signUp()" style="background-color: #f44336;" class="formButton">Cancel</button>
+                <button type="button" style="background-color: #f44336;" class="formButton">Cancel</button>
               </div>
             </div>
           </form>

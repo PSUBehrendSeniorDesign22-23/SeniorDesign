@@ -1,4 +1,4 @@
-document.getElementById("logIn").addEventListener('submit', handleForm)
+document.getElementById("logId").addEventListener('submit', handleForm)
 document.getElementById("signUp").addEventListener('submit', handleForm)
 
 function handleForm(event) {
