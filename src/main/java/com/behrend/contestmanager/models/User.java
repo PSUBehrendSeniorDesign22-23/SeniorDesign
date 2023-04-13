@@ -17,7 +17,7 @@ public class User {
     private Player player;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "roles",
+    @CollectionTable(name = "role",
                 joinColumns = @JoinColumn(name = "user_id",
                 referencedColumnName = "user_id"))
     @Enumerated(EnumType.STRING)
