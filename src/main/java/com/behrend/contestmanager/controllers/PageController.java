@@ -1,8 +1,7 @@
 package com.behrend.contestmanager.controllers;
 
-import com.behrend.contestmanager.models.ERole;
+import com.behrend.contestmanager.models.Role;
 import com.behrend.contestmanager.models.User;
-import com.behrend.contestmanager.repository.RoleRepository;
 import com.behrend.contestmanager.repository.UserRepository;
 import com.behrend.contestmanager.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.behrend.contestmanager.models.ERole.USER;
+import static com.behrend.contestmanager.models.Role.USER;
 
 @Controller
 public class PageController {
@@ -33,9 +32,6 @@ public class PageController {
 
     @Autowired
     UserRepository userRepo;
-
-    @Autowired
-    RoleRepository roleRepo;
 
     @GetMapping(value = "/")
     public String index(Model model) {
@@ -56,28 +52,18 @@ public class PageController {
         return "redirect:/";
     }
 
-    /*@RequestParam(name = "firstName") String firstName,
-            @RequestParam(name = "lastName") String lastName,
-            @RequestParam(name = "emailSU") String email,
-            @RequestParam(name = "phoneNum") String phoneNum,
-            @RequestParam(name = "address") String address,
-            @RequestParam(name = "pswSU") String password,
-            @RequestParam(name = "psw-repeat") String pswRep,
-            @RequestParam(name = "remember") String rem*/
+   
 
     @PostMapping(value="/registerUser")
-    public String registerUser(@RequestBody Map<String, Object> request) {
+    public String registerUser( @RequestParam(name = "firstName") String firstName,
+                                @RequestParam(name = "lastName") String lastName,
+                                @RequestParam(name = "emailSU") String email,
+                                @RequestParam(name = "phoneNum") String phoneNum,
+                                @RequestParam(name = "address") String address,
+                                @RequestParam(name = "pswSU") String password,
+                                @RequestParam(name = "psw-repeat") String pswRep) {
         User user = new User();
-        String firstName = (String) request.get("firstName");
-        String lastName = (String) request.get("lastName");
-        String email = (String) request.get("emailSU");
-        String phoneNum = (String) request.get("phoneNum");
-        String address = (String) request.get("address");
-        String password = (String) request.get("pswSU");
-        String pswRep = (String) request.get("psw-repeat");
-        String rem = (String) request.get("remember");
 
-        //"firstName", "lastName", "emailSU","phoneNum","address","pswSU","psw-repeat", "remember"
         if(userRepo.findByEmail(email) != null){
             //new ResponseEntity<>("An account with this email already exists", HttpStatus.BAD_REQUEST)
             return "redirect:/";
@@ -93,7 +79,7 @@ public class PageController {
         UserService.setLoggedIn(user.getUserId());
         user.setPassword(encryptedPass);
 
-        ArrayList<ERole> roles = new ArrayList<>();
+        ArrayList<Role> roles = new ArrayList<>();
         roles.add(USER);
         user.setRoles(roles);
         userRepo.save(user);

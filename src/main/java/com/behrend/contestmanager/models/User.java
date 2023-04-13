@@ -18,9 +18,10 @@ public class User {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "roles",
-                joinColumns = @JoinColumn(name = "user_id"))
+                joinColumns = @JoinColumn(name = "user_id",
+                referencedColumnName = "user_id"))
     @Enumerated(EnumType.STRING)
-    public List<ERole> roles;
+    public List<Role> roles;
 
     @Column(nullable = false, length = 64)
     private String firstName;
@@ -40,11 +41,11 @@ public class User {
     @Column(nullable = true, length = 64)
     private String password;
 
-    public List<ERole> getRoles() {
+    public List<Role> getRoles() {
         return this.roles;
     }
 
-    public void setRoles(List<ERole> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 

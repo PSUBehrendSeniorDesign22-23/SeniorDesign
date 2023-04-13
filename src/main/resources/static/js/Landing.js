@@ -1,5 +1,15 @@
-document.getElementById("logId").addEventListener('submit', handleForm)
-document.getElementById("signUp").addEventListener('submit', handleForm)
+let logModal = document.getElementById("idLog")
+let signModal = document.getElementById("idSign")
+
+logModal.addEventListener('submit', handleForm)
+signModal.addEventListener('submit', handleForm)
+
+window.onclick = function(event) {
+    if (event.target == logModal) {
+      logModal.style.display = "none";
+    } else if (event.target == signModal)
+      signModal.style.display = "none";
+}
 
 function handleForm(event) {
     event.preventDefault();
@@ -25,8 +35,7 @@ function logIn() {
     })
 }
 
-function signUp(e) {
-    e.preventDefault();
+function signUp() {
 
     var form = document.getElementById("signUpForm")
 

@@ -1,26 +1,13 @@
 package com.behrend.contestmanager.models;
 
-import javax.persistence.*;
+public enum Role {
+    USER("USER"),
+    ADMIN("ADMIN"),
+    SUPER_ADMIN("SUPER_ADMIN");
 
-import java.util.List;
 
-@Entity
-@Table(name = "role")
-public class Role {
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "role_id")
-    private int id;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 45)
-    private ERole name;
-
-    @ManyToMany(mappedBy = "roles")
-    private List<User> users;
-    
-    public void setName(ERole roleName){
-        this.name = roleName;
+    private String role;
+    Role(String role){
+        this.role = role;
     }
 }
