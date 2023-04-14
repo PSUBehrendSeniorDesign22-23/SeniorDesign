@@ -17,22 +17,22 @@ public class Match {
     private long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "player_one_id", nullable = false, referencedColumnName = "player_id")
-    private Player playerOne;
+    @JoinColumn(name = "defender_id", nullable = false, referencedColumnName = "player_id")
+    private Player defender;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "player_two_id", nullable = false, referencedColumnName = "player_id")
-    private Player playerTwo;
+    @JoinColumn(name = "challenger_id", nullable = false, referencedColumnName = "player_id")
+    private Player challenger;
 
 
     // Player scores default to -1 on object instantiation
     // This value is set prior to saving to the database
 
     @Column(nullable = false)
-    private int playerOneScore = -1;
+    private int defenderScore = -1;
 
     @Column(nullable = false)
-    private int playerTwoScore = -1;
+    private int challengerScore = -1;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "tournament_id", referencedColumnName = "tournament_id")
@@ -42,36 +42,36 @@ public class Match {
         return this.id;
     }
 
-    public Player getPlayerOne() {
-        return this.playerOne;
+    public Player getDefender() {
+        return this.defender;
     }
 
-    public void setPlayerOne(Player playerOne) {
-        this.playerOne = playerOne;
+    public void setDefender(Player playerOne) {
+        this.defender = playerOne;
     }
 
-    public Player getPlayerTwo() {
-        return this.playerTwo;
+    public Player getChallenger() {
+        return this.challenger;
     }
 
-    public void setPlayerTwo(Player playerTwo) {
-        this.playerTwo = playerTwo;
+    public void setChallenger(Player playerTwo) {
+        this.challenger = playerTwo;
     }
 
-    public int getPlayerOneScore() {
-        return this.playerOneScore;
+    public int getDefenderScore() {
+        return this.defenderScore;
     }
 
-    public void setPlayerOneScore(int score) {
-        this.playerOneScore = score;
+    public void setDefenderScore(int score) {
+        this.defenderScore = score;
     }
 
-    public int getPlayerTwoScore() {
-        return this.playerTwoScore;
+    public int getChallengerScore() {
+        return this.challengerScore;
     }
 
-    public void setPlayerTwoScore(int score) {
-        this.playerTwoScore = score;
+    public void setChallengerScore(int score) {
+        this.challengerScore = score;
     }
 
     public Tournament getTournament() {

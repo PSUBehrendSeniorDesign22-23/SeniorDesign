@@ -22,12 +22,12 @@ public class MatchServiceImpl implements MatchService{
     @Override
     public Match saveMatch(Match match) {
 
-        if (match.getPlayerOneScore() < 0)  {
-            match.setPlayerOneScore(0);
+        if (match.getDefenderScore() < 0)  {
+            match.setDefenderScore(0);
         }
 
-        if (match.getPlayerTwoScore() < 0) {
-            match.setPlayerTwoScore(0);
+        if (match.getChallengerScore() < 0) {
+            match.setChallengerScore(0);
         }
 
         return matchRepository.save(match);
@@ -43,8 +43,8 @@ public class MatchServiceImpl implements MatchService{
     public List<Match> getMatchesByPlayer(Player player) {
         
         ArrayList<Match> matchList = new ArrayList<>();
-        matchList.addAll(matchRepository.findAllByPlayerOneId(player.getPlayerId()));
-        matchList.addAll(matchRepository.findAllByPlayerTwoId(player.getPlayerId()));
+        matchList.addAll(matchRepository.findAllByDefenderId(player.getPlayerId()));
+        matchList.addAll(matchRepository.findAllByChallengerId(player.getPlayerId()));
         return matchList;
     }
 
@@ -63,20 +63,20 @@ public class MatchServiceImpl implements MatchService{
             return null;
         }
 
-        if (match.getPlayerOne() != null) {
-            currentMatch.setPlayerOne(match.getPlayerOne());
+        if (match.getDefender() != null) {
+            currentMatch.setDefender(match.getDefender());
         }
 
-        if (match.getPlayerTwo() != null) {
-            currentMatch.setPlayerTwo(match.getPlayerTwo());
+        if (match.getChallenger() != null) {
+            currentMatch.setChallenger(match.getChallenger());
         }
 
-        if (match.getPlayerOneScore() != -1) {
-            currentMatch.setPlayerOneScore(match.getPlayerOneScore());
+        if (match.getDefenderScore() != -1) {
+            currentMatch.setDefenderScore(match.getDefenderScore());
         }
 
-        if (match.getPlayerTwoScore() != -1) {
-            currentMatch.setPlayerTwoScore(match.getPlayerTwoScore());
+        if (match.getChallengerScore() != -1) {
+            currentMatch.setChallengerScore(match.getChallengerScore());
         }
 
         if (match.getTournament() != null) {

@@ -20,7 +20,7 @@ INSERT INTO TOURNAMENT(tournament_id, name, location, date, ruleset_id) VALUES
 (11, 'TournamentOne', 'North America', '1980-12-07', 11),
 (12, 'TournamentTwo', 'Japan', '1980-12-08', 12);
 
-INSERT INTO MATCH(player_one_id, player_two_id, player_one_score, player_two_score, tournament_id) VALUES
+INSERT INTO MATCH(defender_id, challenger_id, defender_score, challenger_score, tournament_id) VALUES
 (11, 12, 1, 2, 11),
 (12, 11, 2, 1, 12),
 (13, 14, 2, 1, 11),

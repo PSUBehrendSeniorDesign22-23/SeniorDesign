@@ -41,15 +41,15 @@ public class MatchRepositoryTests {
     @Test
     void findMatchesByPlayerId() {
         long playerId = 11L;
-        List<Match> matchesOne = matchRepository.findAllByPlayerOneId(playerId);
-        List<Match> matchesTwo = matchRepository.findAllByPlayerTwoId(playerId);
+        List<Match> matchesOne = matchRepository.findAllByDefenderId(playerId);
+        List<Match> matchesTwo = matchRepository.findAllByChallengerId(playerId);
         
         boolean matchPlayerOneFound = false;
         boolean matchPlayerTwoFound = false;
 
         for (Match match : matchesOne)
         {
-            if (match.getPlayerOne().getPlayerId() == playerId)
+            if (match.getDefender().getPlayerId() == playerId)
             {
                 matchPlayerOneFound = true;
             }
@@ -60,7 +60,7 @@ public class MatchRepositoryTests {
 
         for (Match match : matchesTwo)
         {
-            if (match.getPlayerTwo().getPlayerId() == playerId) 
+            if (match.getChallenger().getPlayerId() == playerId) 
             {
                 matchPlayerTwoFound = true;
             }

@@ -92,36 +92,36 @@ public class CreateController {
         return ResponseEntity.ok("{\"operation\": \"success\"}");
     }
 
-    @PostMapping(value = "/match/create", params = {"playerOneId", "playerTwoId", "tournamentId", "playerOneScore", "playerTwoScore"})
+    @PostMapping(value = "/match/create", params = {"defenderId", "challengerId", "tournamentId", "defenderScore", "challengerScore"})
     @ResponseBody
-    public ResponseEntity<String> createMatch(@RequestParam(name = "playerOneId") long playerOneId,
-                                              @RequestParam(name = "playerTwoId") long playerTwoId,
+    public ResponseEntity<String> createMatch(@RequestParam(name = "defenderId") long defenderId,
+                                              @RequestParam(name = "challengerId") long challengerId,
                                               @RequestParam(name = "tournamentId") long tournamentId,
-                                              @RequestParam(name = "playerOneScore", required = false) int playerOneScore,
-                                              @RequestParam(name = "playerTwoScore", required = false) int playerTwoScore) {
+                                              @RequestParam(name = "defenderScore", required = false) int defenderScore,
+                                              @RequestParam(name = "challengerScore", required = false) int challengerScore) {
 
         Match match = new Match();
         
-        Player playerOne = playerService.findPlayerById(playerOneId);
-        Player playerTwo = playerService.findPlayerById(playerTwoId);
+        Player defender = playerService.findPlayerById(defenderId);
+        Player challenger = playerService.findPlayerById(challengerId);
         Tournament tournament = tournamentService.findTournamentById(tournamentId);
 
-        if (playerOne == null) {
-            return new ResponseEntity<>("Player with ID: " + playerOneId + " does not exist", HttpStatus.BAD_REQUEST);
+        if (defender == null) {
+            return new ResponseEntity<>("Player with ID: " + defenderId + " does not exist", HttpStatus.BAD_REQUEST);
         }
-        if (playerTwo == null) {
-            return new ResponseEntity<>("Player with ID: " + playerTwoId + " does not exist", HttpStatus.BAD_REQUEST);
+        if (challenger == null) {
+            return new ResponseEntity<>("Player with ID: " + challengerId + " does not exist", HttpStatus.BAD_REQUEST);
         }
         if (tournament == null) {
             return new ResponseEntity<>("Tournament with ID: " + tournamentId + " does not exist", HttpStatus.BAD_REQUEST);
         }
 
-        match.setPlayerOne(playerOne);
-        match.setPlayerTwo(playerTwo);
+        match.setDefender(defender);
+        match.setChallenger(challenger);
         match.setTournament(tournament);
 
-        match.setPlayerOneScore(playerOneScore);
-        match.setPlayerTwoScore(playerTwoScore);
+        match.setDefenderScore(defenderScore);
+        match.setChallengerScore(challengerScore);
 
         matchService.saveMatch(match);
 

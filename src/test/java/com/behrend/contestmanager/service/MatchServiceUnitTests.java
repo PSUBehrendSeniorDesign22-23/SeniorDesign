@@ -43,8 +43,8 @@ public class MatchServiceUnitTests {
         tournament = new Tournament();
 
         match = new Match();
-        match.setPlayerOne(playerOne);
-        match.setPlayerTwo(playerTwo);
+        match.setDefender(playerOne);
+        match.setChallenger(playerTwo);
         match.setTournament(tournament);
     }
 
@@ -102,22 +102,22 @@ public class MatchServiceUnitTests {
         Player playerThree = new Player();
 
         Match match2 = new Match();
-        match2.setPlayerOne(playerTwo);
-        match2.setPlayerTwo(playerThree);
+        match2.setDefender(playerTwo);
+        match2.setChallenger(playerThree);
 
         Match match3 = new Match();
-        match3.setPlayerOne(playerThree);
-        match3.setPlayerTwo(playerOne);
+        match3.setDefender(playerThree);
+        match3.setChallenger(playerOne);
 
         // given
-        given(matchRepository.findAllByPlayerOneId(playerOne.getPlayerId())).willReturn(List.of(match));
-        given(matchRepository.findAllByPlayerTwoId(playerOne.getPlayerId())).willReturn(List.of(match3));
+        given(matchRepository.findAllByDefenderId(playerOne.getPlayerId())).willReturn(List.of(match));
+        given(matchRepository.findAllByChallengerId(playerOne.getPlayerId())).willReturn(List.of(match3));
 
-        given(matchRepository.findAllByPlayerOneId(playerTwo.getPlayerId())).willReturn(List.of(match2));
-        given(matchRepository.findAllByPlayerTwoId(playerTwo.getPlayerId())).willReturn(List.of(match));
+        given(matchRepository.findAllByDefenderId(playerTwo.getPlayerId())).willReturn(List.of(match2));
+        given(matchRepository.findAllByChallengerId(playerTwo.getPlayerId())).willReturn(List.of(match));
 
-        given(matchRepository.findAllByPlayerOneId(playerThree.getPlayerId())).willReturn(List.of(match3));
-        given(matchRepository.findAllByPlayerTwoId(playerThree.getPlayerId())).willReturn(List.of(match2));
+        given(matchRepository.findAllByDefenderId(playerThree.getPlayerId())).willReturn(List.of(match3));
+        given(matchRepository.findAllByChallengerId(playerThree.getPlayerId())).willReturn(List.of(match2));
 
         // when
         List<Match> playerOneMatchList = matchService.getMatchesByPlayer(playerOne);
@@ -140,10 +140,10 @@ public class MatchServiceUnitTests {
     public void givenMatchObject_whenUpdateMatch_thenReturnUpdatedMatch() {
        
         Match matchUpdate = new Match();
-        matchUpdate.setPlayerOne(playerTwo);
-        matchUpdate.setPlayerTwo(playerOne);
-        matchUpdate.setPlayerOneScore(2);
-        matchUpdate.setPlayerTwoScore(1);
+        matchUpdate.setDefender(playerTwo);
+        matchUpdate.setChallenger(playerOne);
+        matchUpdate.setDefenderScore(2);
+        matchUpdate.setChallengerScore(1);
 
         // given
         given(matchRepository.findById(match.getMatchId())).willReturn(Optional.of(match));
@@ -155,10 +155,10 @@ public class MatchServiceUnitTests {
         // Then
         Assertions.assertNotNull(updatedMatch);
         Assertions.assertEquals(match.getMatchId(), updatedMatch.getMatchId());
-        Assertions.assertEquals(match.getPlayerOne(), updatedMatch.getPlayerOne());
-        Assertions.assertEquals(match.getPlayerTwo(), updatedMatch.getPlayerTwo());
-        Assertions.assertEquals(2, updatedMatch.getPlayerOneScore());
-        Assertions.assertEquals(1, updatedMatch.getPlayerTwoScore());
+        Assertions.assertEquals(match.getDefender(), updatedMatch.getDefender());
+        Assertions.assertEquals(match.getChallenger(), updatedMatch.getChallenger());
+        Assertions.assertEquals(2, updatedMatch.getDefenderScore());
+        Assertions.assertEquals(1, updatedMatch.getChallengerScore());
     }
 
 

@@ -131,25 +131,25 @@ public class UpdateController {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(ruleAsJson);
     }
 
-    @PatchMapping(value = "/match/update", params = {"matchId", "playerOneId", "playerTwoId", "tournamentId", "playerOneScore", "playerTwoScore"})
+    @PatchMapping(value = "/match/update", params = {"matchId", "defenderId", "challengerId", "tournamentId", "defenderScore", "challengerScore"})
     @ResponseBody
     public ResponseEntity<String> updateMatch(@RequestParam(name = "matchId") long matchId,
-                                              @RequestParam(name = "playerOneId") long playerOneId,
-                                              @RequestParam(name = "playerTwoId") long playerTwoId,
+                                              @RequestParam(name = "defenderId") long defenderId,
+                                              @RequestParam(name = "challengerId") long challengerId,
                                               @RequestParam(name = "tournamentId") long tournamentId,
-                                              @RequestParam(name = "playerOneScore") int playerOneScore,
-                                              @RequestParam(name = "playerTwoScore") int playerTwoScore) {
+                                              @RequestParam(name = "defenderScore") int defenderScore,
+                                              @RequestParam(name = "challengerScore") int challengerScore) {
         Match match = new Match();
 
-        Player playerOne = playerService.findPlayerById(playerOneId);
+        Player defender = playerService.findPlayerById(defenderId);
 
-        if (playerOne == null) {
+        if (defender == null) {
             return ResponseEntity.badRequest().body("Player one not found");
         }
 
-        Player playerTwo = playerService.findPlayerById(playerTwoId);
+        Player challenger = playerService.findPlayerById(challengerId);
 
-        if (playerTwo == null) {
+        if (challenger == null) {
             return ResponseEntity.badRequest().body("Player two not found");
         }
 
@@ -159,11 +159,11 @@ public class UpdateController {
             return ResponseEntity.badRequest().body("Tournament not found");
         }
 
-        match.setPlayerOne(playerOne);
-        match.setPlayerTwo(playerTwo);
+        match.setDefender(defender);
+        match.setChallenger(challenger);
         match.setTournament(tournament);
-        match.setPlayerOneScore(playerOneScore);
-        match.setPlayerTwoScore(playerTwoScore);
+        match.setDefenderScore(defenderScore);
+        match.setChallengerScore(challengerScore);
 
         match = matchService.updateMatch(match, matchId);
 

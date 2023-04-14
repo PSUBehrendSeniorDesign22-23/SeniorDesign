@@ -30,11 +30,11 @@ public class Player {
     @ManyToMany(mappedBy = "players")
     private List<Tournament> tournaments;
 
-    @OneToMany(mappedBy = "playerOne")
-    private List<Match> matchesOne;
+    @OneToMany(mappedBy = "defender")
+    private List<Match> defenderMatches;
 
-    @OneToMany(mappedBy = "playerTwo")
-    private List<Match> matchesTwo;
+    @OneToMany(mappedBy = "challenger")
+    private List<Match> challengerMatches;
 
     public long getPlayerId() {
         return id;

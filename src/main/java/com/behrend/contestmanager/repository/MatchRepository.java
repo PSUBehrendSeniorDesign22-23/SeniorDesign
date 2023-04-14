@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface MatchRepository extends CrudRepository<Match, Long> {
 
-    List<Match> findAllByPlayerOneId(long playerId);
+    List<Match> findAllByDefenderId(long playerId);
 
-    List<Match> findAllByPlayerTwoId(long playerId);
+    List<Match> findAllByChallengerId(long playerId);
 
     List<Match> findAllByTournamentId(long tournamentId);
     

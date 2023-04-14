@@ -152,7 +152,7 @@ public class SearchController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid search type");
     }
     
-    @GetMapping(value = "/match/search", params={"playerOneId, playerTwoId, tournamentId"})
+    @GetMapping(value = "/match/search", params={"defenderId, challengerId, tournamentId"})
     @ResponseBody
     public ResponseEntity<String> searchMatch(@RequestParam(name = "searchType") String type,
                                               @RequestParam(name = "searchFilter") String filter) {
