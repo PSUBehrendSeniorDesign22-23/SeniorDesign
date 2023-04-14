@@ -92,7 +92,7 @@ public class PageController {
     public String loginFailed(){return "LoginFailed";}
 
     @GetMapping(value = "/CoordinatorTools", produces = "application/json")
-    public String coordinatorTools(){return "Coordinator";}
+    public String coordinatorTools(){return "CoordinatorTools";}
 
 
 }

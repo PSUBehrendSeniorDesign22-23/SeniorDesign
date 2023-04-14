@@ -42,7 +42,7 @@
       </form>
     </div>
     <div class="hiddenTextBox" id="tournamentAdd">
-      <form action="/action_page.php">
+      <form method="POST" id="tournamentAddForm">
         <label for="addtname">Tournament Name: </label>
         <input type="text" id="addtname" name="addtname"><br><br>
         <label for="addtloc">Tournament Location: </label>
@@ -51,7 +51,7 @@
         <input type="date" id="addtdate" name="addtdate"><br><br>
         <label for="addtrule">Tournament Ruleset: </label>
         <input type="text" id="addtrule" name="addtrule"><br><br>
-        <input type="submit" value="Submit" class="formButton">
+        <input type="submit" value="Submit" onclick="addTournament()" class="formButton">
       </form>
     </div>
     <div class="hiddenTextBox" id="rulesetAdd">
@@ -142,7 +142,7 @@
     </div>
     <div class="hiddenTextBox" id="tournamentSearch">
       <label for="tournament-search-options">Choose a search criteria:</label>
-      <select name="tournament-search" id="tournament-search" onchange="tournamentSearchInputChange()">
+      <select name="tournament-search" id="tournament-search-options" onchange="tournamentSearchInputChange()">
         <option value="tname">Tournament Name</option>
         <option value="tlocation">Tournament Location</option>
         <option value="tdate">Tournament Date</option>
