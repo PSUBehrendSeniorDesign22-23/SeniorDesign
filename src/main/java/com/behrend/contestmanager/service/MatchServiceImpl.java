@@ -42,8 +42,8 @@ public class MatchServiceImpl implements MatchService{
     public ArrayList<Match> getMatchesByPlayer(Player player) {
         
         ArrayList<Match> playerList = new ArrayList<>();
-        playerList.addAll(matchRepository.findAllByPlayerOneId(player.getPlayerId()));
-        playerList.addAll(matchRepository.findAllByPlayerTwoId(player.getPlayerId()));
+        playerList.addAll(matchRepository.findAllByDefenderId(player.getPlayerId()));
+        playerList.addAll(matchRepository.findAllByChallengerId(player.getPlayerId()));
         return playerList;
     }
 

@@ -17,11 +17,11 @@ public class Match {
     private long id;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "player_one_id", nullable = false, referencedColumnName = "player_id")
+    @JoinColumn(name = "defender_id", nullable = false, referencedColumnName = "player_id")
     private Player defender;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "player_two_id", nullable = false, referencedColumnName = "player_id")
+    @JoinColumn(name = "challenger_id", nullable = false, referencedColumnName = "player_id")
     private Player challenger;
 
 

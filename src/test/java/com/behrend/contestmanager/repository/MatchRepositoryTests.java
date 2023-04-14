@@ -41,8 +41,8 @@ public class MatchRepositoryTests {
     @Test
     void findMatchesByPlayerId() {
         long playerId = 11L;
-        List<Match> matchesOne = matchRepository.findAllByPlayerOneId(playerId);
-        List<Match> matchesTwo = matchRepository.findAllByPlayerTwoId(playerId);
+        List<Match> matchesOne = matchRepository.findAllByDefenderId(playerId);
+        List<Match> matchesTwo = matchRepository.findAllByChallengerId(playerId);
         
         boolean matchPlayerOneFound = false;
         boolean matchPlayerTwoFound = false;
