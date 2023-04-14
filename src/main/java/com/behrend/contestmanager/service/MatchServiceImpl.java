@@ -9,6 +9,7 @@ import com.behrend.contestmanager.models.Match;
 import com.behrend.contestmanager.models.Player;
 import com.behrend.contestmanager.models.Tournament;
 
+import java.util.List;
 import java.util.ArrayList;
 
 @Service
@@ -34,22 +35,22 @@ public class MatchServiceImpl implements MatchService{
 
     // Read
     @Override
-    public ArrayList<Match> getAllMatches() {
-        return (ArrayList<Match>) matchRepository.findAll();
+    public List<Match> getAllMatches() {
+        return (List<Match>) matchRepository.findAll();
     }
 
     @Override
-    public ArrayList<Match> getMatchesByPlayer(Player player) {
+    public List<Match> getMatchesByPlayer(Player player) {
         
-        ArrayList<Match> playerList = new ArrayList<>();
-        playerList.addAll(matchRepository.findAllByDefenderId(player.getPlayerId()));
-        playerList.addAll(matchRepository.findAllByChallengerId(player.getPlayerId()));
-        return playerList;
+        ArrayList<Match> matchList = new ArrayList<>();
+        matchList.addAll(matchRepository.findAllByDefenderId(player.getPlayerId()));
+        matchList.addAll(matchRepository.findAllByChallengerId(player.getPlayerId()));
+        return matchList;
     }
 
     @Override
-    public ArrayList<Match> getMatchesByTournament(Tournament tournament) {
-        return (ArrayList<Match>) matchRepository.findAllByTournamentId(tournament.getTournamentId());
+    public List<Match> getMatchesByTournament(Tournament tournament) {
+        return matchRepository.findAllByTournamentId(tournament.getTournamentId());
     }
 
     // Update

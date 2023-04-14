@@ -8,6 +8,7 @@ import com.behrend.contestmanager.models.Ruleset;
 import com.behrend.contestmanager.models.Player;
 import com.behrend.contestmanager.repository.TournamentRepository;
 
+import java.util.List;
 import java.util.ArrayList;
 import java.sql.Date;
 
@@ -26,32 +27,32 @@ public class TournamentServiceImpl implements TournamentService {
     // Read
     @Override
     public Tournament findTournamentById(long tournamentId) {
-        return tournamentRepository.findById(tournamentId).get();
+        return tournamentRepository.findById(tournamentId).orElse(null);
     }
 
     @Override
-    public ArrayList<Tournament> findAllTournaments() {
-        return (ArrayList<Tournament>) tournamentRepository.findAll();
+    public List<Tournament> findAllTournaments() {
+        return (List<Tournament>) tournamentRepository.findAll();
     }
 
     @Override
-    public ArrayList<Tournament> findTournamentsByName(String name) {
-        return (ArrayList<Tournament>) tournamentRepository.findTournamentsByName(name);
+    public List<Tournament> findTournamentsByName(String name) {
+        return (List<Tournament>) tournamentRepository.findTournamentsByName(name);
     }
 
     @Override
-    public ArrayList<Tournament> findTournamentsByLocation(String location) {
-        return (ArrayList<Tournament>) tournamentRepository.findTournamentsByLocation(location);
+    public List<Tournament> findTournamentsByLocation(String location) {
+        return (List<Tournament>) tournamentRepository.findTournamentsByLocation(location);
     }
 
     @Override
-    public ArrayList<Tournament> findTournamentsByDate(Date date) {
-        return (ArrayList<Tournament>) tournamentRepository.findTournamentsByDate(date);
+    public List<Tournament> findTournamentsByDate(Date date) {
+        return (List<Tournament>) tournamentRepository.findTournamentsByDate(date);
     }
 
     @Override
-    public ArrayList<Tournament> findTournamentsByRuleset(Ruleset ruleset) {
-        return (ArrayList<Tournament>) tournamentRepository.findTournamentsByRulesetId(ruleset.getRulesetId());
+    public List<Tournament> findTournamentsByRuleset(Ruleset ruleset) {
+        return (List<Tournament>) tournamentRepository.findTournamentsByRulesetId(ruleset.getRulesetId());
     }
 
     // Update
@@ -79,8 +80,11 @@ public class TournamentServiceImpl implements TournamentService {
             currentTournament.setRuleset(tournament.getRuleset());
         }
 
-        if (!tournament.getPlayers().equals(currentTournament.getPlayers())) {
-            currentTournament.setPlayers(currentTournament.getPlayers());
+        if (currentTournament.getPlayers() == null) {
+            currentTournament.setPlayers(tournament.getPlayers());
+        }
+        else if (!tournament.getPlayers().equals(currentTournament.getPlayers())) {
+            currentTournament.setPlayers(tournament.getPlayers());
         }
 
         return tournamentRepository.save(currentTournament);
