@@ -19,7 +19,7 @@
         <!-- The Modal (contains the Log In form) -->
         <div id="idLog" class="modal">
           <span onclick="document.getElementById('idLog').style.display='none'" title="Close Modal"></span>
-          <form class="modal-content" id="logInForm"  method="post">
+          <form class="modal-content" id="logInForm" action="/login" method="post">
             <div class="textBox">
               <h1 class="primaryTextCenter">Login</h1>
               <p class="primaryTextLeft">Please fill in this form login to your account.</p>
@@ -36,7 +36,7 @@
 
               <div class="clearfix">
                 <button type="submit" class="button" style="background-color: #008000;">Login</button>
-                <button type="button" onclick="logIn()" style="background-color: #f44336;" class="formButton">Cancel</button>
+                <button type="button" style="background-color: #f44336;" class="formButton">Cancel</button>
               </div>
             </div>
           </form>
@@ -44,7 +44,7 @@
         <!-- The Modal (contains the Sign Up form) -->
         <div id="idSign" class="modal">
           <span onclick="document.getElementById('idSign').style.display='none'" title="Close Modal"></span>
-          <form class="modal-content" id="signUpForm" method="post">
+          <form class="modal-content" id="signUpForm" action="/registerUser" method="post">
             <div class="textBox">
               <h1 class="primaryTextCenter">Sign Up</h1>
               <p class="primaryTextLeft">Please fill in this form to create an account.</p>
@@ -70,15 +70,11 @@
               <label for="psw-repeat"><b>Repeat Password</b></label>
               <input type="password" id="psw-repeat" placeholder="Repeat Password" name="psw-repeat" required="required">
 
-              <label>
-                <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me
-              </label>
-
               <p class="primaryTextCenter">By creating an account you agree to our <a href="#" class="primaryTextCenter" style="color:dodgerblue">Terms & Privacy</a>.</p>
 
               <div class="clearfix">
                 <button type="submit" class="button" style="background-color: #008000;">Sign Up</button>
-                <button type="button" onclick="signUp()" style="background-color: #f44336;" class="formButton">Cancel</button>
+                <button type="button" style="background-color: #f44336;" class="formButton">Cancel</button>
               </div>
             </div>
           </form>
@@ -89,18 +85,3 @@
   </body>
 
 </html>
-
-<script>
-  // Get the modal
-  var logModal = document.getElementById('idLog');
-  var signModal = document.getElementById('idSign');
-
-  // When the user clicks anywhere outside of the modal, close it
-  window.onclick = function(event) {
-    if (event.target == logModal) {
-      logModal.style.display = "none";
-    } else if (event.target == signModal)
-      signModal.style.display = "none";
-  }
-
-</script>
