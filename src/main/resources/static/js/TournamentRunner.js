@@ -166,7 +166,20 @@ function createMatch() {
 }
 
 function generatePlayerOrder() {
-    
+    /* 
+    Decrementing condition ensures that the range of possible indices for the selected player
+    decreases by 1 with each iteration
+    Moving the selected player to the end of the general list then removes the possibility of
+    the same player being selected twice, and the order of the general list does not matter.
+    */
+    let playerCount = players.length
+    for (let unplacedPlayers = playerCount; unplacedPlayers > 0; unplacedPlayers--) {
+        selectedPlayerIndex = Math.floor(Math.random() * unplacedPlayers) // returns a random integer from 0 to unplacedPlayers - 1
+        playerOrder.push(players[selectedPlayerIndex]) // Add selected player into the player turn order
+        // Move placed player to the end of the general player list
+        let movingPlayer = players.splice(selectedPlayerIndex, 1)
+        players.push(movingPlayer)
+    }
 }
 
 async function retrieveTournamentInformation() {
@@ -211,7 +224,7 @@ function initializeTournament() {
             players = tournamentInfo.players
             ruleset = tournamentInfo.ruleset
             rules = tournamentInfo.rules
-            playerOrder = generatePlayerOrder(tournamentInfo.players) // List of players
+            playerOrder = generatePlayerOrder() // List of players
             
             // Append runtime attributes to each player
             for (let player in playerOrder) {
