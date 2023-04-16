@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Tournament Runner - Mountain Man's Millstone</title>
+    <link rel="stylesheet" th:href="@{/css/TournamentRunner.css}">
+    <script type="text/javascript" th:src="@{/js/TournamentRunner.js}" defer></script>
+  </head>
+
+
+
+  <body class="parallax">
+    <br>
+    <div class="textBox" style="width: 95%">
+      <h1 class="primaryTextCenter">Tournament Name - Match #</h1>
+    </div>
+    <br>
+
+    <br>
+    <div class="textBox" style="width: 95%">
+      <h1 class="primaryTextCenter">Player Rankings</h1>
+
+      <table style="width:100%">
+        <tr>
+          <td>Player Number</td>
+          <td>Player Name</td>
+          <td>Tournament W-L Record</td>
+          <td>Stones</td>
+          <td>Chips</td>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Mountain Man</td>
+          <td>1-0</td>
+          <td>4</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Plateau Man</td>
+          <td>0-1</td>
+          <td>5</td>
+          <td>2</td>
+        </tr>
+      </table>
+    </div>
+    <br>
+
+    <br>
+    <div class="textBox" style="width: 95%">
+      <h1 class="primaryTextCenter">Rule Styling</h1>
+      <h2 class="primaryTextLeft">Retrieve ruleset information from database and display here</h2>
+    </div>
+    <br>
+
+    <div class="centerTextBox" style="width: 95%">
+      <h1 class="primaryTextCenter">Player 1 Match Record</h1>
+      
+      <button onclick= "roundWinChange(1, 'plus')">Add Score</button>
+      <span id = "p1Score" class="primaryTextCenter">0</span>
+      <button onclick= "roundWinChange(1, 'minus')">Subtract Score</button>
+      
+      <h1 class="primaryTextCenter">Player 2 Match Record</h1>
+      
+      <button onclick= "roundWinChange(2, 'plus')">Add Score</button>
+      <span id = "p2Score" class="primaryTextCenter">0</span>
+      <button onclick= "roundWinChange(2, 'minus')">Subtract Score</button>
+      
+      <form action="/action_page.php">
+      <p class ="primaryTextCenter">Please select this round's winner:</p>
+      <label for="p1">Player 1</label>
+      <input type="radio" id="p1" name="winner" value="player1"><br>
+      <label for="p2">Player 2</label>
+      <input type="radio" id="p2" name="winner" value="player2">
+      </form>
+      <br>
+      <button class="formButton">Submit</button>
+      
+    </div>
+  </body>
+
+</html>
