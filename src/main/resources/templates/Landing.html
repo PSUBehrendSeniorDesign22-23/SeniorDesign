@@ -6,12 +6,11 @@
     <script type="text/javascript" th:src="@{/js/Landing.js}" defer></script>
   </head>
   
-  <body class="mainBody">
+  <body class="parallax">
     <div class="textBox">
-      <h1 class="primaryTextCenter">Welcome to Mountain Man's Millstone</h1>
+      <h1 class="primaryTextCenter" style="font-size:36px">Welcome to Mountain Man's Millstone</h1>
     </div>
-    <div class="parallax"></div>
-    <div class="textBox">
+    <div class="textBox" style="width: 55%; text-align: center; margin: auto">
       <p class="primaryTextCenter" style="font-size:36px">
         <!-- Button to open the modal -->
         <button onclick="document.getElementById('idLog').style.display='block'" class="button">Login</button>
@@ -36,7 +35,7 @@
 
               <div class="clearfix">
                 <button type="submit" class="button" style="background-color: #008000;">Login</button>
-                <button type="button" style="background-color: #f44336;" class="formButton">Cancel</button>
+                <button type="button" style="background-color: #f44336;" class="formButton" onclick="document.getElementById('idLog').style.display='none'">Cancel</button>
               </div>
             </div>
           </form>
@@ -70,18 +69,17 @@
               <label for="psw-repeat"><b>Repeat Password</b></label>
               <input type="password" id="psw-repeat" placeholder="Repeat Password" name="psw-repeat" required="required">
 
-              <p class="primaryTextCenter">By creating an account you agree to our <a href="#" class="primaryTextCenter" style="color:rgb(12, 55, 99)">Terms & Privacy</a>.</p>
+              <p class="primaryTextCenter">By creating an account you agree to our <a href="#" class="primaryTextCenter">Terms & Privacy</a>.</p>
 
               <div class="clearfix">
                 <button type="submit" class="button" style="background-color: #008000;">Sign Up</button>
-                <button type="button" style="background-color: #f44336;" class="formButton">Cancel</button>
+                <button type="button" style="background-color: #f44336;" class="formButton" onclick="document.getElementById('idSign').style.display='none'">Cancel</button>
               </div>
             </div>
           </form>
         </div>
       </p>
     </div>
-    <div class="parallax"></div>
   </body>
 
 </html>
