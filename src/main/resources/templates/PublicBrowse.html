@@ -31,7 +31,7 @@
       <br>
       <label for="playerSearchFilter">Filter: </label>
       <input type="text" id="playerSearchFilter" name="pfilter"><br><br>
-      <input type="submit" value="Submit" class="formButton" onclick="showSearchResults()">
+      <input type="submit" value="Submit" class="formButton" onclick="playerSearch()">
     </div>
     <div class="hiddenTextBox" id="tournamentSearch">
       <label for="tournament-search-options">Choose a search criteria:</label>
@@ -43,7 +43,7 @@
       <br>
       <label for="tournamentSearchFilter">Filter: </label>
       <input type="text" id="tournamentSearchFilter" name="tfilter"><br><br>
-      <input type="submit" value="Submit" class="formButton" onclick="showSearchResults()">
+      <input type="submit" value="Submit" class="formButton" onclick="tournamentSearch()">
     </div>
     <div class="hiddenTextBox" id="rulesetSearch">
       <label for="ruleset-search-options">Choose a search criteria:</label>
@@ -54,16 +54,16 @@
       <br>
       <label for="rulesetSearchFilter">Filter: </label>
       <input type="text" id="rulesetSearchFilter" name="rfilter"><br><br>
-      <input type="submit" value="Submit" class="formButton" onclick="showSearchResults()">
+      <input type="submit" value="Submit" class="formButton" onclick="rulesetSearch()">
     </div>
     <br>
     <div class="hiddenTextBox" id="searchResults">
       <h1 class="primaryTextCenter">
         Search Results
       </h1>
-      <p class="primaryTextLeft">
-        Results
-      </p>
+      <div id="results-container" class="primaryTextLeft">
+        
+      </div>
     </div>
   </body>
 

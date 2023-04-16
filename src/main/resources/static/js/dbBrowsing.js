@@ -40,29 +40,37 @@ function showSearchResults() {
   
 }
 
-function addTournament() {
+function playerSearch() {
 
-    var form = document.getElementById("tournamentAddForm")
+  const searchType = document.getElementById("player-search").value;
+  const searchFilter = document.getElementById("playerSearchFilter").value;
+  
+  const resultsContainer = document.getElementById("results-container")
 
-    const formData = new FormData(form)
+  const searchParams = new URLSearchParams();
+  
+  searchParams.append("searchType", searchType)
+  searchParams.append("searchFilter", searchFilter)
 
-    fetch("/tournament/create", {
-        method: "POST",
-        body:   formData
-    })
-        .then(res => res.json()).then(data => {
-        var para = document.createElement('p')
-        var addDiv = document.getElementById("tournamentAdd")
 
-        para.innerText = data["operation"]
+  const request = new Request("/players/search?" + searchParams.toString())
 
-        addDiv.appendChild(para)
+  fetch(request).then((response) => response.json())
+    .then((data) => {
+      for (var i = 0; i < data.length; i++) {
+        if (data[i] != null)
+        {
+          child = document.createElement('p')
+          child.innerText = JSON.stringify(data[i])
+          resultsContainer.appendChild(child)
+        }
+      }
     })
 }
 
 function tournamentSearch() {
 
-    const searchType = document.getElementById("tournament-search-options").value;
+    const searchType = document.getElementById("tournament-search").value;
     const searchFilter = document.getElementById("tournamentSearchFilter").value;
 
     const resultsContainer = document.getElementById("results-container")
@@ -86,4 +94,92 @@ function tournamentSearch() {
                 }
             }
         })
+}
+
+function rulesetSearch() {
+
+  const searchType = document.getElementById("ruleset-search").value;
+  const searchFilter = document.getElementById("rulesetSearchFilter").value;
+  
+  const resultsContainer = document.getElementById("results-container")
+
+  const searchParams = new URLSearchParams();
+  
+  searchParams.append("searchType", searchType)
+  searchParams.append("searchFilter", searchFilter)
+
+
+  const request = new Request("/ruleset/search?" + searchParams.toString())
+
+  fetch(request).then((response) => response.json())
+    .then((data) => {
+      for (var i = 0; i < data.length; i++) {
+        if (data[i] != null)
+        {
+          child = document.createElement('p')
+          child.innerText = JSON.stringify(data[i])
+          resultsContainer.appendChild(child)
+        }
+      }
+    })
+}
+
+function addPlayer() {
+
+  var form = document.getElementById("playerAddForm")
+
+  const formData = new FormData(form)
+
+  fetch("/players/create", {
+      method: "POST",
+      body:   formData
+  })
+  .then(res => res.json()).then(data => {
+    var para = document.createElement('p')
+    var addDiv = document.getElementById("playerAdd")
+
+    para.innerText = data["operation"]
+
+    addDiv.appendChild(para)
+  })
+}
+
+function addTournament() {
+
+  var form = document.getElementById("tournamentAddForm")
+
+  const formData = new FormData(form)
+
+  fetch("/tournament/create", {
+      method: "POST",
+      body:   formData
+  })
+  .then(res => res.json()).then(data => {
+    var para = document.createElement('p')
+    var addDiv = document.getElementById("tournamentAdd")
+
+    para.innerText = data["operation"]
+
+    addDiv.appendChild(para)
+  })
+}
+
+function addRuleset() {
+
+  var form = document.getElementById("rulesetAddForm")
+
+  const formData = new FormData(form)
+
+  fetch("/ruleset/create", {
+      method: "POST",
+      body:   formData
+  })
+  .then(res => res.json()).then(data => {
+    var para = document.createElement('p')
+    var addDiv = document.getElementById("rulesetAdd")
+
+    para.innerText = data["operation"]
+
+    addDiv.appendChild(para)
+  })
 }

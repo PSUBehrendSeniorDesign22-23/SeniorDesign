@@ -38,7 +38,7 @@
         <input type="email" id="addeadd" name="addeadd"><br><br>
         <label for="addpnum">Phone Number: </label>
         <input type="tel" placeholder="+1 (555) 123-4567" id="addpnum" name="addpnum"><br><br>
-        <input type="submit" value="Submit" class="formButton">
+        <input type="submit" value="Submit" class="formButton" onclick="addPlayer()">
       </form>
     </div>
     <div class="hiddenTextBox" id="tournamentAdd">
@@ -51,7 +51,7 @@
         <input type="date" id="addtdate" name="addtdate"><br><br>
         <label for="addtrule">Tournament Ruleset: </label>
         <input type="text" id="addtrule" name="addtrule"><br><br>
-        <input type="submit" value="Submit" onclick="addTournament()" class="formButton">
+        <input type="submit" value="Submit" class="formButton" onclick="addTournament()">
       </form>
     </div>
     <div class="hiddenTextBox" id="rulesetAdd">
@@ -60,7 +60,7 @@
         <input type="text" id="addrname" name="addrname"><br><br>
         <label for="addrorigin">Ruleset Origin: </label>
         <input type="text" id="addrorigin" name="addorigin"><br><br>
-        <input type="submit" value="Submit" class="formButton">
+        <input type="submit" value="Submit" class="formButton" onclick="addRuleset()">
       </form>
     </div>
     <br>
@@ -138,7 +138,7 @@
       <br>
       <label for="playerSearchFilter">Filter: </label>
       <input type="text" id="playerSearchFilter" name="pfilter"><br><br>
-      <input type="submit" value="Submit" class="formButton" onclick="showSearchResults()">
+      <input type="submit" value="Submit" class="formButton" onclick="playerSearch()">
     </div>
     <div class="hiddenTextBox" id="tournamentSearch">
       <label for="tournament-search-options">Choose a search criteria:</label>
@@ -150,7 +150,7 @@
       <br>
       <label for="tournamentSearchFilter">Filter: </label>
       <input type="text" id="tournamentSearchFilter" name="tfilter"><br><br>
-      <input type="submit" value="Submit" class="formButton" onclick="showSearchResults()">
+      <input type="submit" value="Submit" class="formButton" onclick="tournamentSearch()">
     </div>
     <div class="hiddenTextBox" id="rulesetSearch">
       <label for="ruleset-search-options">Choose a search criteria:</label>
@@ -161,16 +161,16 @@
       <br>
       <label for="rulesetSearchFilter">Filter: </label>
       <input type="text" id="rulesetSearchFilter" name="rfilter"><br><br>
-      <input type="submit" value="Submit" class="formButton" onclick="showSearchResults()">
+      <input type="submit" value="Submit" class="formButton" onclick="rulesetSearch()">
     </div>
     <br>
     <div class="hiddenTextBox" id="searchResults">
       <h1 class="primaryTextCenter">
         Search Results
       </h1>
-      <p class="primaryTextLeft">
-        Results
-      </p>
+      <div id="results-container" class="primaryTextLeft">
+        
+      </div>
     </div>
     <br>
   </body>
