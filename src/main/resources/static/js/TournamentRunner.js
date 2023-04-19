@@ -60,6 +60,7 @@ let defender
 let challenger
 
 let stoneConflictFlag = false // Used to indicate and force resolution of stone count
+let tournamentCompleteFlag = false
 
 // DOM variables
 let matchNumber = document.getElementById("matchNum");
@@ -77,9 +78,12 @@ function defenderRoundWin() {
     defender.chips++   
     
     if (isMatchComplete()) {
-        finalizeMatch()
+        completeMatches.push(activeMatch)
         rotatePlayers()
         startNextMatch()
+        if (tournamentCompleteFlag) {
+            finalizeTournament()
+        }
     }
     updateDisplay()
 }
@@ -100,6 +104,9 @@ function challengerRoundWin() {
         completeMatches.push(activeMatch)
         rotatePlayers()
         startNextMatch()
+        if (tournamentCompleteFlag) {
+            finalizeTournament()
+        }
     }
     updateDisplay()
 }
@@ -165,28 +172,26 @@ function rotatePlayers() {
 }
 
 function startNextMatch() {
+    // Check for end of tournament
+    if (playerOrder.length < 2) {
+        tournamentCompleteFlag = true
+        return
+    }
+
     // Grab defender and challenger
     defender = playerOrder.shift()
     challenger = playerOrder.shift()
     
-    // EDGE CASE: If defender has already faced challenger
-    let duplicateMatch = false
+    // Duplicate match checks should generally go here
 
-    // NEED TO HANDLE DUPLICATE MATCH UPS SOMEHOW
-    // Iterate through matches and check if the upcoming players already had a match
-    for (match in matches) {
-        if (match.defender == defender && match.challenger == challenger) {
-            duplicateMatch = true
-        }
-        if (match.challenger == defender && match.defender == challenger) {
-            duplicateMatch = true
-        }
-    }
+    // Create a new match
+    activeMatch = createMatch()
+}
 
-    // When the match is a duplicate
-    if (duplicateMatch) {
-
-    }
+function finalizeTournament() {
+    // Create all matches in database
+    // Redirect to a summary page
+    // Summary page
 }
 
 function createMatch() {
