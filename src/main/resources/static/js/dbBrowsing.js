@@ -207,7 +207,8 @@ function addRuleInput() {
 
   let newRuleKeyLabel = document.createElement("label")
   newRuleKeyLabel.setAttribute("for", "rule" + ruleInputCount + "Key")
-  newRuleKeyLabel.innerText = "Rule " + ruleInputCount + " Name: "
+  newRuleKeyLabel.innerText = "Rule " + ruleInputCount + " Name:"
+  newRuleKeyLabel.appendChild( document.createTextNode( '\u00A0' ) );
 
   let newRuleKeyInput = document.createElement("input")
   newRuleKeyInput.id = "rule" + ruleInputCount + "Key"
@@ -216,7 +217,8 @@ function addRuleInput() {
 
   let newRuleValueLabel = document.createElement("label")
   newRuleValueLabel.setAttribute("for", "rule" + ruleInputCount + "Key")
-  newRuleValueLabel.innerText = "Rule " + ruleInputCount + " Value: "
+  newRuleValueLabel.innerText = "Rule " + ruleInputCount + " Value:"
+  newRuleValueLabel.appendChild( document.createTextNode( '\u00A0' ) );
 
   let newRuleValueInput = document.createElement("input")
   newRuleValueInput.id = "rule" + ruleInputCount + "Value"
