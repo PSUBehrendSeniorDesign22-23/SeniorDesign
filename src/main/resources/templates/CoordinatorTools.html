@@ -55,13 +55,21 @@
       </form>
     </div>
     <div class="hiddenTextBox" id="rulesetAdd">
-      <form action="/action_page.php">
-        <label for="addrname">Ruleset Name: </label>
+      <form action="/ruleset/create" id="rulesetAddForm">
+        <label for="addrname">Ruleset Name:</label>
         <input type="text" id="addrname" name="addrname"><br><br>
-        <label for="addrorigin">Ruleset Origin: </label>
-        <input type="text" id="addrorigin" name="addorigin"><br><br>
-        <input type="submit" value="Submit" class="formButton" onclick="addRuleset()">
+        <label for="addrorigin">Ruleset Origin:</label>
+        <input type="text" id="addrorigin" name="addrorigin"><br><br>
       </form>
+      <label for="rule1Key">Rule 1 Name:</label>
+      <input type="text" id="rule1Key" name="rule1Key">
+      <label for="rule1Value">Rule 1 Value:</label>
+      <input type="text" id="rule1Value" name="rule1Value">
+      <br>
+      <button type="button" onclick="addRuleInput()">Add Rule</button>
+      <button type="button" onclick="removeRuleInput()">Remove Rule</button>
+      <br>
+      <input type="submit" value="Submit" class="formButton" form="rulesetAddForm" onclick="addRuleset()">
     </div>
     <br>
 

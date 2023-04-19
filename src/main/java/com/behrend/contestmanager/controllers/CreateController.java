@@ -1,12 +1,15 @@
 package com.behrend.contestmanager.controllers;
 
 import java.sql.Date;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -75,17 +78,20 @@ public class CreateController {
         return ResponseEntity.ok("{\"operation\": \"success\"}");
     }
 
-    @PostMapping(value = "/ruleset/create", params = {"addrname","addrorigin"})
+    @PostMapping(value = "/ruleset/create", consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<String> createRuleset(@RequestParam(name = "addrname") String rulesetName, @RequestParam(name = "addrorigin") String origin){
+    public ResponseEntity<String> createRuleset(@RequestBody Map<String, String> inputMap){
 
         Ruleset ruleset = new Ruleset();
+
+        String rulesetName = inputMap.get("rulesetName");
+        String rulesetOrigin = inputMap.get("rulesetOrigin");
 
         if(rulesetName != null){
             ruleset.setName(rulesetName);
         }
-        if(origin != null){
-            ruleset.setOrigin(origin);
+        if(rulesetOrigin != null){
+            ruleset.setOrigin(rulesetOrigin);
         }
         rulesetService.saveRuleset(ruleset);
 

@@ -1,3 +1,9 @@
+document.getElementById("rulesetAddForm").addEventListener("submit", handleForm)
+
+function handleForm(event) {
+  event.preventDefault()
+}
+
 function toggleAddView(clicked_id) {
 		var clickedButton = document.getElementById(clicked_id);
     var clickedButtonState = clickedButton.dataset.state;
@@ -18,7 +24,7 @@ function toggleAddView(clicked_id) {
     	clickedButton.style.opacity = "0.6";
     	document.getElementById(clicked_id.slice(0, -6)).style.display = 'none';
     }
-  }
+}
  
 function tournamentSearchInputChange() {
   var dropdown = document.getElementById("tournament-search");
@@ -37,7 +43,6 @@ function tournamentSearchInputChange() {
 function showSearchResults() {
   var searchResults = document.getElementById("searchResults");
   searchResults.style.display = 'block'
-  
 }
 
 function playerSearch() {
@@ -165,14 +170,24 @@ function addTournament() {
 }
 
 function addRuleset() {
+  
+  let rulesetAttributes = {
+    "rulesetName": document.getElementById("addrname").value,
+    "rulesetOrigin": document.getElementById("addrorigin").value
+  }
 
-  var form = document.getElementById("rulesetAddForm")
-
-  const formData = new FormData(form)
+  for (let i = 1; i <= ruleInputCount; i++) {
+    let ruleKey = document.getElementById("rule" + i + "Key").value
+    let ruleValue = document.getElementById("rule" + i + "Value").value
+    rulesetAttributes[ruleKey] = ruleValue
+  }
 
   fetch("/ruleset/create", {
       method: "POST",
-      body:   formData
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body:   JSON.stringify(rulesetAttributes)
   })
   .then(res => res.json()).then(data => {
     var para = document.createElement('p')
@@ -182,4 +197,49 @@ function addRuleset() {
 
     addDiv.appendChild(para)
   })
+}
+
+// These functions are for adding or removing rule inputs
+let ruleInputCount = 1
+let lastRuleInput = document.getElementById("rule1Value")
+function addRuleInput() {
+  ruleInputCount++
+
+  let newRuleKeyLabel = document.createElement("label")
+  newRuleKeyLabel.setAttribute("for", "rule" + ruleInputCount + "Key")
+  newRuleKeyLabel.innerText = "Rule " + ruleInputCount + " Name: "
+
+  let newRuleKeyInput = document.createElement("input")
+  newRuleKeyInput.id = "rule" + ruleInputCount + "Key"
+  newRuleKeyInput.type = "text"
+  newRuleKeyInput.name = "rule" + ruleInputCount 
+
+  let newRuleValueLabel = document.createElement("label")
+  newRuleValueLabel.setAttribute("for", "rule" + ruleInputCount + "Key")
+  newRuleValueLabel.innerText = "Rule " + ruleInputCount + " Value: "
+
+  let newRuleValueInput = document.createElement("input")
+  newRuleValueInput.id = "rule" + ruleInputCount + "Value"
+  newRuleValueInput.type = "text"
+  newRuleValueInput.name = "rule" + ruleInputCount 
+
+  lastRuleInput.insertAdjacentElement("afterend", newRuleKeyLabel)
+  lastRuleInput = lastRuleInput.nextElementSibling
+  lastRuleInput.insertAdjacentElement("afterend", newRuleKeyInput)
+  lastRuleInput = lastRuleInput.nextElementSibling
+  lastRuleInput.insertAdjacentElement("afterend", newRuleValueLabel)
+  lastRuleInput = lastRuleInput.nextElementSibling
+  lastRuleInput.insertAdjacentElement("afterend", newRuleValueInput)
+  lastRuleInput = lastRuleInput.nextElementSibling
+}
+
+function removeRuleInput() {
+  if (ruleInputCount > 1) {
+    for (let i = 0; i < 4; i++) {
+      let elementToRemove = lastRuleInput
+      lastRuleInput = lastRuleInput.previousElementSibling
+      elementToRemove.remove()
+    }
+    ruleInputCount--
+  }
 }
