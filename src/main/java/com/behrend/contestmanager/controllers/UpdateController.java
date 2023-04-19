@@ -30,10 +30,10 @@ public class UpdateController {
     @Autowired
     RuleService ruleService = new RuleServiceImpl();
     
-    @PatchMapping(value = "/player/update", params = {"playerId", "skipperName", "rank"})
+    @PatchMapping(value = "/player/update", params = {"playerId", "editssname", "rank"})
     @ResponseBody
     public ResponseEntity<String> updatePlayer(@RequestParam(name = "playerId") long playerId,
-                                               @RequestParam(name = "skipperName") String skipperName,
+                                               @RequestParam(name = "editssname") String skipperName,
                                                @RequestParam(name = "rank") int rank) {
         Player player = new Player();
         player.setSkipperName(skipperName);

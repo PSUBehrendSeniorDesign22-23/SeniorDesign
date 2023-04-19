@@ -83,18 +83,14 @@
     <br>
 
     <div class="hiddenTextBox" id="playerEdit">
-      <form action="/action_page.php">
-        <label for="editfname">First Name: </label>
+      <form method="POST" id="playerEditForm">
+        <label for="playerId">Player ID: </label>
         <input type="text" id="editfname" name="editfname"><br><br>
-        <label for="editlname">Last Name: </label>
-        <input type="text" id="editlname" name="editlname"><br><br>
         <label for="editssname">Stone Skipping Name: </label>
         <input type="text" id="editssname" name="editssname"><br><br>
-        <label for="editeadd">Email: </label>
-        <input type="email" id="editeadd" name="editeadd"><br><br>
-        <label for="editpnum">Phone Number: </label>
-        <input type="tel" placeholder="+1 (555) 123-4567" id="editpnum" name="editpnum"><br><br>
-        <input type="submit" value="Submit" class="formButton">
+        <label for="editrank">Rank: </label>
+        <input type="text" id="editrank" name="editrank"><br><br>
+        <input type="submit" value="Submit" class="formButton" onclick="editPlayer()">
       </form>
     </div>
     <div class="hiddenTextBox" id="tournamentEdit">

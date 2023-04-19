@@ -1,6 +1,9 @@
 document.getElementById("rulesetAddForm").addEventListener("submit", handleForm)
 document.getElementById("tournamentAddForm").addEventListener("submit", handleForm)
 document.getElementById("playerAddForm").addEventListener("submit", handleForm)
+document.getElementById("editPlayerForm").addEventListener("submit", handleForm)
+document.getElementById("editTournamentForm").addEventListener("submit", handleForm)
+document.getElementById("editRulesetForm").addEventListener("submit", handleForm)
 
 function handleForm(event) {
   event.preventDefault()
@@ -206,6 +209,18 @@ function addRuleset() {
 
     addDiv.appendChild(para)
   })
+}
+
+function editPlayer() {
+
+}
+
+function editRuleset() {
+
+}
+
+function editTournament() {
+
 }
 
 // These functions are for adding or removing rule inputs
