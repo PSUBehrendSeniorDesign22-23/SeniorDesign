@@ -51,6 +51,10 @@ public class CreateController {
             if (user == null) {
                 return ResponseEntity.badRequest().body("{\"operation\": \"failure\",\"message\": \"User with email " + userEmail + " does not exist\"}");
             }
+            Player existingPlayer = playerService.findPlayerByUserId(user.getUserId());
+            if (existingPlayer != null) {
+                return ResponseEntity.badRequest().body("{\"operation\": \"failure\",\"message\": \"Player with email " + userEmail + " already exists\"}");
+            }
         }
 
         player.setUser(user);

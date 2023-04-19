@@ -42,6 +42,11 @@ public class PlayerServiceImpl implements PlayerService {
         return playerRepository.findAllBySkipperName(skipperName);
     }
 
+    @Override
+    public Player findPlayerByUserId(long userId) {
+        return playerRepository.findByUserId(userId);
+    }
+
     // Update
     @Override
     public Player updatePlayer(Player player, long playerId) {
