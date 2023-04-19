@@ -1,9 +1,9 @@
 document.getElementById("rulesetAddForm").addEventListener("submit", handleForm)
 document.getElementById("tournamentAddForm").addEventListener("submit", handleForm)
 document.getElementById("playerAddForm").addEventListener("submit", handleForm)
-document.getElementById("editPlayerForm").addEventListener("submit", handleForm)
-document.getElementById("editTournamentForm").addEventListener("submit", handleForm)
-document.getElementById("editRulesetForm").addEventListener("submit", handleForm)
+document.getElementById("playerEditForm").addEventListener("submit", handleForm)
+document.getElementById("tournamentEditForm").addEventListener("submit", handleForm)
+document.getElementById("rulesetEditForm").addEventListener("submit", handleForm)
 
 function handleForm(event) {
   event.preventDefault()

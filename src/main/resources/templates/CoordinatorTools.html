@@ -85,7 +85,7 @@
     <div class="hiddenTextBox" id="playerEdit">
       <form method="POST" id="playerEditForm">
         <label for="playerId">Player ID: </label>
-        <input type="text" id="editfname" name="editfname"><br><br>
+        <input type="text" id="playerId" name="playerId"><br><br>
         <label for="editssname">Stone Skipping Name: </label>
         <input type="text" id="editssname" name="editssname"><br><br>
         <label for="editrank">Rank: </label>
@@ -94,7 +94,9 @@
       </form>
     </div>
     <div class="hiddenTextBox" id="tournamentEdit">
-      <form action="/action_page.php">
+      <form method="POST" id="tournamentEditForm">
+        <label for="tournamentId">Tournament ID: </label>
+        <input type="text" id="tournamentId" name="tournamentId"><br><br>
         <label for="edittname">Tournament Name: </label>
         <input type="text" id="edittname" name="edittname"><br><br>
         <label for="edittloc">Tournament Location: </label>
@@ -103,11 +105,13 @@
         <input type="date" id="edittdate" name="edittdate"><br><br>
         <label for="edittrule">Tournament Ruleset: </label>
         <input type="text" id="edittrule" name="edittrule"><br><br>
-        <input type="submit" value="Submit" class="formButton">
+        <input type="submit" value="Submit" class="formButton" onclick="editTournament()">
       </form>
     </div>
     <div class="hiddenTextBox" id="rulesetEdit">
-      <form action="/action_page.php">
+      <form method="POST" id="rulesetEditForm">
+        <label for="rulesetId">Ruleset ID: </label>
+        <input type="text" id="rulesetId" name="rulesetId"><br><br>
         <label for="editrname">Ruleset Name: </label>
         <input type="text" id="editrname" name="editrname"><br><br>
         <label for="editrorigin">Ruleset Origin: </label>
