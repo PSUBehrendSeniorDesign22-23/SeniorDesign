@@ -35,10 +35,10 @@ public class CreateController {
     @Autowired
     UserRepository userRepository;
 
-    @PostMapping(value = "/player/create", params = {"userEmail", "skipperName"})
+    @PostMapping(value = "/player/create", params = {"addPlayerEmail", "addssname"})
     @ResponseBody
-    public ResponseEntity<String> createPlayer(@RequestParam(name = "userEmail") String userEmail, 
-                                               @RequestParam(name = "skipperName") String skipperName){
+    public ResponseEntity<String> createPlayer(@RequestParam(name = "addPlayerEmail") String userEmail, 
+                                               @RequestParam(name = "addssname") String skipperName){
         
         Player player = new Player();
         User user;
@@ -50,6 +50,10 @@ public class CreateController {
             user = userRepository.findByEmail(userEmail);
             if (user == null) {
                 return ResponseEntity.badRequest().body("{\"operation\": \"failure\",\"message\": \"User with email " + userEmail + " does not exist\"}");
+            }
+            Player existingPlayer = playerService.findPlayerByUserId(user.getUserId());
+            if (existingPlayer != null) {
+                return ResponseEntity.badRequest().body("{\"operation\": \"failure\",\"message\": \"Player with email " + userEmail + " already exists\"}");
             }
         }
 

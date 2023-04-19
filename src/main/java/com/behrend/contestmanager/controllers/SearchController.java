@@ -40,6 +40,10 @@ public class SearchController {
         
         System.out.printf("%s  |  %s", type, filter);
 
+        if (type.equals("pname")) {
+            players.addAll(playerService.findPlayersByName(filter));
+        }
+
         if (type.equals("pssname"))
         {
             players.addAll(playerService.findPlayersBySkipperName(filter));

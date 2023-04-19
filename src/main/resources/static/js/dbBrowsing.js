@@ -1,6 +1,9 @@
 document.getElementById("rulesetAddForm").addEventListener("submit", handleForm)
 document.getElementById("tournamentAddForm").addEventListener("submit", handleForm)
 document.getElementById("playerAddForm").addEventListener("submit", handleForm)
+document.getElementById("editPlayerForm").addEventListener("submit", handleForm)
+document.getElementById("editTournamentForm").addEventListener("submit", handleForm)
+document.getElementById("editRulesetForm").addEventListener("submit", handleForm)
 
 function handleForm(event) {
   event.preventDefault()
@@ -61,7 +64,7 @@ function playerSearch() {
 
   showSearchResults()
 
-  const request = new Request("/players/search?" + searchParams.toString())
+  const request = new Request("/player/search?" + searchParams.toString())
 
   fetch(request).then((response) => response.json())
     .then((data) => {
@@ -143,7 +146,7 @@ function addPlayer() {
 
   const formData = new FormData(form)
 
-  fetch("/players/create", {
+  fetch("/player/create", {
       method: "POST",
       body:   formData
   })
@@ -151,7 +154,14 @@ function addPlayer() {
     var para = document.createElement('p')
     var addDiv = document.getElementById("playerAdd")
 
-    para.innerText = data["operation"]
+    let message = "Success"
+    let operationResult = data["operation"]
+
+    if (operationResult == "failure") {
+      message = "Failure: " + data["message"]
+    }
+
+    para.innerText = message
 
     addDiv.appendChild(para)
   })
@@ -205,6 +215,18 @@ function addRuleset() {
 
     addDiv.appendChild(para)
   })
+}
+
+function editPlayer() {
+
+}
+
+function editRuleset() {
+
+}
+
+function editTournament() {
+
 }
 
 // These functions are for adding or removing rule inputs
