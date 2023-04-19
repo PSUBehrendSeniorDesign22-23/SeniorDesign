@@ -148,8 +148,8 @@ function addPlayer() {
       body:   formData
   })
   .then(res => res.json()).then(data => {
-    var para = document.createElement('p')
-    var addDiv = document.getElementById("playerAdd")
+    //var para = document.createElement('p')
+    //var addDiv = document.getElementById("playerAdd")
 
     let message = "Success"
     let operationResult = data["operation"]
@@ -158,9 +158,10 @@ function addPlayer() {
       message = "Failure: " + data["message"]
     }
 
-    para.innerText = message
+    //para.innerText = message
 
-    addDiv.appendChild(para)
+    //addDiv.appendChild(para)
+    showSnackbar(message)
   })
 }
 
@@ -175,12 +176,13 @@ function addTournament() {
       body:   formData
   })
   .then(res => res.json()).then(data => {
-    var para = document.createElement('p')
-    var addDiv = document.getElementById("tournamentAdd")
+    //var para = document.createElement('p')
+    //var addDiv = document.getElementById("tournamentAdd")
 
-    para.innerText = data["operation"]
+    //para.innerText = data["operation"]
 
-    addDiv.appendChild(para)
+    //addDiv.appendChild(para)
+    showSnackbar(data["operation"])
   })
 }
 
@@ -205,12 +207,13 @@ function addRuleset() {
       body:   JSON.stringify(rulesetAttributes)
   })
   .then(res => res.json()).then(data => {
-    var para = document.createElement('p')
-    var addDiv = document.getElementById("rulesetAdd")
+    //var para = document.createElement('p')
+    //var addDiv = document.getElementById("rulesetAdd")
 
-    para.innerText = data["operation"]
+    //para.innerText = data["operation"]
 
-    addDiv.appendChild(para)
+    //addDiv.appendChild(para)
+    showSnackbar(data["operation"])
   })
 }
 
@@ -271,4 +274,16 @@ function removeRuleInput() {
     }
     ruleInputCount--
   }
+}
+
+function showSnackbar(text) {
+  // Get the snackbar DIV
+  var x = document.getElementById("snackbar");
+
+  // Add the "show" class to DIV
+  x.className = "show";
+  x.innerText = text;
+
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 }

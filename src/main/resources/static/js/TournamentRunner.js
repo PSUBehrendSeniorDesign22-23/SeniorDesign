@@ -43,6 +43,7 @@ Steps to run a tournament
 */
 
 // Tournament information
+let tournamentOptions = []
 let tournament
 let players
 let ruleset
@@ -217,11 +218,12 @@ function generatePlayerOrder() {
 
 async function retrieveTournamentInformation() {
     // Get tournament
-    const tournamentSearchParams = new URLSearchParams()
-    tournamentSearchParams.append("searchType", searchType)
-    tournamentSearchParams.append("searchFilter", searchFilter)
-    const tournamentRequest = new Request("/tournament/search?" + tournamentSearchParams.toString())
-    const tournament = await fetch(tournamentRequest).json()
+    //const tournamentSearchParams = new URLSearchParams()
+    //tournamentSearchParams.append("searchType", searchType)
+    //tournamentSearchParams.append("searchFilter", searchFilter)
+    //const tournamentRequest = new Request("/tournament/search?" + tournamentSearchParams.toString())
+    //const tournament = await fetch(tournamentRequest).json()
+    //const tournament = 
     
     // Get players associated with tournament
     const playerSearchParams = new URLSearchParams()
@@ -254,12 +256,36 @@ function initializeTournament() {
 	var value = tournamentSelect.value
 	var text = tournamentSelect.options[tournamentSelect.selectedIndex].text
     
-    //console.log(value);
+    tournament = tournamentOptions[value]
     document.getElementById("idSelect").style.display = "none"
+
+    console.log(tournament)
+    players = tournament.players
+    ruleset = tournament.ruleset
+    rules = ruleset.rules
+    playerOrder = generatePlayerOrder()
+
+    // Append runtime attributes to each player
+    for (let player in playerOrder) {
+        player.stones = tournamentInfo.rules.StartingStones
+        player.chips = 0
+    }
+
+    // Set initial defender and challenger
+    // Pull first player as defender
+    //defender = playerOrder.shift()
+    defender = "Me"
+    // Pull second player as challenger
+    //challenger = playerOrder.shift()
+    challenger = "You"
+
+    // Create first match
+    activeMatch = createMatch()
+    // Initialize display to user
     initializeDisplay()
 
     // Get all required information from database
-    retrieveTournamentInformation().then((tournamentInfo) => {
+    /*retrieveTournamentInformation().then((tournamentInfo) => {
             tournament = tournamentInfo.tournament
             players = tournamentInfo.players
             ruleset = tournamentInfo.ruleset
@@ -282,12 +308,12 @@ function initializeTournament() {
             activeMatch = createMatch()
             // Initialize display to user
             initializeDisplay()
-    })
+    })*/
 }
 
 function initializeDisplay() {
     // Reconstruct DOM for running tournament
-    matchNumber.innerText = "Tournament Name - Match " + (completeMatches.length + 1);
+    matchNumber.innerText = tournament.name + " - Match " + (completeMatches.length + 1);
     
 }
 
@@ -347,12 +373,12 @@ function preload()
       for (var i = 0; i < data.length; i++) {
         if (data[i] != null)
         {
-            console.log(data[i].name)
-
             let newRuleKeyLabel = document.createElement("option")
-            newRuleKeyLabel.setAttribute("value", data[i].tournamentId)
+            newRuleKeyLabel.setAttribute("value", i)
             newRuleKeyLabel.innerText = data[i].name
-            document.getElementById("tournaments").appendChild(newRuleKeyLabel);
+            document.getElementById("tournaments").appendChild(newRuleKeyLabel)
+
+            tournamentOptions.push(data[i])
 
             child = document.createElement('p')
             child.innerText = JSON.stringify(data[i])
