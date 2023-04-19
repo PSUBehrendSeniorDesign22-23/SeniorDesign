@@ -13,7 +13,9 @@ public interface RuleService {
 
     Rule findRuleById(long ruleId);
 
-    Rule findRuleByName(String name);
+    List<Rule> findRulesByName(String name);
+    
+    Rule findRuleByNameAndAttribute(String name, String attribute);
     
     // Update
     Rule updateRule(Rule rule, long ruleId);

@@ -141,7 +141,7 @@ public class SearchController {
         }
         if (type.equals("ruleName")) {
             try {
-                Rule rule = ruleService.findRuleByName(filter);
+                List<Rule> rule = ruleService.findRulesByName(filter);
                 String ruleAsJson = mapper.writeValueAsString(rule);
                 return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(ruleAsJson);
             }

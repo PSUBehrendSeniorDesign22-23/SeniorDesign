@@ -2,6 +2,7 @@ package com.behrend.contestmanager.controllers;
 
 import java.sql.Date;
 import java.util.Map;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -81,14 +82,14 @@ public class CreateController {
         if(ruleSetName != null){
             Ruleset ruleset = rulesetService.findRulesetsByName(ruleSetName).get(0);
             if( ruleset == null){
-                return ResponseEntity.status(HttpStatus.valueOf(400)).body("{\"operation\": \"failure\", \"message\": \"Ruleset not found\"}");
+                return ResponseEntity.status(HttpStatus.valueOf(400)).body("{\"operation\":\"failure\",\"message\":\"Ruleset not found\"}");
             }else{
                 tournament.setRuleset(ruleset);
             }
         }
         tournamentService.saveTournament(tournament);
 
-        return ResponseEntity.ok("{\"operation\": \"success\"}");
+        return ResponseEntity.ok("{\"operation\":\"success\"}");
     }
 
     @PostMapping(value = "/ruleset/create", consumes = "application/json")
@@ -99,13 +100,37 @@ public class CreateController {
 
         String rulesetName = inputMap.get("rulesetName");
         String rulesetOrigin = inputMap.get("rulesetOrigin");
+        ArrayList<Rule> rules = new ArrayList<>();
 
-        if(rulesetName != null){
-            ruleset.setName(rulesetName);
+        if(rulesetName == null || rulesetOrigin == null) {
+            return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Ruleset name and origin are required\"}");
         }
-        if(rulesetOrigin != null){
-            ruleset.setOrigin(rulesetOrigin);
+
+        inputMap.remove("rulesetName");
+        inputMap.remove("rulesetOrigin");
+
+        // For each rule
+        for (String ruleName : inputMap.keySet()) {
+            Rule rule;
+            String attribute = inputMap.get(ruleName);
+
+            // Check if the rule already exists
+            rule = ruleService.findRuleByNameAndAttribute(ruleName, attribute);
+
+            // If it does not exist, create it
+            if (rule == null) {
+                rule = new Rule();
+                rule.setName(ruleName);
+                rule.setAttribute(attribute);
+                rule = ruleService.saveRule(rule);
+            }
+            // Add rule to list of rules
+            rules.add(rule);
         }
+
+        ruleset.setName(rulesetName);
+        ruleset.setOrigin(rulesetOrigin);
+        ruleset.setRules(rules);
         rulesetService.saveRuleset(ruleset);
 
         return ResponseEntity.ok("{\"operation\": \"success\"}");
