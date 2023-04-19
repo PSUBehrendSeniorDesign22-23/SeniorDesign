@@ -63,7 +63,7 @@ function playerSearch() {
   searchParams.append("searchFilter", searchFilter)
 
 
-  const request = new Request("/players/search?" + searchParams.toString())
+  const request = new Request("/player/search?" + searchParams.toString())
 
   fetch(request).then((response) => response.json())
     .then((data) => {

@@ -14,6 +14,7 @@ public interface PlayerService {
     Player findPlayerByUserId(long userId);
 
     List<Player> findAllPlayers();
+    List<Player> findPlayersByName(String name);
     List<Player> findPlayersBySkipperName(String skipperName);
 
     // Update
