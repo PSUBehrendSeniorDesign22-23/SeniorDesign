@@ -331,14 +331,14 @@ function alertNotEnoughChips() {
     // Visual alert when there are not enough chips to convert to a stone
 }
 
-function codeAddress()
+function preload()
 {
   const resultsContainer = document.getElementById("results-container")
 
   const searchParams = new URLSearchParams();
   
-  searchParams.append("searchType", "tname")
-
+  searchParams.append("searchType", "all")
+  searchParams.append("searchFilter", "")
 
   const request = new Request("/tournament/search?" + searchParams.toString())
 
@@ -347,12 +347,17 @@ function codeAddress()
       for (var i = 0; i < data.length; i++) {
         if (data[i] != null)
         {
-          child = document.createElement('p')
-          child.innerText = JSON.stringify(data[i])
-          resultsContainer.appendChild(child)
+            console.log(data[i].name)
+
+            let newRuleKeyLabel = document.createElement("option")
+            newRuleKeyLabel.setAttribute("value", data[i].name)
+            newRuleKeyLabel.innerText = "Rule " + ruleInputCount + " Name:"
+            newRuleKeyLabel.appendChild( document.createTextNode( '\u00A0' ) );
+
+            child = document.createElement('p')
+            child.innerText = JSON.stringify(data[i])
+            resultsContainer.appendChild(child)
         }
       }
     })
-    
-	console.log("On load");
 }
