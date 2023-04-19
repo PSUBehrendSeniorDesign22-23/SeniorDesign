@@ -1,4 +1,6 @@
 document.getElementById("rulesetAddForm").addEventListener("submit", handleForm)
+document.getElementById("tournamentAddForm").addEventListener("submit", handleForm)
+document.getElementById("playerAddForm").addEventListener("submit", handleForm)
 
 function handleForm(event) {
   event.preventDefault()

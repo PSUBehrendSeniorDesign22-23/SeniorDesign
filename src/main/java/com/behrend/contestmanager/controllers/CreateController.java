@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.behrend.contestmanager.models.*;
+import com.behrend.contestmanager.repository.UserRepository;
 import com.behrend.contestmanager.service.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -30,17 +31,29 @@ public class CreateController {
     RulesetService rulesetService = new RulesetServiceImpl();
     @Autowired
     RuleService ruleService = new RuleServiceImpl();
+    @Autowired
+    UserRepository userRepository;
 
-     @PostMapping(value = "/player/create", params = {"addfname","addlname","addssname","addeadd","addpnum"})
+    @PostMapping(value = "/player/create", params = {"userEmail", "skipperName"})
     @ResponseBody
-    public ResponseEntity<String> createPlayer(@RequestParam(name = "userId") long userId, 
+    public ResponseEntity<String> createPlayer(@RequestParam(name = "userEmail") String userEmail, 
                                                @RequestParam(name = "skipperName") String skipperName){
         
         Player player = new Player();
+        User user;
 
-        if(skipperName != null){
-            player.setSkipperName(skipperName);
+        if(userEmail.equals("") || skipperName.equals("")){
+            return ResponseEntity.badRequest().body("{\"operation\": \"failure\",\"message\": \"Email and skipper name cannot be empty\"}");
         }
+        else {
+            user = userRepository.findByEmail(userEmail);
+            if (user == null) {
+                return ResponseEntity.badRequest().body("{\"operation\": \"failure\",\"message\": \"User with email " + userEmail + " does not exist\"}");
+            }
+        }
+
+        player.setUser(user);
+        player.setSkipperName(skipperName);
         
         playerService.savePlayer(player);
 
@@ -154,16 +167,20 @@ public class CreateController {
             return new ResponseEntity<>("Rule name and rule attribute are required", HttpStatus.BAD_REQUEST);
         }
         
+        rule.setName(ruleName);
+        rule.setAttribute(ruleAttribute);
+
         ObjectMapper objectMapper = new ObjectMapper();
         String ruleAsJson;
         try {
             ruleAsJson = objectMapper.writeValueAsString(rule);
         }
         catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating match, please try again");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating rule, please try again");
         }
 
         ruleService.saveRule(rule);
+        
         return ResponseEntity.status(HttpStatus.CREATED).contentType(MediaType.APPLICATION_JSON).body(ruleAsJson);
     }
 }
