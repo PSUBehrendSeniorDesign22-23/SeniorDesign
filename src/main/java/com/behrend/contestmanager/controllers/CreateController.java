@@ -1,9 +1,6 @@
 package com.behrend.contestmanager.controllers;
 
 import java.sql.Date;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -50,17 +46,14 @@ public class CreateController {
 
         return ResponseEntity.ok("{\"operation\": \"success\"}");
     }
-//, params = {"addtname","addtloc","addtdate","addtrule"}
-    @PostMapping(value = "/tournament/create")
+
+    @PostMapping(value = "/tournament/create", params = {"addtname","addtloc","addtdate","addtrule"})
+    @ResponseBody
     public ResponseEntity<String> createTournament(@RequestParam(name = "addtname") String name,
                                                    @RequestParam(name = "addtloc") String location,
-                                                   @RequestParam(name = "addtdate") String Tempdate,
-                                                   @RequestParam(name = "addtrule") String ruleSetName ,
-                                                   Model model) throws ParseException {
+                                                   @RequestParam(name = "addtdate") Date date, 
+                                                   @RequestParam(name = "addtrule") String ruleSetName) {
 
-
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = (Date) dateFormat.parse(Tempdate);
         Tournament tournament = new Tournament();
 
         if(name != null){
@@ -72,7 +65,6 @@ public class CreateController {
         if(date != null){
             tournament.setDate(date);
         }
-
         if(ruleSetName != null){
             Ruleset ruleset = rulesetService.findRulesetsByName(ruleSetName).get(0);
             if( ruleset == null){

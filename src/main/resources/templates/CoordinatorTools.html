@@ -42,7 +42,7 @@
       </form>
     </div>
     <div class="hiddenTextBox" id="tournamentAdd">
-      <form class="modal-content" method="POST" enctype="multipart/form-data" id="tournamentAddForm" >
+      <form method="POST" id="tournamentAddForm">
         <label for="addtname">Tournament Name: </label>
         <input type="text" id="addtname" name="addtname"><br><br>
         <label for="addtloc">Tournament Location: </label>
@@ -51,12 +51,12 @@
         <input type="date" id="addtdate" name="addtdate"><br><br>
         <label for="addtrule">Tournament Ruleset: </label>
         <input type="text" id="addtrule" name="addtrule"><br><br>
-        <input type="submit" id="formButton" value="Submit" class="formButton" onclick="addTournament()" >
+        <input type="submit" value="Submit" class="formButton" onclick="addTournament()">
       </form>
     </div>
 
     <div class="hiddenTextBox" id="rulesetAdd">
-      <form class="modal-content" method="POST" enctype="multipart/form-data" id="rulesetAddForm">
+      <form action="/ruleset/create" id="rulesetAddForm">
         <label for="addrname">Ruleset Name:</label>
         <input type="text" id="addrname" name="addrname"><br><br>
         <label for="addrorigin">Ruleset Origin:</label>
@@ -140,7 +140,7 @@
     </div>
     <br>
     <div class="hiddenTextBox" id="playerSearch">
-      <label for="playerSearch">Choose a search criteria:</label>
+      <label for="player-search-options">Choose a search criteria:</label>
       <select name="player-search" id="player-search">
         <option value="pname">Player Name</option>
         <option value="pssname">Stone Skipper Name</option>
@@ -163,7 +163,7 @@
       <input type="submit" value="Submit" class="formButton" onclick="tournamentSearch()">
     </div>
     <div class="hiddenTextBox" id="rulesetSearch">
-      <label for="rulesetSearch">Choose a search criteria:</label>
+      <label for="ruleset-search-options">Choose a search criteria:</label>
       <select name="ruleset-search" id="ruleset-search">
         <option value="rname">Ruleset Name</option>
         <option value="rorigin">Ruleset Origin</option>

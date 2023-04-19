@@ -1,5 +1,4 @@
 document.getElementById("rulesetAddForm").addEventListener("submit", handleForm)
-document.getElementById("tournamentAddForm").addEventListener("submit", addTournament);
 
 function handleForm(event) {
   event.preventDefault()
@@ -150,31 +149,25 @@ function addPlayer() {
   })
 }
 
-async function addTournament(event) {
-    event.preventDefault();
-    const form = event.target;
-    const formData = new FormData(form);
-    const request = new Request('/tournament/create', {
-        method: 'POST',
-        body: formData
-    });
-    fetch(request)
-        .then(response => {
-            if (response.ok) {
-                console.log('Tournament created successfully.');
-            } else {
-                throw new Error('Failed to create tournament.');
-            }
-        })
-        .catch(error => {
-            console.error(error);
-        });
+function addTournament() {
+
+  var form = document.getElementById("tournamentAddForm")
+
+  const formData = new FormData(form)
+
+  fetch("/tournament/create", {
+      method: "POST",
+      body:   formData
+  })
+  .then(res => res.json()).then(data => {
+    var para = document.createElement('p')
+    var addDiv = document.getElementById("tournamentAdd")
+
+    para.innerText = data["operation"]
+
+    addDiv.appendChild(para)
+  })
 }
-
-
-
-
-
 
 function addRuleset() {
   
