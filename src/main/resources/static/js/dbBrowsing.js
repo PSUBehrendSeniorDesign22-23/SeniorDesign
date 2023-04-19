@@ -137,7 +137,7 @@ function addPlayer() {
 
   const formData = new FormData(form)
 
-  fetch("/players/create", {
+  fetch("/player/create", {
       method: "POST",
       body:   formData
   })
@@ -145,7 +145,14 @@ function addPlayer() {
     var para = document.createElement('p')
     var addDiv = document.getElementById("playerAdd")
 
-    para.innerText = data["operation"]
+    let message = "Success"
+    let operationResult = data["operation"]
+
+    if (operationResult == "failure") {
+      message = "Failure: " + data["message"]
+    }
+
+    para.innerText = message
 
     addDiv.appendChild(para)
   })
