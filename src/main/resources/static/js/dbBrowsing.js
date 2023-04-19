@@ -127,17 +127,14 @@ function rulesetSearch() {
   fetch(request).then((response) => response.json())
     .then((data) => {
       for (var i = 0; i < data.length; i++) {
-        console.log("data");
         if (data[i] != null)
         {
-          console.log("not null");
           child = document.createElement('p')
           child.innerText = JSON.stringify(data[i])
           resultsContainer.appendChild(child)
         }
       }
     })
-    console.log("end");
 }
 
 function addPlayer() {

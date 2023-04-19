@@ -250,13 +250,13 @@ async function retrieveTournamentInformation() {
 
 function initializeTournament() {
     // Get tournament selection from user
-    var tournamentSelect = document.getElementById("tournaments");
-		var value = tournamentSelect.value;
-		var text = tournamentSelect.options[tournamentSelect.selectedIndex].text;
+    var tournamentSelect = document.getElementById("tournaments")
+	var value = tournamentSelect.value
+	var text = tournamentSelect.options[tournamentSelect.selectedIndex].text
     
     //console.log(value);
-    document.getElementById("idSelect").style.display = "none";
-    initializeDisplay();
+    document.getElementById("idSelect").style.display = "none"
+    initializeDisplay()
 
     // Get all required information from database
     retrieveTournamentInformation().then((tournamentInfo) => {
@@ -350,9 +350,9 @@ function preload()
             console.log(data[i].name)
 
             let newRuleKeyLabel = document.createElement("option")
-            newRuleKeyLabel.setAttribute("value", data[i].name)
-            newRuleKeyLabel.innerText = "Rule " + ruleInputCount + " Name:"
-            newRuleKeyLabel.appendChild( document.createTextNode( '\u00A0' ) );
+            newRuleKeyLabel.setAttribute("value", data[i].tournamentId)
+            newRuleKeyLabel.innerText = data[i].name
+            document.getElementById("tournaments").appendChild(newRuleKeyLabel);
 
             child = document.createElement('p')
             child.innerText = JSON.stringify(data[i])

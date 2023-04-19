@@ -7,7 +7,7 @@
     <script type="text/javascript" th:src="@{/js/TournamentRunner.js}" defer></script>
   </head>
 
-  <body class="parallax" onLoad="codeAddress()">
+  <body class="parallax" onLoad="preload()">
 
     <!-- The Modal (contains the tournament selection) -->
     <div id="idSelect" class="modal">
@@ -16,9 +16,6 @@
         <form action="/action_page.php">
           <select name="tournaments" id="tournaments">
             <option value="none">--</option>
-            <option value="test 1">Test 1</option>
-            <option value="test 2">Test 2</option>
-            <option value="test 3">Test 3</option>
           </select>
         </form>
         <br><br>
