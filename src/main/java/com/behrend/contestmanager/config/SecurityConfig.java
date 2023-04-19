@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static org.hibernate.criterion.Restrictions.and;
+
 
 @Configuration
 @EnableWebSecurity
@@ -26,15 +28,28 @@ public class SecurityConfig {
    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         return http
-                .csrf(csrf -> csrf.disable())//security measure for CSRF attacks and excludes username/password from HTTP requests
-                .authorizeRequests().antMatchers("/**").permitAll().anyRequest().authenticated()
+                .csrf(csrf -> csrf.disable()).authorizeRequests()//security measure for CSRF attacks and excludes username/password from HTTP requests
+                .antMatchers("/CoordinatorTools","/tournament/create", "/player/create", "/ruleset/create", "/rule/create").hasRole("ADMIN")
+                .antMatchers("/**").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/Landing")
+                .failureUrl("/LoginFailed")
+                .permitAll()
+                .and()
+                .logout()
+                .permitAll()
+                /*.authorizeRequests().antMatchers("/**").permitAll()
+                .antMatcher("/CoordinatorTools").hasRole("ADMIN").anyRequest().authenticated()
                         //permissions need more tweaking
-                        //auth.antMatchers("/DevelopmentTools").hasRole("USER");
+                .and().authorizeRequests()
+                        //.antMatchers("/DevelopmentTools").hasRole("USER")
                 .and().formLogin()
                 .loginPage("/Landing")
                 .failureUrl("/LoginFailed")
                 .and()
-                .logout().permitAll()
+                .logout().permitAll()*/
                 .and()
                 .build();
     }

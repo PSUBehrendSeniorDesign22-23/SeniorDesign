@@ -45,6 +45,11 @@ public class PageController {
         if(acc==null){return "redirect:/LoginFailed";}
         if(encoder.matches(password,acc.getPassword())){
             UserService.setLoggedIn(acc.getUserId());
+            for (Role role : acc.getRoles()) {
+                if (role == Role.ADMIN) {
+                    return "redirect:/CoordinatorTools";
+                }
+            }
             return "redirect:PublicBrowse";
         }
         return "redirect:/";
