@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
-  
+
   <head>
-      <title>Coordinator Tools - Mountain Man's Millstone</title>
-      <link rel="stylesheet" th:href="@{/css/dbBrowsing.css}">
-      <script type="text/javascript" th:src="@{/js/dbBrowsing.js}" defer></script>
+    <title>Coordinator Tools - Mountain Man's Millstone</title>
+    <link rel="stylesheet" th:href="@{/css/dbBrowsing.css}">
+    <script type="text/javascript" th:src="@{/js/dbBrowsing.js}" defer></script>
   </head>
 
   <body class="parallax">
@@ -54,6 +54,7 @@
         <input type="submit" id="formButton" value="Submit" class="formButton" onclick="addTournament()" >
       </form>
     </div>
+
     <div class="hiddenTextBox" id="rulesetAdd">
       <form class="modal-content" method="POST" enctype="multipart/form-data" id="rulesetAddForm">
         <label for="addrname">Ruleset Name:</label>
@@ -61,16 +62,17 @@
         <label for="addrorigin">Ruleset Origin:</label>
         <input type="text" id="addrorigin" name="addrorigin"><br><br>
       </form>
+      <button type="button" class="formButton" onclick="addRuleInput()">Add Rule</button>
+      <button type="button" class="formButton" onclick="removeRuleInput()">Remove Rule</button>
+      <br><br>
       <label for="rule1Key">Rule 1 Name:</label>
       <input type="text" id="rule1Key" name="rule1Key">
       <label for="rule1Value">Rule 1 Value:</label>
       <input type="text" id="rule1Value" name="rule1Value">
-      <br>
-      <button type="button" onclick="addRuleInput()">Add Rule</button>
-      <button type="button" onclick="removeRuleInput()">Remove Rule</button>
-      <br>
+      <br><br>
       <input type="submit" value="Submit" class="formButton" form="rulesetAddForm" onclick="addRuleset()">
     </div>
+
     <br>
 
     <div class="textBox">
@@ -177,7 +179,7 @@
         Search Results
       </h1>
       <div id="results-container" class="primaryTextLeft">
-        
+
       </div>
     </div>
     <br>
