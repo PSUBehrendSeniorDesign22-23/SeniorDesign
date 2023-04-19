@@ -59,6 +59,7 @@ function playerSearch() {
   searchParams.append("searchType", searchType)
   searchParams.append("searchFilter", searchFilter)
 
+  showSearchResults()
 
   const request = new Request("/players/search?" + searchParams.toString())
 
@@ -87,6 +88,7 @@ function tournamentSearch() {
     searchParams.append("searchType", searchType)
     searchParams.append("searchFilter", searchFilter)
 
+    showSearchResults()
 
     const request = new Request("/tournament/search?" + searchParams.toString())
 
@@ -115,20 +117,24 @@ function rulesetSearch() {
   searchParams.append("searchType", searchType)
   searchParams.append("searchFilter", searchFilter)
 
+  showSearchResults()
 
   const request = new Request("/ruleset/search?" + searchParams.toString())
 
   fetch(request).then((response) => response.json())
     .then((data) => {
       for (var i = 0; i < data.length; i++) {
+        console.log("data");
         if (data[i] != null)
         {
+          console.log("not null");
           child = document.createElement('p')
           child.innerText = JSON.stringify(data[i])
           resultsContainer.appendChild(child)
         }
       }
     })
+    console.log("end");
 }
 
 function addPlayer() {

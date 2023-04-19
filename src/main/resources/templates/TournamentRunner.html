@@ -7,12 +7,32 @@
     <script type="text/javascript" th:src="@{/js/TournamentRunner.js}" defer></script>
   </head>
 
+  <body class="parallax" onLoad="codeAddress()">
 
+    <!-- The Modal (contains the tournament selection) -->
+    <div id="idSelect" class="modal">
+      <div class="centerTextBox">
+        <h1 class="primaryTextCenter">Select Tournament to Run</h1>
+        <form action="/action_page.php">
+          <select name="tournaments" id="tournaments">
+            <option value="none">--</option>
+            <option value="test 1">Test 1</option>
+            <option value="test 2">Test 2</option>
+            <option value="test 3">Test 3</option>
+          </select>
+        </form>
+        <br><br>
+        <div class="clearfix">
+          <button type="button" class="formButton" style="background-color: #008000;" onClick=initializeTournament()>Select</button>
+          <br><br>
+          <button type="button" style="background-color: #f44336;" class="formButton" onClick="window.location='/CoordinatorTools'">Exit</button>
+        </div>
+      </div>
+    </div>
 
-  <body class="parallax">
     <br>
     <div class="textBox" style="width: 95%">
-      <h1 class="primaryTextCenter">Tournament Name - Match #</h1>
+      <h1 id="matchNum" class="primaryTextCenter">Tournament Name - Match #</h1>
     </div>
     <br>
 
@@ -55,27 +75,30 @@
 
     <div class="centerTextBox" style="width: 95%">
       <h1 class="primaryTextCenter">Player 1 Match Record</h1>
-      
-      <button onclick= "roundWinChange(1, 'plus')">Add Score</button>
-      <span id = "p1Score" class="primaryTextCenter">0</span>
-      <button onclick= "roundWinChange(1, 'minus')">Subtract Score</button>
-      
+
+      <button onclick="roundWinChange(1, 'plus')">Add Score</button>
+      <span id="p1Score" class="primaryTextCenter">0</span>
+      <button onclick="roundWinChange(1, 'minus')">Subtract Score</button>
+
       <h1 class="primaryTextCenter">Player 2 Match Record</h1>
-      
-      <button onclick= "roundWinChange(2, 'plus')">Add Score</button>
-      <span id = "p2Score" class="primaryTextCenter">0</span>
-      <button onclick= "roundWinChange(2, 'minus')">Subtract Score</button>
-      
+
+      <button onclick="roundWinChange(2, 'plus')">Add Score</button>
+      <span id="p2Score" class="primaryTextCenter">0</span>
+      <button onclick="roundWinChange(2, 'minus')">Subtract Score</button>
+
       <form action="/action_page.php">
-      <p class ="primaryTextCenter">Please select this round's winner:</p>
-      <label for="p1">Player 1</label>
-      <input type="radio" id="p1" name="winner" value="player1"><br>
-      <label for="p2">Player 2</label>
-      <input type="radio" id="p2" name="winner" value="player2">
+        <p class="primaryTextCenter">Please select this round's winner:</p>
+        <label for="p1">Player 1</label>
+        <input type="radio" id="p1" name="winner" value="player1"><br>
+        <label for="p2">Player 2</label>
+        <input type="radio" id="p2" name="winner" value="player2">
       </form>
       <br>
       <button class="formButton">Submit</button>
-      
+
+    </div>
+    <div class="textBox" id="results-container">
+    
     </div>
   </body>
 

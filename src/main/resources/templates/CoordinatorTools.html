@@ -128,6 +128,15 @@
     <br>
 
     <div class="textBox">
+      <h2 class="primaryTextCenter">Tournament Runner</h2>
+    </div>
+
+    <div class="textBox" style="text-align:center;">
+        <button type="button" class="formButton" onClick="window.location='/TournamentRunner'">Start Runner</button>
+    </div>
+    <br><br>
+
+    <div class="textBox">
       <h2 class="primaryTextCenter">Search Tools</h2>
     </div>
 
@@ -152,7 +161,7 @@
     </div>
     <div class="hiddenTextBox" id="tournamentSearch">
       <label for="tournament-search-options">Choose a search criteria:</label>
-      <select name="tournament-search" id="tournament-search-options" onchange="tournamentSearchInputChange()">
+      <select name="tournament-search" id="tournament-search" onchange="tournamentSearchInputChange()">
         <option value="tname">Tournament Name</option>
         <option value="tlocation">Tournament Location</option>
         <option value="tdate">Tournament Date</option>

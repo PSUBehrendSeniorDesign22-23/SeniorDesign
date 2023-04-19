@@ -60,6 +60,9 @@ let challenger
 
 let stoneConflictFlag = false // Used to indicate and force resolution of stone count
 
+// DOM variables
+let matchNumber = document.getElementById("matchNum");
+
 function defenderRoundWin() {
     if (stoneConflictFlag) {
         alertStoneConflict()
@@ -246,7 +249,14 @@ async function retrieveTournamentInformation() {
 }
 
 function initializeTournament() {
-    // TODO: Get tournament selection from user
+    // Get tournament selection from user
+    var tournamentSelect = document.getElementById("tournaments");
+		var value = tournamentSelect.value;
+		var text = tournamentSelect.options[tournamentSelect.selectedIndex].text;
+    
+    //console.log(value);
+    document.getElementById("idSelect").style.display = "none";
+    initializeDisplay();
 
     // Get all required information from database
     retrieveTournamentInformation().then((tournamentInfo) => {
@@ -277,6 +287,8 @@ function initializeTournament() {
 
 function initializeDisplay() {
     // Reconstruct DOM for running tournament
+    matchNumber.innerText = "Tournament Name - Match " + (completeMatches.length + 1);
+    
 }
 
 function updateDisplay() {
@@ -317,4 +329,30 @@ function convertChips(player) {
 
 function alertNotEnoughChips() {
     // Visual alert when there are not enough chips to convert to a stone
+}
+
+function codeAddress()
+{
+  const resultsContainer = document.getElementById("results-container")
+
+  const searchParams = new URLSearchParams();
+  
+  searchParams.append("searchType", "tname")
+
+
+  const request = new Request("/tournament/search?" + searchParams.toString())
+
+  fetch(request).then((response) => response.json())
+    .then((data) => {
+      for (var i = 0; i < data.length; i++) {
+        if (data[i] != null)
+        {
+          child = document.createElement('p')
+          child.innerText = JSON.stringify(data[i])
+          resultsContainer.appendChild(child)
+        }
+      }
+    })
+    
+	console.log("On load");
 }
