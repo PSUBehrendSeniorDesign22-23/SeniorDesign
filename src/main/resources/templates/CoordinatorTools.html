@@ -7,7 +7,7 @@
     <script type="text/javascript" th:src="@{/js/dbBrowsing.js}" defer></script>
   </head>
 
-  <body class="parallax" onload="loadPlayerSelections()">
+  <body class="parallax" onload="loadDropDownSelections()">
     <br>
     <div class="textBox" style="width: 95%">
       <h1 class="primaryTextCenter">Tournament Coordinator Tools</h1>
@@ -43,19 +43,19 @@
         <input type="text" id="addtloc" name="addtloc"><br><br>
         <label for="addtdate">Tournament Date: </label>
         <input type="date" id="addtdate" name="addtdate"><br><br>
-        <label for="addtrule">Tournament Ruleset: </label>
-        <input type="text" id="addtrule" name="addtrule"><br><br>
+        <label for="rulesetSelector">Tournament Ruleset: </label>
+        <select name="rulesetSelector" class="rulesetSelector"></select><br>
         
         <button type="button" class="formButton" onclick="addPlayerSelector()">Add Player</button>
         <button type="button" class="formButton" onclick="removePlayerSelector()">Remove Player</button>
         <br>
 
         <label for="player1Select">Player 1: </label>
-        <select name="player1Select" id="player1Select">
+        <select name="player1Select" id="player1Select" class="playerSelectors">
         </select><br>
 
         <label for="player2Select">Player 2: </label>
-        <select name="player2Select" id="player2Select">
+        <select name="player2Select" id="player2Select" class="playerSelectors">
         </select><br>
 
         <input type="submit" value="Submit" class="formButton" onclick="addTournament()">
@@ -97,8 +97,8 @@
 
     <div class="hiddenTextBox" id="playerEdit">
       <form method="POST" id="playerEditForm">
-        <label for="playerId">Player ID: </label>
-        <input type="text" id="playerId" name="playerId"><br><br>
+        <label for="playerEditSelect">Player: </label>
+        <select name="playerEditSelect" id="playerEditSelect" class="playerSelectors"></select><br><br>
         <label for="editssname">Stone Skipping Name: </label>
         <input type="text" id="editssname" name="editssname"><br><br>
         <label for="editrank">Rank: </label>
@@ -108,23 +108,23 @@
     </div>
     <div class="hiddenTextBox" id="tournamentEdit">
       <form method="POST" id="tournamentEditForm">
-        <label for="tournamentId">Tournament ID: </label>
-        <input type="text" id="tournamentId" name="tournamentId"><br><br>
+        <label for="tournamentSelector">Tournament: </label>
+        <select name="tournamentSelector" id="tournamentSelector"></select><br><br>
         <label for="edittname">Tournament Name: </label>
         <input type="text" id="edittname" name="edittname"><br><br>
         <label for="edittloc">Tournament Location: </label>
         <input type="text" id="edittloc" name="edittloc"><br><br>
         <label for="edittdate">Tournament Date: </label>
         <input type="date" id="edittdate" name="edittdate"><br><br>
-        <label for="edittrule">Tournament Ruleset: </label>
-        <input type="text" id="edittrule" name="edittrule"><br><br>
+        <label for="rulesetSelector">Tournament Ruleset: </label>
+        <select name="rulesetSelector" class="rulesetSelector"></select><br>
         <input type="submit" value="Submit" class="formButton" onclick="editTournament()">
       </form>
     </div>
     <div class="hiddenTextBox" id="rulesetEdit">
       <form method="POST" id="rulesetEditForm">
-        <label for="rulesetId">Ruleset ID: </label>
-        <input type="text" id="rulesetId" name="rulesetId"><br><br>
+        <label for="rulesetSelector">Tournament Ruleset: </label>
+        <select name="rulesetSelector" class="rulesetSelector"></select><br><br>
         <label for="editrname">Ruleset Name: </label>
         <input type="text" id="editrname" name="editrname"><br><br>
         <label for="editrorigin">Ruleset Origin: </label>

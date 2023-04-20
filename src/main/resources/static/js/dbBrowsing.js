@@ -315,6 +315,7 @@ function addPlayerSelector() {
   let playerSelect = document.createElement("select")
   playerSelect.setAttribute("name", nameTag)
   playerSelect.setAttribute("id", nameTag)
+  playerSelect.setAttribute("class", "playerSelector")
   // populate options
   populatePlayerOptions(playerSelect)
   // Add to DOM
@@ -335,38 +336,95 @@ function removePlayerSelector() {
   }
 }
 
-function loadPlayerSelections()
-{
-  const searchParams = new URLSearchParams();
-  
-  searchParams.append("searchType", "all")
-  searchParams.append("searchFilter", "")
-
-  const request = new Request("/player/search?" + searchParams.toString())
-
-  fetch(request).then((response) => response.json())
-    .then((data) => {
-      playerOptions = data
-      let player1Select = document.getElementById("player1Select")
-      let player2Select = document.getElementById("player2Select")
-      populatePlayerOptions(player1Select)
-      populatePlayerOptions(player2Select)
-    })
-}
 
 function populatePlayerOptions(playerSelector) {
   let emptyOption = document.createElement("option")
   emptyOption.setAttribute("value", "none")
   emptyOption.innerText = "--"
   playerSelector.appendChild(emptyOption)
-
+  
   for (var i = 0; i < playerOptions.length; i++) {
     if (playerOptions[i] != null)
     {
-        let playerOption = document.createElement("option")
-        playerOption.setAttribute("value", playerOptions[i].playerId)
-        playerOption.innerText = playerOptions[i].skipperName
-        playerSelector.appendChild(playerOption);
+      let playerOption = document.createElement("option")
+      playerOption.setAttribute("value", playerOptions[i].playerId)
+      playerOption.innerText = playerOptions[i].skipperName
+      playerSelector.appendChild(playerOption);
     }
   }
+}
+
+let rulesetOptions = []
+function populateRulesetOptions(rulesetSelector) {
+  let emptyOption = document.createElement("option")
+  emptyOption.setAttribute("value", "none")
+  emptyOption.innerText = "--"
+  rulesetSelector.appendChild(emptyOption)
+  
+  for (var i = 0; i < rulesetOptions.length; i++) {
+    if (rulesetOptions[i] != null)
+    {
+      let rulesetOption = document.createElement("option")
+      rulesetOption.setAttribute("value", rulesetOptions[i].rulesetId)
+      rulesetOption.innerText = rulesetOptions[i].name
+      rulesetSelector.appendChild(rulesetOption);
+    }
+  }
+}
+
+let tournamentOptions = []
+function populateTournamentOptions(tournamentSelector) {
+  let emptyOption = document.createElement("option")
+  emptyOption.setAttribute("value", "none")
+  emptyOption.innerText = "--"
+  tournamentSelector.appendChild(emptyOption)
+
+  for (var i = 0; i < tournamentOptions.length; i++) {
+    if (tournamentOptions[i] != null)
+    {
+      let tournamentOption = document.createElement("option")
+      tournamentOption.setAttribute("value", tournamentOptions[i].tournamentId)
+      tournamentOption.innerText = tournamentOptions[i].name
+      tournamentSelector.appendChild(tournamentOption);
+    }
+  }
+}
+
+function loadDropDownSelections()
+{
+  const searchParams = new URLSearchParams();
+  
+  searchParams.append("searchType", "all")
+  searchParams.append("searchFilter", "")
+
+  const playerRequest = new Request("/player/search?" + searchParams.toString())
+
+  fetch(playerRequest).then((response) => response.json())
+    .then((data) => {
+      playerOptions = data
+      let playerSelectors = document.getElementsByClassName("playerSelectors")
+      for (let i = 0; i < playerSelectors.length; i++) {
+        populatePlayerOptions(playerSelectors[i])
+      }
+    })
+
+  const rulesetRequest = new Request("/ruleset/search?" + searchParams.toString())
+
+  fetch(rulesetRequest).then((response) => response.json())
+    .then((data) => {
+      rulesetOptions = data
+      let rulesetSelectors = document.getElementsByClassName("rulesetSelector")
+      for (let i = 0; i < rulesetSelectors.length; i++) {
+          populateRulesetOptions(rulesetSelectors[i])
+      }
+    })
+  
+  const tournamentRequest = new Request("/tournament/search?" + searchParams.toString())
+  
+  fetch(tournamentRequest).then((response) => response.json())
+    .then((data) => {
+      tournamentOptions = data
+      let tournamentSelector = document.getElementById("tournamentSelector")
+      populateTournamentOptions(tournamentSelector)
+    })
 }

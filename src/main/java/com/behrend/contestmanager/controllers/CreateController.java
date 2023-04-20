@@ -230,8 +230,8 @@ public class CreateController {
                                              @RequestParam(name = "ruleAttribute") String ruleAttribute) {
         Rule rule = new Rule();
 
-        if (ruleName == null || ruleAttribute == null) {
-            return new ResponseEntity<>("Rule name and rule attribute are required", HttpStatus.BAD_REQUEST);
+        if (ruleName.equals("") || ruleAttribute.equals("")) {
+            return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Rule key and attribute are required\"}");
         }
         
         rule.setName(ruleName);
@@ -243,7 +243,7 @@ public class CreateController {
             ruleAsJson = objectMapper.writeValueAsString(rule);
         }
         catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating rule, please try again");
+            return ResponseEntity.internalServerError().body("Error creating rule, please try again");
         }
 
         ruleService.saveRule(rule);

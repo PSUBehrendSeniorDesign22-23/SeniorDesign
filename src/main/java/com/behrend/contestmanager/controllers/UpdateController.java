@@ -42,7 +42,7 @@ public class UpdateController {
         player = playerService.updatePlayer(player, playerId);
 
         if (player == null) {
-            return ResponseEntity.badRequest().body("Player not found");
+            return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Player not found\"}");
         }
 
         String playerAsJson;
@@ -50,7 +50,7 @@ public class UpdateController {
             playerAsJson = JsonMapper(player);
         }
         catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating player");
+            return ResponseEntity.internalServerError().body("{\"operation:\"\"failure\",\"message\":\"Error updating player\"}");
         }
 
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(playerAsJson);
