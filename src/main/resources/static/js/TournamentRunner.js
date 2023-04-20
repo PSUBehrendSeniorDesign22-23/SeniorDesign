@@ -1,33 +1,3 @@
-/*var p1Wins = 0;
-var p2Wins = 0;
-
-function roundWinChange(player, change)
-{
-	if (player == 1)
-  {
-  	if (change == "plus")
-    {
-    	p1Wins = p1Wins + 1;
-    }
-    if (change == "minus")
-    {
-    	p1Wins = p1Wins - 1;
-    }
-  	document.getElementById("p1Score").innerHTML = p1Wins;
-  }
-  if (player == 2)
-  {
-  	if (change == "plus")
-    {
-    	p2Wins = p2Wins + 1;
-    }
-    if (change == "minus")
-    {
-    	p2Wins = p2Wins - 1;
-    }
-  	document.getElementById("p2Score").innerHTML = p2Wins;
-  }
-}*/
 /* 
 Steps to run a tournament
 
