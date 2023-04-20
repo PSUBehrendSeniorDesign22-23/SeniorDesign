@@ -6,7 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/dbBrowsing.css}">
     <script type="text/javascript" th:src="@{/js/dbBrowsing.js}" defer></script>
   </head>
-
+  <button class="logout" id="logOutButton" onclick="location.href = 'http://localhost:8080/'" >Logout</button>
   <body class="parallax" onload="loadDropDownSelections()">
     <br>
     <div class="textBox" style="width: 95%">
@@ -45,7 +45,7 @@
         <input type="date" id="addtdate" name="addtdate"><br><br>
         <label for="rulesetSelector">Tournament Ruleset: </label>
         <select name="rulesetSelector" class="rulesetSelector"></select><br>
-        
+
         <button type="button" class="formButton" onclick="addPlayerSelector()">Add Player</button>
         <button type="button" class="formButton" onclick="removePlayerSelector()">Remove Player</button>
         <br>

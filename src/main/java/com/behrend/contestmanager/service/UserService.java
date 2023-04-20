@@ -13,7 +13,9 @@ public class UserService implements UserDetails, UserDetailsService {
     private String firstName;
     private String lastName;
     private String phoneNum;
-
+    private String email;
+    private String address;
+    private String password;
 
     private static long loggedIn = 0;
 
@@ -21,6 +23,9 @@ public class UserService implements UserDetails, UserDetailsService {
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.phoneNum = user.getPhoneNum();
+        this.email= user.getEmail();
+        this.address= user.getAddress();
+        this.password = user.getPassword();
     }
 
     public UserService() {

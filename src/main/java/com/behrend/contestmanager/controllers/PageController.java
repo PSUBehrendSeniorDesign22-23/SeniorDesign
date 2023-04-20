@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 import static com.behrend.contestmanager.models.Role.USER;
 
@@ -42,9 +43,12 @@ public class PageController {
         //create endpoints for redirects
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         User acc = userRepo.findByEmail(email);
+
         if(acc==null){return "redirect:/LoginFailed";}
         if(encoder.matches(password,acc.getPassword())){
             UserService.setLoggedIn(acc.getUserId());
+            String sessionId = UUID.randomUUID().toString();
+            //UserService.setLoggedIn(acc.getUserId(), sessionId);
             for (Role role : acc.getRoles()) {
                 if (role == Role.ADMIN) {
                     return "redirect:/CoordinatorTools";
