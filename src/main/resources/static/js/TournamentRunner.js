@@ -63,7 +63,22 @@ let stoneConflictFlag = false // Used to indicate and force resolution of stone 
 let tournamentCompleteFlag = false
 
 // DOM variables
-let matchNumber = document.getElementById("matchNum");
+let matchNumber = document.getElementById("matchNum")
+
+let ruleInfo = document.getElementById("ruleInfo")
+
+let challengerName = document.getElementById("challengerName")
+let defenderName = document.getElementById("defenderName")
+let challengerStones = document.getElementById("challengerStones")
+let defenderStones = document.getElementById("defenderStones")
+let challengerChips = document.getElementById("challengerChips")
+let defenderChips = document.getElementById("defenderChips")
+
+let challengerRecord = document.getElementById("challengerRecord")
+let defenderRecord = document.getElementById("defenderRecord")
+
+let p1Winner = document.getElementById("p1Label")
+let p2Winner = document.getElementById("p2Label")
 
 function defenderRoundWin() {
     if (stoneConflictFlag) {
@@ -259,30 +274,33 @@ function initializeTournament() {
     // Get tournament selection from user
     var tournamentSelect = document.getElementById("tournaments")
 	var value = tournamentSelect.value
-	var text = tournamentSelect.options[tournamentSelect.selectedIndex].text
+	if (value == "none")
+    {
+        window.location='/CoordinatorTools'
+    }
     
     tournament = tournamentOptions[value]
     document.getElementById("idSelect").style.display = "none"
 
-    console.log(tournament)
     players = tournament.players
     ruleset = tournament.ruleset
     rules = ruleset.rules
-    playerOrder = generatePlayerOrder()
+
+    generatePlayerOrder()
 
     // Append runtime attributes to each player
     for (let player in playerOrder) {
-        player.stones = tournamentInfo.rules.StartingStones
-        player.chips = 0
+        playerOrder[player].stones = 3//tournament.rules.StartingStones
+        playerOrder[player].chips = 0
     }
 
     // Set initial defender and challenger
     // Pull first player as defender
-    //defender = playerOrder.shift()
-    defender = "Me"
+    defender = playerOrder.shift()
+    //challenger = "Ypu"
     // Pull second player as challenger
-    //challenger = playerOrder.shift()
-    challenger = "You"
+    challenger = playerOrder.shift()
+    //defender = "Me"
 
     // Create first match
     activeMatch = createMatch()
@@ -320,6 +338,35 @@ function initializeDisplay() {
     // Reconstruct DOM for running tournament
     matchNumber.innerText = tournament.name + " - Match " + (completeMatches.length + 1);
     
+    defenderName.innerText = defender.skipperName
+    challengerName.innerText = challenger.skipperName
+
+    defenderStones.innerText = defender.stones
+    challengerStones.innerText = challenger.stones
+
+    defenderChips.innerText = defender.chips
+    challengerChips.innerText = challenger.chips
+
+    for (let rule in rules) {
+        let newRuleRow = document.createElement("tr")
+
+        let newRuleName = document.createElement("td")
+        newRuleName.innerText = rules[rule].name
+
+        let newRuleAttribute = document.createElement("td")
+        newRuleAttribute.innerText = rules[rule].attribute
+
+        newRuleRow.appendChild(newRuleName)
+        newRuleRow.appendChild(newRuleAttribute)
+        
+        ruleInfo.appendChild(newRuleRow)
+    }
+
+    challengerRecord.innerText = challenger.skipperName + " Round Record"
+    defenderRecord.innerText = defender.skipperName + " Round Record"
+
+    p1Winner.innerText = challenger.skipperName
+    p2Winner.innerText = defender.skipperName
 }
 
 function updateDisplay() {
@@ -364,8 +411,6 @@ function alertNotEnoughChips() {
 
 function preload()
 {
-  const resultsContainer = document.getElementById("results-container")
-
   const searchParams = new URLSearchParams();
   
   searchParams.append("searchType", "all")
@@ -384,10 +429,6 @@ function preload()
             document.getElementById("tournaments").appendChild(newRuleKeyLabel)
 
             tournamentOptions.push(data[i])
-
-            child = document.createElement('p')
-            child.innerText = JSON.stringify(data[i])
-            resultsContainer.appendChild(child)
         }
       }
     })

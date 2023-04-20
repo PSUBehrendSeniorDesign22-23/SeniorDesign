@@ -167,13 +167,25 @@ function addPlayer() {
 
 function addTournament() {
 
-  var form = document.getElementById("tournamentAddForm")
+  let tournamentAttributes = {
+    "tournamentName": document.getElementById("addtname").value,
+    "tournamentLocation": document.getElementById("addtloc").value,
+    "tournamentDate": document.getElementById("addtdate").value,
+    "tournamentRulesetName": document.getElementById("addtrule").value
+  }
 
-  const formData = new FormData(form)
+  for (let i = 1; i <= playerCount; i++) {
+    let playerKey = "player" + i + "Select";
+    let playerId = document.getElementById(playerKey).value
+    tournamentAttributes[playerKey] = playerId
+  }
 
   fetch("/tournament/create", {
       method: "POST",
-      body:   formData
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body:  JSON.stringify(tournamentAttributes)
   })
   .then(res => res.json()).then(data => {
     //var para = document.createElement('p')
@@ -286,4 +298,133 @@ function showSnackbar(text) {
 
   // After 3 seconds, remove the show class from DIV
   setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+
+let playerOptions = []
+let playerCount = 2
+let lastPlayerInput = document.getElementById("player2Select")
+function addPlayerSelector() {
+  playerCount++
+
+  let nameTag = "player" + playerCount + "Select"
+  // Create label
+  let playerLabel = document.createElement("label")
+  playerLabel.setAttribute("for", nameTag)
+  playerLabel.innerText = "Player " + playerCount + ": "
+  // Create selector
+  let playerSelect = document.createElement("select")
+  playerSelect.setAttribute("name", nameTag)
+  playerSelect.setAttribute("id", nameTag)
+  playerSelect.setAttribute("class", "playerSelector")
+  // populate options
+  populatePlayerOptions(playerSelect)
+  // Add to DOM
+  lastPlayerInput.insertAdjacentElement("afterend", playerLabel)
+  lastPlayerInput = lastPlayerInput.nextElementSibling
+  lastPlayerInput.insertAdjacentElement("afterend", playerSelect)
+  lastPlayerInput = lastPlayerInput.nextElementSibling
+}
+
+function removePlayerSelector() {
+  if (playerCount > 2) {
+    for (let i = 0; i < 2; i++) {
+      let elementToRemove = lastPlayerInput
+      lastPlayerInput = lastPlayerInput.previousElementSibling
+      elementToRemove.remove()
+    }
+    playerCount--
+  }
+}
+
+
+function populatePlayerOptions(playerSelector) {
+  let emptyOption = document.createElement("option")
+  emptyOption.setAttribute("value", "none")
+  emptyOption.innerText = "--"
+  playerSelector.appendChild(emptyOption)
+  
+  for (var i = 0; i < playerOptions.length; i++) {
+    if (playerOptions[i] != null)
+    {
+      let playerOption = document.createElement("option")
+      playerOption.setAttribute("value", playerOptions[i].playerId)
+      playerOption.innerText = playerOptions[i].skipperName
+      playerSelector.appendChild(playerOption);
+    }
+  }
+}
+
+let rulesetOptions = []
+function populateRulesetOptions(rulesetSelector) {
+  let emptyOption = document.createElement("option")
+  emptyOption.setAttribute("value", "none")
+  emptyOption.innerText = "--"
+  rulesetSelector.appendChild(emptyOption)
+  
+  for (var i = 0; i < rulesetOptions.length; i++) {
+    if (rulesetOptions[i] != null)
+    {
+      let rulesetOption = document.createElement("option")
+      rulesetOption.setAttribute("value", rulesetOptions[i].rulesetId)
+      rulesetOption.innerText = rulesetOptions[i].name
+      rulesetSelector.appendChild(rulesetOption);
+    }
+  }
+}
+
+let tournamentOptions = []
+function populateTournamentOptions(tournamentSelector) {
+  let emptyOption = document.createElement("option")
+  emptyOption.setAttribute("value", "none")
+  emptyOption.innerText = "--"
+  tournamentSelector.appendChild(emptyOption)
+
+  for (var i = 0; i < tournamentOptions.length; i++) {
+    if (tournamentOptions[i] != null)
+    {
+      let tournamentOption = document.createElement("option")
+      tournamentOption.setAttribute("value", tournamentOptions[i].tournamentId)
+      tournamentOption.innerText = tournamentOptions[i].name
+      tournamentSelector.appendChild(tournamentOption);
+    }
+  }
+}
+
+function loadDropDownSelections()
+{
+  const searchParams = new URLSearchParams();
+  
+  searchParams.append("searchType", "all")
+  searchParams.append("searchFilter", "")
+
+  const playerRequest = new Request("/player/search?" + searchParams.toString())
+
+  fetch(playerRequest).then((response) => response.json())
+    .then((data) => {
+      playerOptions = data
+      let playerSelectors = document.getElementsByClassName("playerSelectors")
+      for (let i = 0; i < playerSelectors.length; i++) {
+        populatePlayerOptions(playerSelectors[i])
+      }
+    })
+
+  const rulesetRequest = new Request("/ruleset/search?" + searchParams.toString())
+
+  fetch(rulesetRequest).then((response) => response.json())
+    .then((data) => {
+      rulesetOptions = data
+      let rulesetSelectors = document.getElementsByClassName("rulesetSelector")
+      for (let i = 0; i < rulesetSelectors.length; i++) {
+          populateRulesetOptions(rulesetSelectors[i])
+      }
+    })
+  
+  const tournamentRequest = new Request("/tournament/search?" + searchParams.toString())
+  
+  fetch(tournamentRequest).then((response) => response.json())
+    .then((data) => {
+      tournamentOptions = data
+      let tournamentSelector = document.getElementById("tournamentSelector")
+      populateTournamentOptions(tournamentSelector)
+    })
 }

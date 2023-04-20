@@ -65,32 +65,65 @@ public class CreateController {
         return ResponseEntity.ok("{\"operation\": \"success\"}");
     }
 
-    @PostMapping(value = "/tournament/create", params = {"addtname","addtloc","addtdate","addtrule"})
+    @PostMapping(value = "/tournament/create", consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<String> createTournament(@RequestParam(name = "addtname") String name,
-                                                   @RequestParam(name = "addtloc") String location,
-                                                   @RequestParam(name = "addtdate") Date date, 
-                                                   @RequestParam(name = "addtrule") String ruleSetName) {
+    public ResponseEntity<String> createTournament(@RequestBody Map<String, String> inputMap) {
 
         Tournament tournament = new Tournament();
 
-        if(name != null){
-            tournament.setName(name);
+        String name = inputMap.get("tournamentName");
+        String location = inputMap.get("tournamentLocation");
+        String rulesetName = inputMap.get("tournamentRulesetName");
+        String dateAsString = inputMap.get("tournamentDate");
+
+        if (name == null || location == null || rulesetName == null || dateAsString == null) {
+            return ResponseEntity.internalServerError().body("{\"operation\":\"failure\",\"message\":\"Something went wrong\"}");
         }
-        if(location != null){
-            tournament.setLocation(location);
+
+        if (name.equals("") || location.equals("") || rulesetName.equals("") || dateAsString.equals("")) {
+            return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Name, location, and ruleset are required\"}");
         }
-        if(date != null){
-            tournament.setDate(date);
+
+        Date date;
+        try {
+            date = Date.valueOf(dateAsString);
+        }        
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Date format is invalid\"}");
         }
-        if(ruleSetName != null){
-            Ruleset ruleset = rulesetService.findRulesetsByName(ruleSetName).get(0);
-            if( ruleset == null){
-                return ResponseEntity.status(HttpStatus.valueOf(400)).body("{\"operation\":\"failure\",\"message\":\"Ruleset not found\"}");
-            }else{
-                tournament.setRuleset(ruleset);
+
+        tournament.setName(name);
+        tournament.setLocation(location);
+        tournament.setDate(date);
+
+        Ruleset ruleset = rulesetService.findRulesetsByName(rulesetName).get(0);
+        if(ruleset == null){
+            return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Ruleset not found\"}");
+        }
+        else{
+            tournament.setRuleset(ruleset);
+        }
+
+        inputMap.remove("tournamentName");
+        inputMap.remove("tournamentLocation");
+        inputMap.remove("tournamentRulesetName");
+        inputMap.remove("tournamentDate");
+
+        ArrayList<Player> players = new ArrayList<>();
+        for (String playerEntry : inputMap.keySet()) {
+            Player player;
+            String playerId = inputMap.get(playerEntry);
+
+            if (playerId.equals("") || playerId.equals("none")) {
+                return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"All players must be selected\"}");
             }
+
+            player = playerService.findPlayerById(Long.parseLong(playerId));
+
+            players.add(player);
         }
+
+        tournament.setPlayers(players);
         tournamentService.saveTournament(tournament);
 
         return ResponseEntity.ok("{\"operation\":\"success\"}");
@@ -106,7 +139,7 @@ public class CreateController {
         String rulesetOrigin = inputMap.get("rulesetOrigin");
         ArrayList<Rule> rules = new ArrayList<>();
 
-        if(rulesetName == null || rulesetOrigin == null) {
+        if(rulesetName.equals("") || rulesetOrigin.equals("")) {
             return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Ruleset name and origin are required\"}");
         }
 
@@ -117,6 +150,11 @@ public class CreateController {
         for (String ruleName : inputMap.keySet()) {
             Rule rule;
             String attribute = inputMap.get(ruleName);
+
+            // Check for empty value
+            if (attribute.equals("")) {
+                return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Attribute with key " + ruleName + " is empty\"}");
+            }
 
             // Check if the rule already exists
             rule = ruleService.findRuleByNameAndAttribute(ruleName, attribute);
@@ -192,8 +230,8 @@ public class CreateController {
                                              @RequestParam(name = "ruleAttribute") String ruleAttribute) {
         Rule rule = new Rule();
 
-        if (ruleName == null || ruleAttribute == null) {
-            return new ResponseEntity<>("Rule name and rule attribute are required", HttpStatus.BAD_REQUEST);
+        if (ruleName.equals("") || ruleAttribute.equals("")) {
+            return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Rule key and attribute are required\"}");
         }
         
         rule.setName(ruleName);
@@ -205,7 +243,7 @@ public class CreateController {
             ruleAsJson = objectMapper.writeValueAsString(rule);
         }
         catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating rule, please try again");
+            return ResponseEntity.internalServerError().body("Error creating rule, please try again");
         }
 
         ruleService.saveRule(rule);

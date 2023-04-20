@@ -33,8 +33,8 @@ public class UpdateController {
     @PatchMapping(value = "/player/update", params = {"playerId", "editssname", "rank"})
     @ResponseBody
     public ResponseEntity<String> updatePlayer(@RequestParam(name = "playerId") long playerId,
-                                               @RequestParam(name = "editssname") String skipperName,
-                                               @RequestParam(name = "rank") int rank) {
+                                               @RequestParam(name = "editssname", required = false) String skipperName,
+                                               @RequestParam(name = "rank", required = false) int rank) {
         Player player = new Player();
         player.setSkipperName(skipperName);
         player.setRank(rank);
@@ -42,7 +42,7 @@ public class UpdateController {
         player = playerService.updatePlayer(player, playerId);
 
         if (player == null) {
-            return ResponseEntity.badRequest().body("Player not found");
+            return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Player not found\"}");
         }
 
         String playerAsJson;
@@ -50,7 +50,7 @@ public class UpdateController {
             playerAsJson = JsonMapper(player);
         }
         catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating player");
+            return ResponseEntity.internalServerError().body("{\"operation:\"\"failure\",\"message\":\"Error updating player\"}");
         }
 
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(playerAsJson);
@@ -62,17 +62,17 @@ public class UpdateController {
                                                    @RequestParam(name = "name") String name,
                                                    @RequestParam(name = "location") String location,
                                                    @RequestParam(name = "date") Date date,
-                                                   @RequestParam(name = "rulesetId") long rulesetId,
+                                                   @RequestParam(name = "rulesetName") String rulesetName,
                                                    @RequestParam(name = "playerIds") ArrayList<Long> playerIds) {
         Tournament tournament = new Tournament();
         tournament.setName(name);
         tournament.setLocation(location);
         tournament.setDate(date);
 
-        Ruleset ruleset = rulesetService.findRulesetById(rulesetId);
+        Ruleset ruleset = rulesetService.findRulesetsByName(rulesetName).get(0);
 
         if (ruleset == null) {
-            return ResponseEntity.badRequest().body("Ruleset not found");
+            return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body("\"operation\": \"failure\", \"message\": \"Ruleset not found\"");
         }
 
         tournament.setRuleset(ruleset);
