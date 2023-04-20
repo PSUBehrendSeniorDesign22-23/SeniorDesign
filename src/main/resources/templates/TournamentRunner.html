@@ -47,16 +47,16 @@
         <tr>
           <td>Challenger</td>
           <td id="challengerName">--</td>
-          <td>1-0</td>
-          <td id="challengerStones">4</td>
-          <td id="challengerChips">1</td>
+          <td id="challengerRatio">*-*</td>
+          <td id="challengerStones">--</td>
+          <td id="challengerChips">--</td>
         </tr>
         <tr>
           <td>Defender</td>
           <td id="defenderName">--</td>
-          <td>0-1</td>
-          <td id="defenderStones">5</td>
-          <td id="defenderChips">2</td>
+          <td id="defenderRatio">*-*</td>
+          <td id="defenderStones">--</td>
+          <td id="defenderChips">--</td>
         </tr>
       </table>
     </div>
@@ -77,13 +77,13 @@
     <div class="centerTextBox" style="width: 95%">
       <h1 class="primaryTextCenter" id="challengerRecord">-- Match Record</h1>
 
-      <button onclick="roundWinChange(1, 'plus')">Add Score</button>
+      <button onclick="challengerRoundWin()">Add Score</button>
       <span id="p1Score" class="primaryTextCenter">0</span>
       <button onclick="roundWinChange(1, 'minus')">Subtract Score</button>
 
       <h1 class="primaryTextCenter" id="defenderRecord">-- Match Record</h1>
 
-      <button onclick="roundWinChange(2, 'plus')">Add Score</button>
+      <button onclick="defenderRoundWin()">Add Score</button>
       <span id="p2Score" class="primaryTextCenter">0</span>
       <button onclick="roundWinChange(2, 'minus')">Subtract Score</button>
 

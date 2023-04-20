@@ -1,4 +1,4 @@
-var p1Wins = 0;
+/*var p1Wins = 0;
 var p2Wins = 0;
 
 function roundWinChange(player, change)
@@ -27,7 +27,7 @@ function roundWinChange(player, change)
     }
   	document.getElementById("p2Score").innerHTML = p2Wins;
   }
-}
+}*/
 /* 
 Steps to run a tournament
 
@@ -69,13 +69,17 @@ let ruleInfo = document.getElementById("ruleInfo")
 
 let challengerName = document.getElementById("challengerName")
 let defenderName = document.getElementById("defenderName")
+let challengerRatio = document.getElementById("challengerRatio")
+let defenderRatio = document.getElementById("defenderRatio")
 let challengerStones = document.getElementById("challengerStones")
 let defenderStones = document.getElementById("defenderStones")
 let challengerChips = document.getElementById("challengerChips")
 let defenderChips = document.getElementById("defenderChips")
 
 let challengerRecord = document.getElementById("challengerRecord")
+let challengerRoundScore = document.getElementById("p1Score")
 let defenderRecord = document.getElementById("defenderRecord")
+let defenderRoundScore = document.getElementById("p2Score")
 
 let p1Winner = document.getElementById("p1Label")
 let p2Winner = document.getElementById("p2Label")
@@ -93,6 +97,9 @@ function defenderRoundWin() {
     defender.chips++   
     
     if (isMatchComplete()) {
+        console.log("Defender Win")
+        defender.matchWins++
+        challenger.matchLosses++
         completeMatches.push(activeMatch)
         rotatePlayers()
         startNextMatch()
@@ -116,6 +123,9 @@ function challengerRoundWin() {
     challenger.chips++   
 
     if (isMatchComplete()) {
+        console.log("Challenger Win")
+        challenger.matchWins++
+        defender.matchLosses++
         completeMatches.push(activeMatch)
         rotatePlayers()
         startNextMatch()
@@ -183,7 +193,15 @@ function rotatePlayers() {
         // Remove challenger from list
         playerHolder = playerOrder.splice(1,1)
     }
-    playerOrder.push(playerHolder)
+    if (playerHolder.length == undefined)
+    {
+        playerOrder.push(playerHolder)
+    }
+    else
+    {
+        playerOrder.push(playerHolder[0])
+    }
+    
 }
 
 function startNextMatch() {
@@ -207,6 +225,7 @@ function finalizeTournament() {
     // Create all matches in database
     // Redirect to a summary page
     // Summary page
+    console.log("Display summary modal")
 }
 
 function createMatch() {
@@ -282,56 +301,50 @@ function initializeTournament() {
     tournament = tournamentOptions[value]
     document.getElementById("idSelect").style.display = "none"
 
+    // Get all required information from database
     players = tournament.players
     ruleset = tournament.ruleset
     rules = ruleset.rules
+
+    rules.BestOf = 3
+    rules.StartingStones = 3
+    rules.ChipsPerStone = 2
+
+    for (let rule in rules) {
+        if (rules[rule].name == "BestOf")
+        {
+            rules.BestOf = rules[rule].attribute
+        }
+        if (rules[rule].name == "StartingStones")
+        {
+            rules.StartingStones = rules[rule].attribute
+        }
+        if (rules[rule].name == "ChipsPerStone")
+        {
+            rules.ChipsPerStone = rules[rule].attribute
+        }
+    }
 
     generatePlayerOrder()
 
     // Append runtime attributes to each player
     for (let player in playerOrder) {
-        playerOrder[player].stones = 3//tournament.rules.StartingStones
+        playerOrder[player].stones = rules.StartingStones
         playerOrder[player].chips = 0
+        playerOrder[player].matchWins = 0
+        playerOrder[player].matchLosses = 0
     }
 
     // Set initial defender and challenger
     // Pull first player as defender
     defender = playerOrder.shift()
-    //challenger = "Ypu"
     // Pull second player as challenger
     challenger = playerOrder.shift()
-    //defender = "Me"
 
     // Create first match
     activeMatch = createMatch()
     // Initialize display to user
     initializeDisplay()
-
-    // Get all required information from database
-    /*retrieveTournamentInformation().then((tournamentInfo) => {
-            tournament = tournamentInfo.tournament
-            players = tournamentInfo.players
-            ruleset = tournamentInfo.ruleset
-            rules = tournamentInfo.rules
-            playerOrder = generatePlayerOrder() // List of players
-            
-            // Append runtime attributes to each player
-            for (let player in playerOrder) {
-                player.stones = tournamentInfo.rules.StartingStones
-                player.chips = 0
-            }
-
-            // Set initial defender and challenger
-            // Pull first player as defender
-            defender = playerOrder.shift()
-            // Pull second player as challenger
-            challenger = playerOrder.shift()
-
-            // Create first match
-            activeMatch = createMatch()
-            // Initialize display to user
-            initializeDisplay()
-    })*/
 }
 
 function initializeDisplay() {
@@ -341,6 +354,9 @@ function initializeDisplay() {
     defenderName.innerText = defender.skipperName
     challengerName.innerText = challenger.skipperName
 
+    defenderRatio.innerText = defender.matchWins + " - " + defender.matchLosses
+    challengerRatio.innerText = challenger.matchWins + " - " + challenger.matchLosses
+
     defenderStones.innerText = defender.stones
     challengerStones.innerText = challenger.stones
 
@@ -348,6 +364,11 @@ function initializeDisplay() {
     challengerChips.innerText = challenger.chips
 
     for (let rule in rules) {
+        if (rules[rule].name == undefined)
+        {
+            continue
+        }
+
         let newRuleRow = document.createElement("tr")
 
         let newRuleName = document.createElement("td")
@@ -363,7 +384,9 @@ function initializeDisplay() {
     }
 
     challengerRecord.innerText = challenger.skipperName + " Round Record"
+    challengerRoundScore.innerText = activeMatch.challengerScore
     defenderRecord.innerText = defender.skipperName + " Round Record"
+    defenderRoundScore.innerText = activeMatch.defenderScore
 
     p1Winner.innerText = challenger.skipperName
     p2Winner.innerText = defender.skipperName
@@ -371,6 +394,27 @@ function initializeDisplay() {
 
 function updateDisplay() {
     // Update DOM to reflect tournament state
+    matchNumber.innerText = tournament.name + " - Match " + (completeMatches.length + 1);
+    
+    defenderName.innerText = defender.skipperName
+    challengerName.innerText = challenger.skipperName
+
+    defenderRatio.innerText = defender.matchWins + " - " + defender.matchLosses
+    challengerRatio.innerText = challenger.matchWins + " - " + challenger.matchLosses
+
+    defenderStones.innerText = defender.stones
+    challengerStones.innerText = challenger.stones
+
+    defenderChips.innerText = defender.chips
+    challengerChips.innerText = challenger.chips
+
+    challengerRecord.innerText = challenger.skipperName + " Round Record"
+    challengerRoundScore.innerText = activeMatch.challengerScore
+    defenderRecord.innerText = defender.skipperName + " Round Record"
+    defenderRoundScore.innerText = activeMatch.defenderScore
+
+    p1Winner.innerText = challenger.skipperName
+    p2Winner.innerText = defender.skipperName
 }
 
 function alertStoneConflict() {
@@ -385,6 +429,8 @@ function alertStoneConflict() {
     // etc.
 
     // THIS FUNCTION IS FOR CONSTRUCTING OPTIONS TO DISPLAY TO THE USER ONLY
+    console.log("Stone Alert")
+    resolveStoneConflict()
 }
 
 function resolveStoneConflict() {
@@ -392,6 +438,40 @@ function resolveStoneConflict() {
     // This function can do anything, as long as it resolves conflict.
     // It also could be broken into multiple functions for different resolutions
     // It may edit stone counts, perform chip conversions, edit and finalize a match, etc.
+    if (challenger.chips >= rules.ChipsPerStone)
+    {
+        challenger.stones++
+        challenger.chips = challenger.chips - rules.ChipsPerStone
+    }
+    else
+    {
+        challengerKnockoutFlag = true
+        console.log("Defender Win")
+        defender.matchWins++
+        challenger.matchLosses++
+    }
+
+    if (defender.chips >= rules.ChipsPerStone)
+    {
+        defender.stones++
+        defender.chips = defender.chips - rules.ChipsPerStone
+    }
+    else
+    {
+        defenderKnockoutFlag = true
+        console.log("Challenger Win")
+        challenger.matchWins++
+        defender.matchLosses++
+    }
+
+    completeMatches.push(activeMatch)
+    rotatePlayers()
+    startNextMatch()
+    if (tournamentCompleteFlag) {
+        finalizeTournament()
+    }
+
+    updateDisplay()
 }
 
 function convertChips(player) {
@@ -423,10 +503,10 @@ function preload()
       for (var i = 0; i < data.length; i++) {
         if (data[i] != null)
         {
-            let newRuleKeyLabel = document.createElement("option")
-            newRuleKeyLabel.setAttribute("value", i)
-            newRuleKeyLabel.innerText = data[i].name
-            document.getElementById("tournaments").appendChild(newRuleKeyLabel)
+            let newTournamentOption = document.createElement("option")
+            newTournamentOption.setAttribute("value", i)
+            newTournamentOption.innerText = data[i].name
+            document.getElementById("tournaments").appendChild(newTournamentOption)
 
             tournamentOptions.push(data[i])
         }
