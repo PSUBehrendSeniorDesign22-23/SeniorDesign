@@ -40,6 +40,10 @@ public class SearchController {
         
         System.out.printf("%s  |  %s", type, filter);
 
+        if (type.equals("all")) {
+            players.addAll(playerService.findAllPlayers());
+        }
+
         if (type.equals("pname")) {
             players.addAll(playerService.findPlayersByName(filter));
         }

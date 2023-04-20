@@ -7,7 +7,7 @@
     <script type="text/javascript" th:src="@{/js/dbBrowsing.js}" defer></script>
   </head>
 
-  <body class="parallax">
+  <body class="parallax" onload="loadPlayerSelections()">
     <br>
     <div class="textBox" style="width: 95%">
       <h1 class="primaryTextCenter">Tournament Coordinator Tools</h1>
@@ -45,6 +45,19 @@
         <input type="date" id="addtdate" name="addtdate"><br><br>
         <label for="addtrule">Tournament Ruleset: </label>
         <input type="text" id="addtrule" name="addtrule"><br><br>
+        
+        <button type="button" class="formButton" onclick="addPlayerSelector()">Add Player</button>
+        <button type="button" class="formButton" onclick="removePlayerSelector()">Remove Player</button>
+        <br>
+
+        <label for="player1Select">Player 1: </label>
+        <select name="player1Select" id="player1Select">
+        </select><br>
+
+        <label for="player2Select">Player 2: </label>
+        <select name="player2Select" id="player2Select">
+        </select><br>
+
         <input type="submit" value="Submit" class="formButton" onclick="addTournament()">
       </form>
     </div>

@@ -167,13 +167,25 @@ function addPlayer() {
 
 function addTournament() {
 
-  var form = document.getElementById("tournamentAddForm")
+  let tournamentAttributes = {
+    "tournamentName": document.getElementById("addtname").value,
+    "tournamentLocation": document.getElementById("addtloc").value,
+    "tournamentDate": document.getElementById("addtdate").value,
+    "tournamentRulesetName": document.getElementById("addtrule").value
+  }
 
-  const formData = new FormData(form)
+  for (let i = 1; i <= playerCount; i++) {
+    let playerKey = "player" + i + "Select";
+    let playerId = document.getElementById(playerKey).value
+    tournamentAttributes[playerKey] = playerId
+  }
 
   fetch("/tournament/create", {
       method: "POST",
-      body:   formData
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body:  JSON.stringify(tournamentAttributes)
   })
   .then(res => res.json()).then(data => {
     //var para = document.createElement('p')
@@ -286,4 +298,75 @@ function showSnackbar(text) {
 
   // After 3 seconds, remove the show class from DIV
   setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+}
+
+let playerOptions = []
+let playerCount = 2
+let lastPlayerInput = document.getElementById("player2Select")
+function addPlayerSelector() {
+  playerCount++
+
+  let nameTag = "player" + playerCount + "Select"
+  // Create label
+  let playerLabel = document.createElement("label")
+  playerLabel.setAttribute("for", nameTag)
+  playerLabel.innerText = "Player " + playerCount + ": "
+  // Create selector
+  let playerSelect = document.createElement("select")
+  playerSelect.setAttribute("name", nameTag)
+  playerSelect.setAttribute("id", nameTag)
+  // populate options
+  populatePlayerOptions(playerSelect)
+  // Add to DOM
+  lastPlayerInput.insertAdjacentElement("afterend", playerLabel)
+  lastPlayerInput = lastPlayerInput.nextElementSibling
+  lastPlayerInput.insertAdjacentElement("afterend", playerSelect)
+  lastPlayerInput = lastPlayerInput.nextElementSibling
+}
+
+function removePlayerSelector() {
+  if (playerCount > 2) {
+    for (let i = 0; i < 2; i++) {
+      let elementToRemove = lastPlayerInput
+      lastPlayerInput = lastPlayerInput.previousElementSibling
+      elementToRemove.remove()
+    }
+    playerCount--
+  }
+}
+
+function loadPlayerSelections()
+{
+  const searchParams = new URLSearchParams();
+  
+  searchParams.append("searchType", "all")
+  searchParams.append("searchFilter", "")
+
+  const request = new Request("/player/search?" + searchParams.toString())
+
+  fetch(request).then((response) => response.json())
+    .then((data) => {
+      playerOptions = data
+      let player1Select = document.getElementById("player1Select")
+      let player2Select = document.getElementById("player2Select")
+      populatePlayerOptions(player1Select)
+      populatePlayerOptions(player2Select)
+    })
+}
+
+function populatePlayerOptions(playerSelector) {
+  let emptyOption = document.createElement("option")
+  emptyOption.setAttribute("value", "none")
+  emptyOption.innerText = "--"
+  playerSelector.appendChild(emptyOption)
+
+  for (var i = 0; i < playerOptions.length; i++) {
+    if (playerOptions[i] != null)
+    {
+        let playerOption = document.createElement("option")
+        playerOption.setAttribute("value", playerOptions[i].playerId)
+        playerOption.innerText = playerOptions[i].skipperName
+        playerSelector.appendChild(playerOption);
+    }
+  }
 }
