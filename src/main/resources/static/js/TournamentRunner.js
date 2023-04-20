@@ -63,7 +63,18 @@ let stoneConflictFlag = false // Used to indicate and force resolution of stone 
 let tournamentCompleteFlag = false
 
 // DOM variables
-let matchNumber = document.getElementById("matchNum");
+let matchNumber = document.getElementById("matchNum")
+
+let ruleInfo = document.getElementById("ruleInfo")
+
+let challengerName = document.getElementById("challengerName")
+let defenderName = document.getElementById("defenderName")
+
+let challengerRecord = document.getElementById("challengerRecord")
+let defenderRecord = document.getElementById("defenderRecord")
+
+let p1Winner = document.getElementById("p1Label")
+let p2Winner = document.getElementById("p2Label")
 
 function defenderRoundWin() {
     if (stoneConflictFlag) {
@@ -259,12 +270,15 @@ function initializeTournament() {
     // Get tournament selection from user
     var tournamentSelect = document.getElementById("tournaments")
 	var value = tournamentSelect.value
-	var text = tournamentSelect.options[tournamentSelect.selectedIndex].text
+	if (value == "none")
+    {
+        console.log("invalid")
+        window.location='/CoordinatorTools'
+    }
     
     tournament = tournamentOptions[value]
     document.getElementById("idSelect").style.display = "none"
 
-    console.log(tournament)
     players = tournament.players
     ruleset = tournament.ruleset
     rules = ruleset.rules
@@ -279,10 +293,10 @@ function initializeTournament() {
     // Set initial defender and challenger
     // Pull first player as defender
     //defender = playerOrder.shift()
-    defender = "Me"
+    challenger = "Ypu"
     // Pull second player as challenger
     //challenger = playerOrder.shift()
-    challenger = "You"
+    defender = "Me"
 
     // Create first match
     activeMatch = createMatch()
@@ -320,6 +334,29 @@ function initializeDisplay() {
     // Reconstruct DOM for running tournament
     matchNumber.innerText = tournament.name + " - Match " + (completeMatches.length + 1);
     
+    defenderName.innerText = defender
+    challengerName.innerText = challenger
+
+    for (let rule in rules) {
+        let newRuleRow = document.createElement("tr")
+
+        let newRuleName = document.createElement("td")
+        newRuleName.innerText = rules[rule].name
+
+        let newRuleAttribute = document.createElement("td")
+        newRuleAttribute.innerText = rules[rule].attribute
+
+        newRuleRow.appendChild(newRuleName)
+        newRuleRow.appendChild(newRuleAttribute)
+        
+        ruleInfo.appendChild(newRuleRow)
+    }
+
+    challengerRecord.innerText = challenger + " Match Record"
+    defenderRecord.innerText = defender + " Match Record"
+
+    p1Winner.innerText = challenger
+    p2Winner.innerText = defender
 }
 
 function updateDisplay() {
@@ -364,8 +401,6 @@ function alertNotEnoughChips() {
 
 function preload()
 {
-  const resultsContainer = document.getElementById("results-container")
-
   const searchParams = new URLSearchParams();
   
   searchParams.append("searchType", "all")
@@ -384,10 +419,6 @@ function preload()
             document.getElementById("tournaments").appendChild(newRuleKeyLabel)
 
             tournamentOptions.push(data[i])
-
-            child = document.createElement('p')
-            child.innerText = JSON.stringify(data[i])
-            resultsContainer.appendChild(child)
         }
       }
     })
