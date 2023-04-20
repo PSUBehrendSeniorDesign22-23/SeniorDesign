@@ -48,15 +48,15 @@
           <td>Challenger</td>
           <td id="challengerName">--</td>
           <td>1-0</td>
-          <td>4</td>
-          <td>1</td>
+          <td id="challengerStones">4</td>
+          <td id="challengerChips">1</td>
         </tr>
         <tr>
           <td>Defender</td>
           <td id="defenderName">--</td>
           <td>0-1</td>
-          <td>5</td>
-          <td>2</td>
+          <td id="defenderStones">5</td>
+          <td id="defenderChips">2</td>
         </tr>
       </table>
     </div>
@@ -66,7 +66,10 @@
     <div class="textBox" style="width: 95%">
       <h1 class="primaryTextCenter">Rules</h1>
       <table style="width:100%" id="ruleInfo">
-        
+        <tr>
+          <td class="primaryTextCenter">Rule Name</td>
+          <td class="primaryTextCenter">Rule Value</td>
+        </tr>
       </table>
     </div>
     <br>
@@ -85,7 +88,7 @@
       <button onclick="roundWinChange(2, 'minus')">Subtract Score</button>
 
       <form action="/action_page.php">
-        <p class="primaryTextCenter">Please select this round's winner:</p>
+        <p class="primaryTextCenter">Please select this match's winner:</p>
         <label for="p1" id="p1Label">--</label>
         <input type="radio" id="p1" name="winner" value="player1"><br>
         <label for="p2" id="p2Label">--</label>

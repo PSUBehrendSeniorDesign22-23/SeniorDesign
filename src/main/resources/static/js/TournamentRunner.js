@@ -69,6 +69,10 @@ let ruleInfo = document.getElementById("ruleInfo")
 
 let challengerName = document.getElementById("challengerName")
 let defenderName = document.getElementById("defenderName")
+let challengerStones = document.getElementById("challengerStones")
+let defenderStones = document.getElementById("defenderStones")
+let challengerChips = document.getElementById("challengerChips")
+let defenderChips = document.getElementById("defenderChips")
 
 let challengerRecord = document.getElementById("challengerRecord")
 let defenderRecord = document.getElementById("defenderRecord")
@@ -272,7 +276,6 @@ function initializeTournament() {
 	var value = tournamentSelect.value
 	if (value == "none")
     {
-        console.log("invalid")
         window.location='/CoordinatorTools'
     }
     
@@ -282,21 +285,22 @@ function initializeTournament() {
     players = tournament.players
     ruleset = tournament.ruleset
     rules = ruleset.rules
-    playerOrder = generatePlayerOrder()
+
+    generatePlayerOrder()
 
     // Append runtime attributes to each player
     for (let player in playerOrder) {
-        player.stones = tournamentInfo.rules.StartingStones
-        player.chips = 0
+        playerOrder[player].stones = 3//tournament.rules.StartingStones
+        playerOrder[player].chips = 0
     }
 
     // Set initial defender and challenger
     // Pull first player as defender
-    //defender = playerOrder.shift()
-    challenger = "Ypu"
+    defender = playerOrder.shift()
+    //challenger = "Ypu"
     // Pull second player as challenger
-    //challenger = playerOrder.shift()
-    defender = "Me"
+    challenger = playerOrder.shift()
+    //defender = "Me"
 
     // Create first match
     activeMatch = createMatch()
@@ -334,8 +338,14 @@ function initializeDisplay() {
     // Reconstruct DOM for running tournament
     matchNumber.innerText = tournament.name + " - Match " + (completeMatches.length + 1);
     
-    defenderName.innerText = defender
-    challengerName.innerText = challenger
+    defenderName.innerText = defender.skipperName
+    challengerName.innerText = challenger.skipperName
+
+    defenderStones.innerText = defender.stones
+    challengerStones.innerText = challenger.stones
+
+    defenderChips.innerText = defender.chips
+    challengerChips.innerText = challenger.chips
 
     for (let rule in rules) {
         let newRuleRow = document.createElement("tr")
@@ -352,11 +362,11 @@ function initializeDisplay() {
         ruleInfo.appendChild(newRuleRow)
     }
 
-    challengerRecord.innerText = challenger + " Match Record"
-    defenderRecord.innerText = defender + " Match Record"
+    challengerRecord.innerText = challenger.skipperName + " Round Record"
+    defenderRecord.innerText = defender.skipperName + " Round Record"
 
-    p1Winner.innerText = challenger
-    p2Winner.innerText = defender
+    p1Winner.innerText = challenger.skipperName
+    p2Winner.innerText = defender.skipperName
 }
 
 function updateDisplay() {
