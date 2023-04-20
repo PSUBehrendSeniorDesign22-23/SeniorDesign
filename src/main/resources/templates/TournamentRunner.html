@@ -29,14 +29,13 @@
 
     <br>
     <div class="textBox" style="width: 95%">
-      <h1 id="matchNum" class="primaryTextCenter">Tournament Name - Match #</h1>
+      <h1 id="matchNum" class="primaryTextCenter">--</h1>
     </div>
     <br>
 
     <br>
     <div class="textBox" style="width: 95%">
       <h1 class="primaryTextCenter">Player Rankings</h1>
-
       <table style="width:100%">
         <tr>
           <td>Player Status</td>
@@ -47,14 +46,14 @@
         </tr>
         <tr>
           <td>Challenger</td>
-          <td>Mountain Man</td>
+          <td id="challengerName">--</td>
           <td>1-0</td>
           <td>4</td>
           <td>1</td>
         </tr>
         <tr>
           <td>Defender</td>
-          <td>Plateau Man</td>
+          <td id="defenderName">--</td>
           <td>0-1</td>
           <td>5</td>
           <td>2</td>
@@ -65,19 +64,21 @@
 
     <br>
     <div class="textBox" style="width: 95%">
-      <h1 class="primaryTextCenter">Rule Styling</h1>
-      <h2 class="primaryTextLeft">Retrieve ruleset information from database and display here</h2>
+      <h1 class="primaryTextCenter">Rules</h1>
+      <table style="width:100%" id="ruleInfo">
+        
+      </table>
     </div>
     <br>
 
     <div class="centerTextBox" style="width: 95%">
-      <h1 class="primaryTextCenter">Player 1 Match Record</h1>
+      <h1 class="primaryTextCenter" id="challengerRecord">-- Match Record</h1>
 
       <button onclick="roundWinChange(1, 'plus')">Add Score</button>
       <span id="p1Score" class="primaryTextCenter">0</span>
       <button onclick="roundWinChange(1, 'minus')">Subtract Score</button>
 
-      <h1 class="primaryTextCenter">Player 2 Match Record</h1>
+      <h1 class="primaryTextCenter" id="defenderRecord">-- Match Record</h1>
 
       <button onclick="roundWinChange(2, 'plus')">Add Score</button>
       <span id="p2Score" class="primaryTextCenter">0</span>
@@ -85,17 +86,14 @@
 
       <form action="/action_page.php">
         <p class="primaryTextCenter">Please select this round's winner:</p>
-        <label for="p1">Player 1</label>
+        <label for="p1" id="p1Label">--</label>
         <input type="radio" id="p1" name="winner" value="player1"><br>
-        <label for="p2">Player 2</label>
+        <label for="p2" id="p2Label">--</label>
         <input type="radio" id="p2" name="winner" value="player2">
       </form>
       <br>
       <button class="formButton">Submit</button>
 
-    </div>
-    <div class="textBox" id="results-container">
-    
     </div>
   </body>
 
