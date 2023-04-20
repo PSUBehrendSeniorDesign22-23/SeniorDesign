@@ -4,6 +4,16 @@
   --primaryTextColor: #ffffff;
   --secondaryColor: #728370;
 }
+.logout {
+  text-align: center;
+  font-weight: bold;
+  background-color:#f44336;
+  border: 1px solid lightgray;
+  position: fixed;
+  top: 5px;
+  right:10px;
+  border-radius: 5px;
+}
 
 .mainBody {
   background-color: var(--backgroundColor);
