@@ -126,7 +126,7 @@ function rotatePlayers() {
         playerOrder.unshift(challenger)
     }
     // Check for defender knockout
-    if (defender.stones == 0 && defender.chips == 0) {
+    if (defender.stones == 0 && defender.chips < rules.ChipsPerStone) {
         knockoutList.push(defender)
         defenderKnockoutFlag = true
     }
