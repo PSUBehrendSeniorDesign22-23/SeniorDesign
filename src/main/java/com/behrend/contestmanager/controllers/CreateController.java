@@ -203,7 +203,7 @@ public class CreateController {
         }
         
         if (defenderId == challengerId) {
-            return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Defender and Challenger cannot be the same\"}")
+            return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Defender and Challenger cannot be the same\"}");
         }
 
         Player defender = playerService.findPlayerById(defenderId);
