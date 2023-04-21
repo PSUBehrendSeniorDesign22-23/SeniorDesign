@@ -73,17 +73,16 @@ public class CreateController {
 
         String name = inputMap.get("tournamentName");
         String location = inputMap.get("tournamentLocation");
-        String rulesetName = inputMap.get("tournamentRulesetName");
         String dateAsString = inputMap.get("tournamentDate");
-
-        if (name == null || location == null || rulesetName == null || dateAsString == null) {
+        
+        if (name == null || location == null || dateAsString == null) {
             return ResponseEntity.internalServerError().body("{\"operation\":\"failure\",\"message\":\"Something went wrong\"}");
         }
-
-        if (name.equals("") || location.equals("") || rulesetName.equals("") || dateAsString.equals("")) {
+        
+        if (name.equals("") || location.equals("") || dateAsString.equals("")) {
             return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Name, location, and ruleset are required\"}");
         }
-
+        
         Date date;
         try {
             date = Date.valueOf(dateAsString);
@@ -91,12 +90,20 @@ public class CreateController {
         catch (Exception e) {
             return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Date format is invalid\"}");
         }
-
+        
         tournament.setName(name);
         tournament.setLocation(location);
         tournament.setDate(date);
 
-        Ruleset ruleset = rulesetService.findRulesetsByName(rulesetName).get(0);
+        long rulesetId;
+        try {
+            rulesetId = Long.parseLong(inputMap.get("tournamentRulesetId"));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Failed to parse ruleset ID\"}");
+        }
+
+        Ruleset ruleset = rulesetService.findRulesetById(rulesetId);
         if(ruleset == null){
             return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Ruleset not found\"}");
         }
@@ -106,7 +113,7 @@ public class CreateController {
 
         inputMap.remove("tournamentName");
         inputMap.remove("tournamentLocation");
-        inputMap.remove("tournamentRulesetName");
+        inputMap.remove("tournamentRulesetId");
         inputMap.remove("tournamentDate");
 
         ArrayList<Player> players = new ArrayList<>();
@@ -115,7 +122,7 @@ public class CreateController {
             String playerId = inputMap.get(playerEntry);
 
             if (playerId.equals("") || playerId.equals("none")) {
-                return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"All players must be selected\"}");
+                return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"All players must be selected\"}");
             }
 
             player = playerService.findPlayerById(Long.parseLong(playerId));
@@ -126,7 +133,7 @@ public class CreateController {
         tournament.setPlayers(players);
         tournamentService.saveTournament(tournament);
 
-        return ResponseEntity.ok("{\"operation\":\"success\"}");
+        return ResponseEntity.ok("{\"operation\":\"success\",\"message\": \"Tournament Created\"}");
     }
 
     @PostMapping(value = "/ruleset/create", consumes = "application/json")
@@ -140,7 +147,7 @@ public class CreateController {
         ArrayList<Rule> rules = new ArrayList<>();
 
         if(rulesetName.equals("") || rulesetOrigin.equals("")) {
-            return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Ruleset name and origin are required\"}");
+            return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Ruleset name and origin are required\"}");
         }
 
         inputMap.remove("rulesetName");
@@ -153,7 +160,7 @@ public class CreateController {
 
             // Check for empty value
             if (attribute.equals("")) {
-                return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Attribute with key " + ruleName + " is empty\"}");
+                return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Attribute with key " + ruleName + " is empty\"}");
             }
 
             // Check if the rule already exists
@@ -175,7 +182,7 @@ public class CreateController {
         ruleset.setRules(rules);
         rulesetService.saveRuleset(ruleset);
 
-        return ResponseEntity.ok("{\"operation\": \"success\"}");
+        return ResponseEntity.ok("{\"operation\": \"success\",\"message\": \"Ruleset Created\"}");
     }
 
     @PostMapping(value = "/match/create", consumes = "application/json")
@@ -199,11 +206,11 @@ public class CreateController {
             challengerScore = Integer.parseInt(inputMap.get("challengerScore"));
         }
         catch (Exception e) {
-            return ResponseEntity.internalServerError().body("{\"operation:\"\"failure\",\"message\":\"Values must be numerical\"}");
+            return ResponseEntity.internalServerError().body("{\"operation\":\"failure\",\"message\":\"Values must be numerical\"}");
         }
         
         if (defenderId == challengerId) {
-            return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Defender and Challenger cannot be the same\"}");
+            return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Defender and Challenger cannot be the same\"}");
         }
 
         Player defender = playerService.findPlayerById(defenderId);
@@ -214,10 +221,10 @@ public class CreateController {
             return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Player with ID: " + defenderId + " does not exist\"}");
         }
         if (challenger == null) {
-            return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Player with ID: " + challengerId + " does not exist\"}");
+            return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Player with ID: " + challengerId + " does not exist\"}");
         }
         if (tournament == null) {
-            return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Tournament with ID: " + tournamentId + " does not exist\"}");
+            return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Tournament with ID: " + tournamentId + " does not exist\"}");
         }
 
         match.setDefender(defender);
