@@ -442,6 +442,10 @@ function addPlayer() {
 
     //addDiv.appendChild(para)
     showSnackbar(message)
+    const searchParams = new URLSearchParams()
+    searchParams.append("searchType", "all")
+    searchParams.append("searchFilter", "")
+    loadPlayerSelections(searchParams)
   })
 }
 
@@ -475,6 +479,10 @@ function addTournament() {
 
     //addDiv.appendChild(para)
     showSnackbar(data["operation"])
+    const searchParams = new URLSearchParams()
+    searchParams.append("searchType", "all")
+    searchParams.append("searchFilter", "")
+    loadTournamentSelections(searchParams)
   })
 }
 
@@ -506,6 +514,10 @@ function addRuleset() {
 
     //addDiv.appendChild(para)
     showSnackbar(data["operation"])
+    const searchParams = new URLSearchParams()
+    searchParams.append("searchType", "all")
+    searchParams.append("searchFilter", "")
+    loadRulesetSelections(searchParams)
   })
 }
 
@@ -525,6 +537,10 @@ function editPlayer() {
   })
   .then(res => res.json()).then(data => {
     showSnackbar(data["operation"])
+    const searchParams = new URLSearchParams()
+    searchParams.append("searchType", "all")
+    searchParams.append("searchFilter", "")
+    loadPlayerSelections(searchParams)
   })
 }
 
@@ -550,6 +566,10 @@ function editRuleset() {
   })
   .then(res => res.json()).then(data => {
     showSnackbar(data["operation"])
+    const searchParams = new URLSearchParams()
+    searchParams.append("searchType", "all")
+    searchParams.append("searchFilter", "")
+    loadRulesetSelections(searchParams)
   })
 }
 
@@ -578,6 +598,10 @@ function editTournament() {
   })
   .then(res => res.json()).then(data => {
     showSnackbar(data["operation"])
+    const searchParams = new URLSearchParams()
+    searchParams.append("searchType", "all")
+    searchParams.append("searchFilter", "")
+    loadTournamentSelections(searchParams)
   })
 }
 
@@ -696,7 +720,7 @@ function showSnackbar(text) {
 
 let playerOptions = []
 let playerCount = 2
-let lastPlayerInput = document.getElementById("player2Select")
+let lastPlayerInput = document.getElementById("player2Select").nextElementSibling
 function addPlayerSelector() {
   playerCount++
 
@@ -705,6 +729,7 @@ function addPlayerSelector() {
   let playerLabel = document.createElement("label")
   playerLabel.setAttribute("for", nameTag)
   playerLabel.innerText = "Player " + playerCount + ": "
+  playerLabel.appendChild( document.createTextNode( '\u00A0' ) );
   // Create selector
   let playerSelect = document.createElement("select")
   playerSelect.setAttribute("name", nameTag)
@@ -712,16 +737,21 @@ function addPlayerSelector() {
   playerSelect.setAttribute("class", "playerSelector")
   // populate options
   populatePlayerOptions(playerSelect)
+
+  let breakElement = document.createElement("br")
+
   // Add to DOM
   lastPlayerInput.insertAdjacentElement("afterend", playerLabel)
   lastPlayerInput = lastPlayerInput.nextElementSibling
   lastPlayerInput.insertAdjacentElement("afterend", playerSelect)
   lastPlayerInput = lastPlayerInput.nextElementSibling
+  lastPlayerInput.insertAdjacentElement("afterend", breakElement)
+  lastPlayerInput = lastPlayerInput.nextElementSibling
 }
 
 function removePlayerSelector() {
   if (playerCount > 2) {
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 3; i++) {
       let elementToRemove = lastPlayerInput
       lastPlayerInput = lastPlayerInput.previousElementSibling
       elementToRemove.remove()
@@ -731,15 +761,17 @@ function removePlayerSelector() {
 }
 
 let playerEditCount = 2
-let lastPlayerEditInput = document.getElementById("player2EditSelect")
+let lastPlayerEditInput = document.getElementById("player2EditSelect").nextElementSibling
 function addPlayerEditSelector() {
-  playerCount++
+  playerEditCount++
 
-  let nameTag = "player" + playerCount + "EditSelect"
+  let nameTag = "player" + playerEditCount + "EditSelect"
   // Create label
   let playerLabel = document.createElement("label")
   playerLabel.setAttribute("for", nameTag)
-  playerLabel.innerText = "Player " + playerCount + ": "
+  playerLabel.innerText = "Player " + playerEditCount + ": "
+  playerLabel.appendChild( document.createTextNode( '\u00A0' ) );
+
   // Create selector
   let playerSelect = document.createElement("select")
   playerSelect.setAttribute("name", nameTag)
@@ -747,26 +779,31 @@ function addPlayerEditSelector() {
   playerSelect.setAttribute("class", "playerSelector")
   // populate options
   populatePlayerOptions(playerSelect)
+
+  let breakElement = document.createElement("br")
   // Add to DOM
   lastPlayerEditInput.insertAdjacentElement("afterend", playerLabel)
   lastPlayerEditInput = lastPlayerEditInput.nextElementSibling
   lastPlayerEditInput.insertAdjacentElement("afterend", playerSelect)
   lastPlayerEditInput = lastPlayerEditInput.nextElementSibling
+  lastPlayerEditInput.insertAdjacentElement("afterend", breakElement)
+  lastPlayerEditInput = lastPlayerEditInput.nextElementSibling
 }
 
 function removePlayerEditSelector() {
-  if (playerCount > 2) {
-    for (let i = 0; i < 2; i++) {
+  if (playerEditCount > 2) {
+    for (let i = 0; i < 3; i++) {
       let elementToRemove = lastPlayerEditInput
       lastPlayerEditInput = lastPlayerEditInput.previousElementSibling
       elementToRemove.remove()
     }
-    playerCount--
+    playerEditCount--
   }
 }
 
 
 function populatePlayerOptions(playerSelector) {
+  playerSelector.innerHTML =''
   let emptyOption = document.createElement("option")
   emptyOption.setAttribute("value", "none")
   emptyOption.innerText = "--"
@@ -785,6 +822,7 @@ function populatePlayerOptions(playerSelector) {
 
 let rulesetOptions = []
 function populateRulesetOptions(rulesetSelector) {
+  rulesetSelector.innerHTML =''
   let emptyOption = document.createElement("option")
   emptyOption.setAttribute("value", "none")
   emptyOption.innerText = "--"
@@ -803,6 +841,7 @@ function populateRulesetOptions(rulesetSelector) {
 
 let tournamentOptions = []
 function populateTournamentOptions(tournamentSelector) {
+  tournamentSelector.innerHTML = ''
   let emptyOption = document.createElement("option")
   emptyOption.setAttribute("value", "none")
   emptyOption.innerText = "--"
@@ -826,6 +865,12 @@ function loadDropDownSelections()
   searchParams.append("searchType", "all")
   searchParams.append("searchFilter", "")
 
+  loadPlayerSelections(searchParams)
+  loadRulesetSelections(searchParams)
+  loadTournamentSelections(searchParams)
+}
+
+function loadPlayerSelections(searchParams) {
   const playerRequest = new Request("/player/search?" + searchParams.toString())
 
   fetch(playerRequest).then((response) => response.json())
@@ -836,7 +881,9 @@ function loadDropDownSelections()
         populatePlayerOptions(playerSelectors[i])
       }
     })
+}
 
+function loadRulesetSelections(searchParams) {
   const rulesetRequest = new Request("/ruleset/search?" + searchParams.toString())
 
   fetch(rulesetRequest).then((response) => response.json())
@@ -847,7 +894,9 @@ function loadDropDownSelections()
           populateRulesetOptions(rulesetSelectors[i])
       }
     })
-  
+}
+
+function loadTournamentSelections(searchParams) {
   const tournamentRequest = new Request("/tournament/search?" + searchParams.toString())
   
   fetch(tournamentRequest).then((response) => response.json())
