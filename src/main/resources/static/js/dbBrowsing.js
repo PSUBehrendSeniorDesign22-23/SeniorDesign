@@ -16,17 +16,17 @@ function toggleAddView(clicked_id) {
     if (clickedButtonState == "INACTIVE") {
     	var retiredButton = document.querySelector('[data-state="ACTIVE"]');
       if (retiredButton != null) {
-      	retiredButton.style.opacity = "0.6";
+      	retiredButton.style.backgroundColor = "#b2d4b64d";
         retiredButton.dataset.state = "INACTIVE";
         document.getElementById(retiredButton.id.slice(0, -6)).style.display = 'none';
       }
       clickedButton.dataset.state = "ACTIVE";
-      clickedButton.style.opacity = "1";
+      clickedButton.style.backgroundColor = "#b2d4b6";
       document.getElementById(clicked_id.slice(0, -6)).style.display = 'block';
     }
     else if (clickedButtonState == "ACTIVE") {
-    clickedButton.dataset.state = "INACTIVE";
-    	clickedButton.style.opacity = "0.6";
+      clickedButton.dataset.state = "INACTIVE";
+      clickedButton.style.backgroundColor = "#b2d4b64d";
     	document.getElementById(clicked_id.slice(0, -6)).style.display = 'none';
     }
 }
