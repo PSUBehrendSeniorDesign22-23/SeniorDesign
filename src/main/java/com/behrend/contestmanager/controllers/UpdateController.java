@@ -2,13 +2,15 @@ package com.behrend.contestmanager.controllers;
 
 import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.behrend.contestmanager.models.*;
@@ -30,19 +32,39 @@ public class UpdateController {
     @Autowired
     RuleService ruleService = new RuleServiceImpl();
     
-    @PatchMapping(value = "/player/update", params = {"playerId", "editssname", "rank"})
+    @PatchMapping(value = "/player/update", consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<String> updatePlayer(@RequestParam(name = "playerId") long playerId,
-                                               @RequestParam(name = "editssname", required = false) String skipperName,
-                                               @RequestParam(name = "rank", required = false) int rank) {
+    public ResponseEntity<String> updatePlayer(@RequestBody Map<String, String> inputMap) {
         Player player = new Player();
+
+        long playerId;
+        try {
+            playerId = Long.parseLong(inputMap.get("playerId"));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body("Unable to parse player ID");
+        }
+
+        String skipperName = inputMap.get("skipperName");
+        String rankString = inputMap.get("rank");
+
+        Integer rank = null;
+        if (!rankString.equals("")) {
+            try {
+                rank = Integer.parseInt(rankString);
+            }
+            catch (Exception e) {
+                return ResponseEntity.badRequest().body("");
+            }
+        }
+
         player.setSkipperName(skipperName);
         player.setRank(rank);
 
         player = playerService.updatePlayer(player, playerId);
 
         if (player == null) {
-            return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Player not found\"}");
+            return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Player not found\"}");
         }
 
         String playerAsJson;
@@ -50,32 +72,81 @@ public class UpdateController {
             playerAsJson = JsonMapper(player);
         }
         catch (Exception e) {
-            return ResponseEntity.internalServerError().body("{\"operation:\"\"failure\",\"message\":\"Error updating player\"}");
+            return ResponseEntity.internalServerError().body("{\"operation\":\"failure\",\"message\":\"Error updating player\"}");
         }
 
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(playerAsJson);
+        return ResponseEntity.ok().body(null);
     }
 
-    @PatchMapping(value = "/tournament/update", params = {"tournamentId", "name", "location", "date", "rulesetId", "playerIds"})
+    @PatchMapping(value = "/tournament/update", consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<String> updateTournament(@RequestParam(name = "tournamentId") long tournamentId,
-                                                   @RequestParam(name = "name") String name,
-                                                   @RequestParam(name = "location") String location,
-                                                   @RequestParam(name = "date") Date date,
-                                                   @RequestParam(name = "rulesetName") String rulesetName,
-                                                   @RequestParam(name = "playerIds") ArrayList<Long> playerIds) {
+    public ResponseEntity<String> updateTournament(@RequestBody Map<String, String> inputMap) {
         Tournament tournament = new Tournament();
-        tournament.setName(name);
-        tournament.setLocation(location);
-        tournament.setDate(date);
 
-        Ruleset ruleset = rulesetService.findRulesetsByName(rulesetName).get(0);
-
-        if (ruleset == null) {
-            return ResponseEntity.badRequest().contentType(MediaType.APPLICATION_JSON).body("\"operation\": \"failure\", \"message\": \"Ruleset not found\"");
+        long tournamentId;
+        
+        try {
+            tournamentId = Long.parseLong(inputMap.get("tournamentId"));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error parsing tournament ID");
         }
 
-        tournament.setRuleset(ruleset);
+        
+        String tournamentName = inputMap.get("tournamentName");
+        String tournamentLocation = inputMap.get("tournamentLocation");
+        
+        tournament.setName(tournamentName);
+        tournament.setLocation(tournamentLocation);
+        
+        String dateString = inputMap.get("tournamentDate");
+        if (!dateString.equals("")) {
+            Date tournamentDate;
+            try {
+                tournamentDate = Date.valueOf(dateString);
+                tournament.setDate(tournamentDate);
+            }
+            catch (Exception e) {
+                return ResponseEntity.badRequest().body("Unable to parse date");
+            }
+        }
+        
+        String rulesetIdString = inputMap.get("tournamentRulesetId");
+
+        Ruleset ruleset;
+        long rulesetId;
+        if (!rulesetIdString.equals("")) {
+            try {
+                rulesetId = Long.parseLong(inputMap.get("tournamentRulesetId"));
+            }
+            catch (Exception e) {
+                return ResponseEntity.badRequest().body("Unable to parse ruleset ID");
+            }
+
+            ruleset = rulesetService.findRulesetById(rulesetId);
+            if (ruleset == null) {
+                return ResponseEntity.badRequest().body("Ruleset does not exist");
+            }
+            tournament.setRuleset(ruleset);
+        }
+
+        
+        inputMap.remove("tournamentName");
+        inputMap.remove("tournamentLocation");
+        inputMap.remove("tournamentDate");
+        inputMap.remove("tournamentRulesetId");
+
+
+        ArrayList<Long> playerIds = new ArrayList<>();
+
+        for (String key : inputMap.keySet()) {
+            try {
+                playerIds.add(Long.parseLong(inputMap.get(key)));
+            }
+            catch (Exception e) {
+                return ResponseEntity.badRequest().body("Error parsing player IDs");
+            }
+        }
 
         ArrayList<Player> playerList = new ArrayList<>();
         for (long id : playerIds) {
@@ -105,12 +176,24 @@ public class UpdateController {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(tournamentAsJson);
     }
 
-    @PatchMapping(value = "/rule/update", params = {"ruleId", "ruleName", "attribute"})
+    @PatchMapping(value = "/rule/update")
     @ResponseBody
-    public ResponseEntity<String> updateRule(@RequestParam(name = "ruleId") long ruleId,
-                                             @RequestParam(name = "ruleName") String ruleName,
-                                             @RequestParam(name = "attribute") String attribute) {
+    public ResponseEntity<String> updateRule(@RequestBody Map<String, String> inputMap) {
         Rule rule = new Rule();
+
+        long ruleId;
+
+        try {
+            ruleId = Long.parseLong(inputMap.get("ruleId"));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().body("Rule ID must be a number");
+        }
+        
+
+        String ruleName = inputMap.get("ruleName");
+        String attribute = inputMap.get("attribute");
+
         rule.setName(ruleName);
         rule.setAttribute(attribute);
 
@@ -131,26 +214,43 @@ public class UpdateController {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(ruleAsJson);
     }
 
-    @PatchMapping(value = "/match/update", params = {"matchId", "defenderId", "challengerId", "tournamentId", "defenderScore", "challengerScore"})
+    @PatchMapping(value = "/match/update", consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<String> updateMatch(@RequestParam(name = "matchId") long matchId,
-                                              @RequestParam(name = "defenderId") long defenderId,
-                                              @RequestParam(name = "challengerId") long challengerId,
-                                              @RequestParam(name = "tournamentId") long tournamentId,
-                                              @RequestParam(name = "defenderScore") int defenderScore,
-                                              @RequestParam(name = "challengerScore") int challengerScore) {
+    public ResponseEntity<String> updateMatch(@RequestBody Map<String, String> inputMap) {
+
         Match match = new Match();
+
+        long matchId;
+        long defenderId;
+        long challengerId;
+        long tournamentId;
+
+        int defenderScore;
+        int challengerScore;
+
+        try {
+            matchId = Long.parseLong(inputMap.get("matchId"));
+            defenderId = Long.parseLong(inputMap.get("defenderId"));
+            challengerId = Long.parseLong(inputMap.get("challengerId"));
+            tournamentId = Long.parseLong(inputMap.get("tournamentId"));
+            defenderScore = Integer.parseInt(inputMap.get("defenderScore"));
+            challengerScore = Integer.parseInt(inputMap.get("challengerScore"));
+        }
+        catch (Exception e) {
+            return ResponseEntity.internalServerError().body("{\"operation\":\"failure\",\"message\":\"Values must be numerical\"}");
+        }
+
 
         Player defender = playerService.findPlayerById(defenderId);
 
         if (defender == null) {
-            return ResponseEntity.badRequest().body("Player one not found");
+            return ResponseEntity.badRequest().body("Defender not found");
         }
 
         Player challenger = playerService.findPlayerById(challengerId);
 
         if (challenger == null) {
-            return ResponseEntity.badRequest().body("Player two not found");
+            return ResponseEntity.badRequest().body("Challenger not found");
         }
 
         Tournament tournament = tournamentService.findTournamentById(tournamentId);

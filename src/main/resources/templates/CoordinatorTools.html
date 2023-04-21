@@ -20,8 +20,8 @@
     <div class="textBox">
       <div style="text-align:center;">
         <button class="formButton" id="playerAddButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Create Player</button>
-        <button class="formButton" id="tournamentAddButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Create Tournament</button>
         <button class="formButton" id="rulesetAddButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Create Ruleset</button>
+        <button class="formButton" id="tournamentAddButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Create Tournament</button>
       </div>
     </div>
     <br>
@@ -89,8 +89,8 @@
     <div class="textBox">
       <div style="text-align:center;">
         <button class="formButton" id="playerEditButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Edit Player</button>
-        <button class="formButton" id="tournamentEditButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Edit Tournament</button>
         <button class="formButton" id="rulesetEditButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Edit Ruleset</button>
+        <button class="formButton" id="tournamentEditButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Edit Tournament</button>
       </div>
     </div>
     <br>
@@ -118,6 +118,17 @@
         <input type="date" id="edittdate" name="edittdate"><br><br>
         <label for="rulesetSelector">Tournament Ruleset: </label>
         <select name="rulesetSelector" class="rulesetSelector"></select><br>
+        <button type="button" class="formButton" onclick="addPlayerEditSelector()">Add Player</button>
+        <button type="button" class="formButton" onclick="removePlayerEditSelector()">Remove Player</button>
+        <br>
+
+        <label for="player1EditSelect">Player 1: </label>
+        <select name="player1EditSelect" id="player1EditSelect" class="playerSelectors">
+        </select><br>
+
+        <label for="player2EditSelect">Player 2: </label>
+        <select name="player2EditSelect" id="player2EditSelect" class="playerSelectors">
+        </select><br>
         <input type="submit" value="Submit" class="formButton" onclick="editTournament()">
       </form>
     </div>
@@ -129,6 +140,15 @@
         <input type="text" id="editrname" name="editrname"><br><br>
         <label for="editrorigin">Ruleset Origin: </label>
         <input type="text" id="editrorigin" name="editorigin"><br><br>
+
+        <button type="button" class="formButton" onclick="addRuleEditInput()">Add Rule</button>
+        <button type="button" class="formButton" onclick="removeRuleEditInput()">Remove Rule</button>
+        <br><br>
+        <label for="rule1EditKey">Rule 1 Name:</label>
+        <input type="text" id="rule1EditKey" name="rule1EditKey">
+        <label for="rule1EditValue">Rule 1 Value:</label>
+        <input type="text" id="rule1EditValue" name="rule1EditValue">
+        <br><br>
         <input type="submit" value="Submit" class="formButton">
       </form>
     </div>
@@ -150,8 +170,8 @@
     <div class="textBox">
       <div style="text-align:center;">
         <button class="formButton" id="playerSearchButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Find Player</button>
-        <button class="formButton" id="tournamentSearchButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Find Tournament</button>
         <button class="formButton" id="rulesetSearchButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Find Ruleset</button>
+        <button class="formButton" id="tournamentSearchButton" onclick="toggleAddView(this.id)" data-state="INACTIVE">Find Tournament</button>
       </div>
     </div>
     <br>

@@ -510,26 +510,79 @@ function addRuleset() {
 }
 
 function editPlayer() {
+  let playerAttributes = {
+    "playerId": document.getElementById("playerEditSelect").value,
+    "skipperName": document.getElementById("editssname").value,
+    "rank": document.getElementById("editrank").value
+  }
 
+  fetch("/player/update", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(playerAttributes)
+  })
+  .then(res => res.json()).then(data => {
+    showSnackbar(data["operation"])
+  })
 }
 
 function editRuleset() {
+  let rulesetAttributes = {
+    "rulesetName": document.getElementById("editrname"),
+    "rulesetOrigin": document.getElementById("editrorigin"),
+  }
 
+  for (let i = 1; i <= ruleEditInputCount; i++) {
+    let ruleKey = document.getElementById("rule" + i + "EditKey").value
+    let ruleValue = document.getElementById("rule" + i + "EditValue").value
+    rulesetAttributes[ruleKey] = ruleValue
+  }
+
+  fetch("/ruleset/update", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(rulesetAttributes)
+  })
+  .then(res => res.json()).then(data => {
+    showSnackbar(data["operation"])
+  })
 }
 
 function editTournament() {
 
+
+
+  for (let i = 1; i <= playerCount; i++) {
+    let playerKey = "player" + i + "Select";
+    let playerId = document.getElementById(playerKey).value
+    tournamentAttributes[playerKey] = playerId
+  }
+
+  fetch("/tournament/update", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(playerAttributes)
+  })
+  .then(res => res.json()).then(data => {
+    showSnackbar(data["operation"])
+  })
 }
 
 // These functions are for adding or removing rule inputs
 let ruleInputCount = 1
-let lastRuleInput = document.getElementById("rule1Value")
+let lastRuleInput = document.getElementById("rule1Value").nextElementSibling
 function addRuleInput() {
   ruleInputCount++
 
   let newRuleKeyLabel = document.createElement("label")
   newRuleKeyLabel.setAttribute("for", "rule" + ruleInputCount + "Key")
-  newRuleKeyLabel.innerText = "Rule " + ruleInputCount + " Name:"
+  newRuleKeyLabel.innerHTML = "Rule " + ruleInputCount + " Name:"
   newRuleKeyLabel.appendChild( document.createTextNode( '\u00A0' ) );
 
   let newRuleKeyInput = document.createElement("input")
@@ -539,13 +592,15 @@ function addRuleInput() {
 
   let newRuleValueLabel = document.createElement("label")
   newRuleValueLabel.setAttribute("for", "rule" + ruleInputCount + "Key")
-  newRuleValueLabel.innerText = "Rule " + ruleInputCount + " Value:"
+  newRuleValueLabel.innerHTML = "Rule " + ruleInputCount + " Value:"
   newRuleValueLabel.appendChild( document.createTextNode( '\u00A0' ) );
 
   let newRuleValueInput = document.createElement("input")
   newRuleValueInput.id = "rule" + ruleInputCount + "Value"
   newRuleValueInput.type = "text"
-  newRuleValueInput.name = "rule" + ruleInputCount 
+  newRuleValueInput.name = "rule" + ruleInputCount
+
+  let breakElement = document.createElement("br")
 
   lastRuleInput.insertAdjacentElement("afterend", newRuleKeyLabel)
   lastRuleInput = lastRuleInput.nextElementSibling
@@ -555,16 +610,68 @@ function addRuleInput() {
   lastRuleInput = lastRuleInput.nextElementSibling
   lastRuleInput.insertAdjacentElement("afterend", newRuleValueInput)
   lastRuleInput = lastRuleInput.nextElementSibling
+  lastRuleInput.insertAdjacentElement("afterend", breakElement)
+  lastRuleInput = lastRuleInput.nextElementSibling
 }
 
 function removeRuleInput() {
   if (ruleInputCount > 1) {
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 5; i++) {
       let elementToRemove = lastRuleInput
       lastRuleInput = lastRuleInput.previousElementSibling
       elementToRemove.remove()
     }
     ruleInputCount--
+  }
+}
+
+let ruleEditInputCount = 1
+let lastRuleEditInput = document.getElementById("rule1EditValue").nextElementSibling
+function addRuleEditInput() {
+  ruleEditInputCount++
+
+  let newRuleKeyLabel = document.createElement("label")
+  newRuleKeyLabel.setAttribute("for", "rule" + ruleEditInputCount + "EditKey")
+  newRuleKeyLabel.innerHTML = "Rule " + ruleEditInputCount + " Name:"
+  newRuleKeyLabel.appendChild( document.createTextNode( '\u00A0' ) );
+
+  let newRuleKeyInput = document.createElement("input")
+  newRuleKeyInput.id = "rule" + ruleEditInputCount + "EditKey"
+  newRuleKeyInput.type = "text"
+  newRuleKeyInput.name = "rule" + ruleEditInputCount 
+
+  let newRuleValueLabel = document.createElement("label")
+  newRuleValueLabel.setAttribute("for", "rule" + ruleEditInputCount + "EditKey")
+  newRuleValueLabel.innerHTML = "Rule " + ruleEditInputCount + " Value:"
+  newRuleValueLabel.appendChild( document.createTextNode( '\u00A0' ) );
+
+  let newRuleValueInput = document.createElement("input")
+  newRuleValueInput.id = "rule" + ruleEditInputCount + "Value"
+  newRuleValueInput.type = "text"
+  newRuleValueInput.name = "rule" + ruleEditInputCount 
+
+  let breakElement = document.createElement("br")
+
+  lastRuleEditInput.insertAdjacentElement("afterend", newRuleKeyLabel)
+  lastRuleEditInput = lastRuleEditInput.nextElementSibling
+  lastRuleEditInput.insertAdjacentElement("afterend", newRuleKeyInput)
+  lastRuleEditInput = lastRuleEditInput.nextElementSibling
+  lastRuleEditInput.insertAdjacentElement("afterend", newRuleValueLabel)
+  lastRuleEditInput = lastRuleEditInput.nextElementSibling
+  lastRuleEditInput.insertAdjacentElement("afterend", newRuleValueInput)
+  lastRuleEditInput = lastRuleEditInput.nextElementSibling
+  lastRuleEditInput.insertAdjacentElement("afterend", breakElement)
+  lastRuleEditInput = lastRuleEditInput.nextElementSibling
+}
+
+function removeRuleEditInput() {
+  if (ruleEditInputCount > 1) {
+    for (let i = 0; i < 5; i++) {
+      let elementToRemove = lastRuleEditInput
+      lastRuleEditInput = lastRuleEditInput.previousElementSibling
+      elementToRemove.remove()
+    }
+    ruleEditInputCount--
   }
 }
 
@@ -610,6 +717,41 @@ function removePlayerSelector() {
     for (let i = 0; i < 2; i++) {
       let elementToRemove = lastPlayerInput
       lastPlayerInput = lastPlayerInput.previousElementSibling
+      elementToRemove.remove()
+    }
+    playerCount--
+  }
+}
+
+let playerEditCount = 2
+let lastPlayerEditInput = document.getElementById("player2EditSelect")
+function addPlayerEditSelector() {
+  playerCount++
+
+  let nameTag = "player" + playerCount + "EditSelect"
+  // Create label
+  let playerLabel = document.createElement("label")
+  playerLabel.setAttribute("for", nameTag)
+  playerLabel.innerText = "Player " + playerCount + ": "
+  // Create selector
+  let playerSelect = document.createElement("select")
+  playerSelect.setAttribute("name", nameTag)
+  playerSelect.setAttribute("id", nameTag)
+  playerSelect.setAttribute("class", "playerSelector")
+  // populate options
+  populatePlayerOptions(playerSelect)
+  // Add to DOM
+  lastPlayerEditInput.insertAdjacentElement("afterend", playerLabel)
+  lastPlayerEditInput = lastPlayerEditInput.nextElementSibling
+  lastPlayerEditInput.insertAdjacentElement("afterend", playerSelect)
+  lastPlayerEditInput = lastPlayerEditInput.nextElementSibling
+}
+
+function removePlayerEditSelector() {
+  if (playerCount > 2) {
+    for (let i = 0; i < 2; i++) {
+      let elementToRemove = lastPlayerEditInput
+      lastPlayerEditInput = lastPlayerEditInput.previousElementSibling
       elementToRemove.remove()
     }
     playerCount--
