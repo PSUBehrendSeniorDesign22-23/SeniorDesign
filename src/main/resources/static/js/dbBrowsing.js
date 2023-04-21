@@ -68,12 +68,49 @@ function playerSearch() {
 
   fetch(request).then((response) => response.json())
     .then((data) => {
+      resultsContainer.innerHTML = ''
+
+      let tableHeaders = document.createElement("tr")
+
+      let header = document.createElement("td")
+      header.setAttribute("class", "primaryTextCenter")
+      header.setAttribute("style", "text-decoration: underline;")
+      header.innerText = "Player First Name"
+      tableHeaders.appendChild(header)
+
+      header = document.createElement("td")
+      header.setAttribute("class", "primaryTextCenter")
+      header.setAttribute("style", "text-decoration: underline;")
+      header.innerText = "Player Last Name"
+      tableHeaders.appendChild(header)
+
+      header = document.createElement("td")
+      header.setAttribute("class", "primaryTextCenter")
+      header.setAttribute("style", "text-decoration: underline;")
+      header.innerText = "Skipper Name"
+      tableHeaders.appendChild(header)
+
+      resultsContainer.appendChild(tableHeaders)
+
       for (var i = 0; i < data.length; i++) {
         if (data[i] != null)
         {
-          child = document.createElement('p')
-          child.innerText = JSON.stringify(data[i])
-          resultsContainer.appendChild(child)
+          let newSearchRow = document.createElement("tr")
+
+          let newPlayerfName = document.createElement("td")
+          newPlayerfName.innerText = data[i].user.firstName
+
+          let newPlayerlName = document.createElement("td")
+          newPlayerlName.innerText = data[i].user.lastName
+
+          let newPlayersName = document.createElement("td")
+          newPlayersName.innerText = data[i].skipperName
+
+          newSearchRow.appendChild(newPlayerfName)
+          newSearchRow.appendChild(newPlayerlName)
+          newSearchRow.appendChild(newPlayersName)
+        
+          resultsContainer.appendChild(newSearchRow)
         }
       }
     })
@@ -97,14 +134,116 @@ function tournamentSearch() {
 
     fetch(request).then((response) => response.json())
         .then((data) => {
-            for (var i = 0; i < data.length; i++) {
-                if (data[i] != null)
+          resultsContainer.innerHTML = ''
+
+          let tableHeaders = document.createElement("tr")
+
+          let header = document.createElement("td")
+          header.setAttribute("class", "primaryTextCenter")
+          header.setAttribute("style", "text-decoration: underline;")
+          header.innerText = "Tournament Name"
+          tableHeaders.appendChild(header)
+
+          header = document.createElement("td")
+          header.setAttribute("class", "primaryTextCenter")
+          header.setAttribute("style", "text-decoration: underline;")
+          header.innerText = "Location"
+          tableHeaders.appendChild(header)
+
+          header = document.createElement("td")
+          header.setAttribute("class", "primaryTextCenter")
+          header.setAttribute("style", "text-decoration: underline;")
+          header.innerText = "Ruleset"
+          tableHeaders.appendChild(header)
+
+          header = document.createElement("td")
+          header.setAttribute("class", "primaryTextCenter")
+          header.setAttribute("style", "text-decoration: underline;")
+          header.innerText = "Players"
+          tableHeaders.appendChild(header)
+
+          resultsContainer.appendChild(tableHeaders)
+
+          for (var i = 0; i < data.length; i++) {
+            if (data[i] != null)
+            {
+              let newSearchRow = document.createElement("tr")
+
+              let TournamentName = document.createElement("td")
+              TournamentName.innerText = data[i].name
+              newSearchRow.appendChild(TournamentName)
+
+              let TournamentLocation = document.createElement("td")
+              TournamentLocation.innerText = data[i].location
+              newSearchRow.appendChild(TournamentLocation)
+
+              let TournamentRuleset = document.createElement("td")
+              TournamentRuleset.innerText = data[i].ruleset.name
+              newSearchRow.appendChild(TournamentRuleset)
+
+              let newPlayer = document.createElement("td")
+              if (data[i].players.length == 0)
+              {
+                newPlayer.innerText = data[i].player.length
+              }
+              else
+              {
+                newPlayer.innerHTML = data[i].players.length + "   " + "<button id='" + data[i].name + "'" + " onclick=\"expandTable('"+ data[i].name + "')\">↓</button>"
+              }
+
+              newSearchRow.appendChild(newPlayer)
+        
+              resultsContainer.appendChild(newSearchRow)
+
+              for (var j = 0; j < data[i].players.length; j++)
+              {
+                if (j == 0)
                 {
-                    child = document.createElement('p')
-                    child.innerText = JSON.stringify(data[i])
-                    resultsContainer.appendChild(child)
+                  let labelRow = document.createElement("tr")
+
+                  let label = document.createElement("td")
+                  label.innerText = "First Name"
+                  label.setAttribute("style", "text-decoration: underline;")
+                  labelRow.appendChild(label)
+    
+                  label = document.createElement("td")
+                  label.innerText = "Last Name"
+                  label.setAttribute("style", "text-decoration: underline;")
+                  labelRow.appendChild(label)
+    
+                  label = document.createElement("td")
+                  label.innerText = "Skipper Name"
+                  label.setAttribute("style", "text-decoration: underline;")
+                  labelRow.appendChild(label)
+
+                  labelRow.setAttribute("id", data[i].name + "List")
+                  labelRow.setAttribute("style", "display: none;")
+
+                  resultsContainer.appendChild(labelRow)
                 }
-            }
+
+                let childPlayer = document.createElement("tr")
+
+                let newPlayerfName = document.createElement("td")
+                newPlayerfName.innerText = data[i].players[j].user.firstName
+
+                let newPlayerlName = document.createElement("td")
+                newPlayerlName.innerText = data[i].players[j].user.lastName
+
+                let newPlayersName = document.createElement("td")
+                newPlayersName.innerText = data[i].players[j].skipperName
+
+                childPlayer.appendChild(newPlayerfName)
+                childPlayer.appendChild(newPlayerlName)
+                childPlayer.appendChild(newPlayersName)
+
+                childPlayer.setAttribute("id", data[i].name + "List")
+                childPlayer.setAttribute("style", "display: none;")
+        
+                resultsContainer.appendChild(childPlayer)
+              }
+        }
+      }
         })
 }
 
@@ -126,15 +265,126 @@ function rulesetSearch() {
 
   fetch(request).then((response) => response.json())
     .then((data) => {
+      resultsContainer.innerHTML = ''
+
+      let tableHeaders = document.createElement("tr")
+
+      let header = document.createElement("td")
+      header.setAttribute("class", "primaryTextCenter")
+      header.setAttribute("style", "text-decoration: underline;")
+      header.innerText = "Ruleset Name"
+      tableHeaders.appendChild(header)
+
+      header = document.createElement("td")
+      header.setAttribute("class", "primaryTextCenter")
+      header.setAttribute("style", "text-decoration: underline;")
+      header.innerText = "Ruleset Origin"
+      tableHeaders.appendChild(header)
+
+      header = document.createElement("td")
+      header.setAttribute("class", "primaryTextCenter")
+      header.setAttribute("style", "text-decoration: underline;")
+      header.innerText = "Number of Rules"
+      tableHeaders.appendChild(header)
+
+      resultsContainer.appendChild(tableHeaders)
+
       for (var i = 0; i < data.length; i++) {
         if (data[i] != null)
         {
-          child = document.createElement('p')
-          child.innerText = JSON.stringify(data[i])
-          resultsContainer.appendChild(child)
+          let newSearchRow = document.createElement("tr")
+
+          let RulesetName = document.createElement("td")
+          RulesetName.innerText = data[i].name
+
+          let RulesetOrigin = document.createElement("td")
+          RulesetOrigin.innerText = data[i].origin
+
+          let newRuleAttribute = document.createElement("td")
+          if (data[i].rules.length == 0)
+          {
+            newRuleAttribute.innerText = data[i].rules.length
+          }
+          else
+          {
+            newRuleAttribute.innerHTML = data[i].rules.length + "   " + "<button id='" + data[i].name + "'" + " onclick=\"expandTable('"+ data[i].name + "')\">↓</button>"
+          }
+
+          newSearchRow.appendChild(RulesetName)
+          newSearchRow.appendChild(RulesetOrigin)
+          newSearchRow.appendChild(newRuleAttribute)
+        
+          resultsContainer.appendChild(newSearchRow)
+
+          for (var j = 0; j < data[i].rules.length; j++)
+          {
+            if (j == 0)
+            {
+              let labelRow = document.createElement("tr")
+
+              let label = document.createElement("td")
+              label.innerText = "Rule Name"
+              label.setAttribute("style", "text-decoration: underline;")
+              labelRow.appendChild(label)
+    
+              label = document.createElement("td")
+              label.innerText = "The Rule"
+              label.setAttribute("style", "text-decoration: underline;")
+              labelRow.appendChild(label)
+
+              labelRow.setAttribute("id", data[i].name + "List")
+              labelRow.setAttribute("style", "display: none;")
+
+              resultsContainer.appendChild(labelRow)
+            }
+
+            let childRule = document.createElement("tr")
+
+            let newRuleName = document.createElement("td")
+            newRuleName.innerText = data[i].rules[j].name
+
+            let newRuleAttribute = document.createElement("td")
+            newRuleAttribute.innerText = data[i].rules[j].attribute
+
+            childRule.appendChild(newRuleName)
+            childRule.appendChild(newRuleAttribute)
+
+            childRule.setAttribute("id", data[i].name + "List")
+            childRule.setAttribute("style", "display: none;")
+        
+            resultsContainer.appendChild(childRule)
+          }
         }
       }
     })
+}
+
+function expandTable(calledBy)
+{
+  let caller = document.getElementById(calledBy)
+  
+  let tableElements = document.querySelectorAll('[id="' + calledBy + 'List"]')
+
+  for (var j = 0; j < tableElements.length; j++)
+  {
+    if (caller.innerText == "↓")
+    {
+      tableElements[j].setAttribute("style", "display: table-row;")
+    }
+    else
+    {
+      tableElements[j].setAttribute("style", "display: none;")
+    }
+  }
+
+  if (caller.innerText == "↓")
+    {
+      caller.innerText = "↑"
+    }
+    else
+    {
+      caller.innerText = "↓"
+    }
 }
 
 function addPlayer() {

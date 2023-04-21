@@ -99,6 +99,11 @@ text-align: right;
   background-size: cover;
 }
 
+table, th, td {
+  border: 1px solid;
+  color: var(--primaryTextColor);
+}
+
 /* The snackbar - position it at the bottom and in the middle of the screen */
 #snackbar {
   visibility: hidden; /* Hidden by default. Visible on click */

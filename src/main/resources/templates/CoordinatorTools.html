@@ -158,6 +158,7 @@
     <div class="hiddenTextBox" id="playerSearch">
       <label for="player-search-options">Choose a search criteria:</label>
       <select name="player-search" id="player-search">
+        <option value="all">All</option>
         <option value="pname">Player Name</option>
         <option value="pssname">Stone Skipper Name</option>
       </select>
@@ -169,6 +170,7 @@
     <div class="hiddenTextBox" id="tournamentSearch">
       <label for="tournament-search-options">Choose a search criteria:</label>
       <select name="tournament-search" id="tournament-search" onchange="tournamentSearchInputChange()">
+        <option value="all">All</option>
         <option value="tname">Tournament Name</option>
         <option value="tlocation">Tournament Location</option>
         <option value="tdate">Tournament Date</option>
@@ -181,6 +183,7 @@
     <div class="hiddenTextBox" id="rulesetSearch">
       <label for="ruleset-search-options">Choose a search criteria:</label>
       <select name="ruleset-search" id="ruleset-search">
+        <option value="all">All</option>
         <option value="rname">Ruleset Name</option>
         <option value="rorigin">Ruleset Origin</option>
       </select>
@@ -191,12 +194,16 @@
     </div>
     <br>
     <div class="hiddenTextBox" id="searchResults">
+      <div style="text-align:center;">
       <h1 class="primaryTextCenter">
         Search Results
       </h1>
-      <div id="results-container" class="primaryTextLeft">
-
+      <div class="primaryTextCenter" style="width: 100%">
+        <table id="results-container" style="width:100%">
+        
+        </table>
       </div>
+    </div>
     </div>
     <br>
     <div id="snackbar">Some text some message..</div>
