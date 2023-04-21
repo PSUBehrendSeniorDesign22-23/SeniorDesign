@@ -421,7 +421,7 @@ function addTournament() {
     "tournamentName": document.getElementById("addtname").value,
     "tournamentLocation": document.getElementById("addtloc").value,
     "tournamentDate": document.getElementById("addtdate").value,
-    "tournamentRulesetName": document.getElementById("addtrule").value
+    "tournamentRulesetId": document.getElementById("addtrule").value
   }
 
   for (let i = 1; i <= playerCount; i++) {
