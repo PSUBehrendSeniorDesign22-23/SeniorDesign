@@ -98,6 +98,34 @@
       <button class="formButton">Submit</button>
 
     </div>
+
+    <!-- The Modal (contains the summary section) -->
+    <div id="idSummary" class="modal" style="display: none;">
+      <div class="centerTextBox">
+        <h1 class="primaryTextCenter">Tournament Summary</h1>
+        <table style="width:100%">
+        
+        </table>
+        <br><br>
+        <div class="clearfix">
+          <br><br>
+          <button type="button" style="background-color: #f44336;" class="formButton" onClick="window.location='/CoordinatorTools'">Exit</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Modal (contains the match confirmation) -->
+    <div id="idConfirm" class="modal" style="display: none;">
+      <div class="centerTextBox">
+        <h1 class="primaryTextCenter">Match Completed</h1>
+        
+        <br><br>
+        <div class="clearfix">
+          <button type="button" class="formButton" style="background-color: #008000;" onClick=initializeTournament()>Confirm</button>
+        </div>
+      </div>
+    </div>
+
   </body>
 
 </html>
