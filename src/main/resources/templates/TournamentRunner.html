@@ -77,38 +77,24 @@
     <div class="centerTextBox" style="width: 95%">
       <h1 class="primaryTextCenter" id="challengerRecord">-- Match Record</h1>
 
-      <button onclick="challengerRoundWin()">Add Score</button>
-      <span id="p1Score" class="primaryTextCenter">0</span>
-      <button onclick="roundWinChange(1, 'minus')">Subtract Score</button>
+      <h1 id="p1Score" class="primaryTextCenter">0</h1>
+      <button class="formButton" onclick="verifyScore('challenger')">Add Score</button>
 
       <h1 class="primaryTextCenter" id="defenderRecord">-- Match Record</h1>
 
-      <button onclick="defenderRoundWin()">Add Score</button>
-      <span id="p2Score" class="primaryTextCenter">0</span>
-      <button onclick="roundWinChange(2, 'minus')">Subtract Score</button>
-
-      <form action="/action_page.php">
-        <p class="primaryTextCenter">Please select this match's winner:</p>
-        <label for="p1" id="p1Label">--</label>
-        <input type="radio" id="p1" name="winner" value="player1"><br>
-        <label for="p2" id="p2Label">--</label>
-        <input type="radio" id="p2" name="winner" value="player2">
-      </form>
-      <br>
-      <button class="formButton">Submit</button>
-
+      <h1 id="p2Score" class="primaryTextCenter">0</h1>
+      <button class="formButton" onclick="verifyScore('defender')">Add Score</button>
     </div>
 
     <!-- The Modal (contains the summary section) -->
     <div id="idSummary" class="modal" style="display: none;">
       <div class="centerTextBox">
         <h1 class="primaryTextCenter">Tournament Summary</h1>
-        <table style="width:100%">
+        <table id="idSummaryTable" style="width:100%">
         
         </table>
         <br><br>
         <div class="clearfix">
-          <br><br>
           <button type="button" style="background-color: #f44336;" class="formButton" onClick="window.location='/CoordinatorTools'">Exit</button>
         </div>
       </div>

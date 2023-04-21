@@ -188,6 +188,18 @@ function tournamentSearch() {
               }
               else
               {
+                for(let x = 0; x < data[i].name.length; x++)
+                {
+                  if(data[i].name[x] == "'")
+                  {
+                    data[i].name = setCharAt(data[i].name, x, '_')
+                  }
+
+                  if(data[i].name[x] == '"')
+                  {
+                    data[i].name = setCharAt(data[i].name, x, '_')
+                  }
+                }
                 newPlayer.innerHTML = data[i].players.length + "   " + "<button id='" + data[i].name + "'" + " onclick=\"expandTable('"+ data[i].name + "')\">↓</button>"
               }
 
@@ -307,6 +319,19 @@ function rulesetSearch() {
           }
           else
           {
+            for(let x = 0; x < data[i].name.length; x++)
+            {
+              if(data[i].name[x] == "'")
+              {
+                data[i].name = setCharAt(data[i].name, x, '_')
+              }
+
+              if(data[i].name[x] == '"')
+              {
+                data[i].name = setCharAt(data[i].name, x, '_')
+              }
+            }
+
             newRuleAttribute.innerHTML = data[i].rules.length + "   " + "<button id='" + data[i].name + "'" + " onclick=\"expandTable('"+ data[i].name + "')\">↓</button>"
           }
 
@@ -357,6 +382,11 @@ function rulesetSearch() {
         }
       }
     })
+}
+
+function setCharAt(str,index,chr) {
+  if(index > str.length-1) return str;
+  return str.substring(0,index) + chr + str.substring(index+1);
 }
 
 function expandTable(calledBy)

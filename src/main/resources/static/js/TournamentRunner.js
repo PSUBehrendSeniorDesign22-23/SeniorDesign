@@ -48,9 +48,6 @@ let challengerRoundScore = document.getElementById("p1Score")
 let defenderRecord = document.getElementById("defenderRecord")
 let defenderRoundScore = document.getElementById("p2Score")
 
-let p1Winner = document.getElementById("p1Label")
-let p2Winner = document.getElementById("p2Label")
-
 function defenderRoundWin() {
     activeMatch.defenderScore++
     // Decrement stones
@@ -86,6 +83,7 @@ function processRound() {
         else {
             prepareNextMatch()
         }
+        updateDisplay()
     }
 }
 
@@ -109,7 +107,7 @@ function establishWinner() {
     }
     else if (activeMatch.defenderScore < activeMatch.challengerScore) {
         defender.matchLosses++
-        challenger.matchLosses++
+        challenger.matchWins++
     }
     // Ties are not tracked
 }
@@ -185,9 +183,42 @@ function finalizeTournament() {
     for (let i = 0; i < completeMatches.length; i++) {
         saveMatchToDatabase(completeMatches[i])
     }
-    // Redirect to a summary page
-    // Summary page
-    console.log("Display summary modal")
+    //Show a summary modal
+    let summary = document.getElementById("idSummary")
+    let summaryTable = document.getElementById("idSummaryTable")
+
+    let tableHeaders = document.createElement("tr")
+
+    let header = document.createElement("td")
+    header.setAttribute("class", "primaryTextCenter")
+    header.setAttribute("style", "text-decoration: underline;")
+    header.innerText = "Skipper Name"
+    tableHeaders.appendChild(header)
+
+    header = document.createElement("td")
+    header.setAttribute("class", "primaryTextCenter")
+    header.setAttribute("style", "text-decoration: underline;")
+    header.innerText = "Tournament W-L Record"
+    tableHeaders.appendChild(header)
+
+    summaryTable.appendChild(tableHeaders)
+
+    for (var x = 0; x < tournament.players.length; x++)
+    {
+        let newSummaryRow = document.createElement("tr")
+
+        let SkipperName = document.createElement("td")
+        SkipperName.innerText = tournament.players[x][0].skipperName
+        newSummaryRow.appendChild(SkipperName)
+
+        let SkipperRecord = document.createElement("td")
+        SkipperRecord.innerText = tournament.players[x][0].matchWins + " - " + tournament.players[x][0].matchLosses
+        newSummaryRow.appendChild(SkipperRecord)
+
+        summaryTable.appendChild(newSummaryRow)
+    }
+
+    summary.setAttribute("style", "display:block;")
 }
 
 function createMatch() {
@@ -369,9 +400,6 @@ function initializeDisplay() {
     challengerRoundScore.innerText = activeMatch.challengerScore
     defenderRecord.innerText = defender.skipperName + " Round Record"
     defenderRoundScore.innerText = activeMatch.defenderScore
-
-    p1Winner.innerText = challenger.skipperName
-    p2Winner.innerText = defender.skipperName
 }
 
 function updateDisplay() {
@@ -394,9 +422,6 @@ function updateDisplay() {
     challengerRoundScore.innerText = activeMatch.challengerScore
     defenderRecord.innerText = defender.skipperName + " Round Record"
     defenderRoundScore.innerText = activeMatch.defenderScore
-
-    p1Winner.innerText = challenger.skipperName
-    p2Winner.innerText = defender.skipperName
 }
 
 function checkStoneCount() {
@@ -451,4 +476,29 @@ function preload()
         }
       }
     })
+}
+
+function verifyScore(caller)
+{
+    if(caller == "challenger")
+    {
+        if (confirm("Please confirm that the challenger (" + challenger.skipperName + ") won this round!\nPress OK or hit enter to confirm.\nPress Cancel or hit Esc to cancel.") == true) {
+            challengerRoundWin()
+        }
+        else
+        {
+            return
+        }
+    }
+
+    else if(caller == "defender")
+    {
+        if (confirm("Please confirm that the defender (" + defender.skipperName + ") won this round!\nPress OK or hit enter to confirm.\nPress Cancel or hit Esc to cancel.") == true) {
+            defenderRoundWin()
+        }
+        else
+        {
+            return
+        }
+    }
 }
