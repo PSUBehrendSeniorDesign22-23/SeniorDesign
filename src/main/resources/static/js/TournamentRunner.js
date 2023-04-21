@@ -29,9 +29,6 @@ let knockoutList = []
 let defender
 let challenger
 
-let stoneConflictFlag = false // Used to indicate and force resolution of stone count
-let tournamentCompleteFlag = false
-
 // DOM variables
 let matchNumber = document.getElementById("matchNum")
 
@@ -55,36 +52,18 @@ let p1Winner = document.getElementById("p1Label")
 let p2Winner = document.getElementById("p2Label")
 
 function defenderRoundWin() {
-    if (stoneConflictFlag) {
-        alertStoneConflict()
-        return
-    }
     activeMatch.defenderScore++
     // Decrement stones
     defender.stones--
     challenger.stones--
     // Award chip for winning throw
-    defender.chips++   
-    
-    if (isMatchComplete()) {
-        console.log("Defender Win")
-        defender.matchWins++
-        challenger.matchLosses++
-        completeMatches.push(activeMatch)
-        rotatePlayers()
-        startNextMatch()
-        if (tournamentCompleteFlag) {
-            finalizeTournament()
-        }
-    }
+    defender.chips++
+
+    processRound()
     updateDisplay()
 }
 
 function challengerRoundWin() {
-    if (stoneConflictFlag) {
-        alertStoneConflict()
-        return
-    }
     activeMatch.challengerScore++
     // Decrement stones
     defender.stones--
@@ -92,31 +71,47 @@ function challengerRoundWin() {
     // Award chip for winning throw
     challenger.chips++   
 
-    if (isMatchComplete()) {
-        console.log("Challenger Win")
-        challenger.matchWins++
-        defender.matchLosses++
-        completeMatches.push(activeMatch)
-        rotatePlayers()
-        startNextMatch()
-        if (tournamentCompleteFlag) {
-            finalizeTournament()
-        }
-    }
+    processRound()
     updateDisplay()
 }
 
+function processRound() {
+    if (isMatchComplete()) {
+        establishWinner()
+        completeMatches.push(activeMatch)
+        rotatePlayers()
+        if (playerOrder.length < 2) {
+            finalizeTournament()
+        }
+        else {
+            prepareNextMatch()
+        }
+    }
+}
+
 function isMatchComplete() {
+    if(checkStoneCount()) {
+        return true
+    }
+
     let maxRoundWins = Math.ceil(rules.BestOf / 2)
     if (activeMatch.defenderScore >= maxRoundWins || activeMatch.challengerScore >= maxRoundWins) {
         return true
     }
 
-    if (defender.stones == 0 || challenger.stones == 0) { // At least one player out of stones, and the match is incomplete
-        stoneConflictFlag = true
-    }
-
     return false
+}
+
+function establishWinner() {
+    if (activeMatch.defenderScore > activeMatch.challengerScore) {
+        defender.matchWins++
+        challenger.matchLosses++
+    }
+    else if (activeMatch.defenderScore < activeMatch.challengerScore) {
+        defender.matchLosses++
+        challenger.matchLosses++
+    }
+    // Ties are not tracked
 }
 
 function rotatePlayers() {
@@ -124,7 +119,7 @@ function rotatePlayers() {
     let challengerKnockoutFlag = false
 
     // Check for challenger knockout
-    if (challenger.stones == 0 && challenger.chips == 0) {
+    if (challenger.stones == 0 && challenger.chips < rules.ChipsPerStone) {
         knockoutList.push(challenger)
         challengerKnockoutFlag = true
     }
@@ -174,14 +169,8 @@ function rotatePlayers() {
     
 }
 
-function startNextMatch() {
-    // Check for end of tournament
-    if (playerOrder.length < 2) {
-        tournamentCompleteFlag = true
-        return
-    }
-
-    // Grab defender and challenger
+function prepareNextMatch() {
+    // Grab next defender and next challenger
     defender = playerOrder.shift()
     challenger = playerOrder.shift()
     
@@ -193,6 +182,9 @@ function startNextMatch() {
 
 function finalizeTournament() {
     // Create all matches in database
+    for (let i = 0; i < completeMatches.length; i++) {
+        saveMatchToDatabase(completeMatches[i])
+    }
     // Redirect to a summary page
     // Summary page
     console.log("Display summary modal")
@@ -206,6 +198,26 @@ function createMatch() {
         challengerScore : 0,
         tournament : tournament
     }
+}
+
+function saveMatchToDatabase(match) {
+    
+    matchAttributes = {
+        "defenderId": match.defender.playerId,
+        "challengerId": match.challenger.playerId,
+        "tournamentId": match.tournament.tournamentId,
+        "defenderScore": match.defenderScore,
+        "challengerScore": match.challengerScore
+    }
+
+    fetch("/match/create", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(matchAttributes)
+    })
+    .then((response) => response.json())
 }
 
 function generatePlayerOrder() {
@@ -387,76 +399,33 @@ function updateDisplay() {
     p2Winner.innerText = defender.skipperName
 }
 
-function alertStoneConflict() {
-    // Display an alert to the user
-    // Prompt for resolution by user 
+function checkStoneCount() {
+    let matchIsOver = false
 
-    // Will have to determine options based on:
-    // who is out of stones
-    // if chips are available for conversion
-    // what the current match score is
-    // rules from the ruleset
-    // etc.
+    let defenderKnockout = false
+    let challengerKnockout = false
 
-    // THIS FUNCTION IS FOR CONSTRUCTING OPTIONS TO DISPLAY TO THE USER ONLY
-    console.log("Stone Alert")
-    resolveStoneConflict()
-}
-
-function resolveStoneConflict() {
-    // Resolve based on selection from alert
-    // This function can do anything, as long as it resolves conflict.
-    // It also could be broken into multiple functions for different resolutions
-    // It may edit stone counts, perform chip conversions, edit and finalize a match, etc.
-    if (challenger.chips >= rules.ChipsPerStone)
-    {
-        challenger.stones++
-        challenger.chips = challenger.chips - rules.ChipsPerStone
+    if (defender.stones == 0 && defender.chips < rules.ChipsPerStone) { // defender is knocked out
+        defenderKnockout = true
+        matchIsOver = true
     }
-    else
-    {
-        challengerKnockoutFlag = true
-        console.log("Defender Win")
-        defender.matchWins++
-        challenger.matchLosses++
+    else if (challenger.stones == 0 && challenger.chips < rules.ChipsPerStone) { // challenger is knocked out
+        challengerKnockout = true
+        matchIsOver = true
     }
 
-    if (defender.chips >= rules.ChipsPerStone)
-    {
+    // Chip Conversions
+    if (!defenderKnockout && defender.stones == 0) { // defender in need of chip conversion
         defender.stones++
-        defender.chips = defender.chips - rules.ChipsPerStone
-    }
-    else
-    {
-        defenderKnockoutFlag = true
-        console.log("Challenger Win")
-        challenger.matchWins++
-        defender.matchLosses++
+        defender.chips -= rules.ChipsPerStone
     }
 
-    completeMatches.push(activeMatch)
-    rotatePlayers()
-    startNextMatch()
-    if (tournamentCompleteFlag) {
-        finalizeTournament()
+    if (!challengerKnockout && challenger.stones == 0) { // challenger in need of chip conversion
+        challenger.stones++
+        challenger.chips -= rules.ChipsPerStone
     }
 
-    updateDisplay()
-}
-
-function convertChips(player) {
-    let chipsPerStone = rules.ChipsPerStone
-    if (player.chips >= chipsPerStone) {
-        player.chips -= chipsPerStone
-        player.stones++
-    }
-    else {
-        alertNotEnoughChips()
-    }
-}
-
-function alertNotEnoughChips() {
-    // Visual alert when there are not enough chips to convert to a stone
+    return matchIsOver
 }
 
 function preload()
