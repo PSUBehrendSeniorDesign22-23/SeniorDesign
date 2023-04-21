@@ -44,6 +44,13 @@ public class PageController {
         User acc = userRepo.findByEmail(email);
         if(acc==null){return "redirect:/LoginFailed";}
         if(encoder.matches(password,acc.getPassword())){
+            //UserService.setLoggedIn(acc.getUserId(), sessionId);
+            for (Role role : acc.getRoles()) {
+                if (role == Role.ADMIN) {
+                    return "redirect:/CoordinatorTools";
+                }
+            }
+
             UserService.setLoggedIn(acc.getUserId());
             return "redirect:PublicBrowse";
         }
