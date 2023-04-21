@@ -1,0 +1,166 @@
+:root {
+  --backgroundColor: #4b514a;
+  --primaryColor: #b2d4b6;
+  --primaryTextColor: #ffffff;
+  --secondaryColor: #728370;
+}
+
+.mainBody {
+  background-color: var(--backgroundColor);
+}
+
+div + div {
+    margin-top: 10px;
+}
+
+.primaryTextCenter {
+  color: var(--primaryTextColor);
+  text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
+  text-align: center;
+}
+
+.primaryTextLeft {
+  color: var(--primaryTextColor);
+  text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000;
+  text-align: left;
+}
+
+.button {
+  text-align: center;
+}
+
+.formButton {
+  background-color: var(--primaryColor);
+  border: none;
+  color: var(--primaryTextColor);
+  opacity: 0.6;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+.formButton:hover {
+  opacity: 1!important;
+  }
+
+.hiddenTextBox {
+  background: var(--secondaryColor);
+  font-size: 20px;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  margin-top: 10px;
+  margin: auto;
+  width: 55%;
+  display: none;
+}
+
+.textBox {
+  background: var(--secondaryColor);
+  font-size: 20px;
+  padding: 10px;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  margin: auto;
+  width: 45%;
+}
+
+.centerTextBox
+{
+  background: var(--secondaryColor);
+  font-size: 20px;
+  padding: 10px;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  margin: auto;
+  width: 45%;
+  text-align: center;
+}
+
+label{
+color: var(--primaryTextColor);
+display: inline-block;
+width: 20%;
+}
+
+.parallax {
+  /* The image used */
+  background-image: url("https://images.newscientist.com/wp-content/uploads/2021/04/20135431/gettyimages-1094679598_web.jpg");
+
+  /* Set a specific height */
+  height: 100%;
+  min-height: 100px;
+
+  /* Create the parallax scrolling effect */
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+table, th, td {
+  border: 1px solid;
+  color: var(--primaryTextColor);
+}
+/* Full-width input fields */
+input[type=text],
+input[type=password] {
+width: 95%;
+padding: 15px;
+margin: 5px 0 22px 0;
+display: inline-block;
+border: none;
+background: #f1f1f1;
+}
+
+/* Add a background color when the inputs get focus */
+input[type=text]:focus,
+input[type=password]:focus {
+background-color: #ddd;
+outline: none;
+}
+
+/* The Modal (background) */
+.modal {
+display: block;
+
+position: fixed;
+
+/* Stay in place */
+z-index: 1;
+
+/* Sit on top */
+left: 0;
+top: 0;
+width: 100%;
+
+/* Full width */
+height: 100%;
+
+/* Full height */
+overflow: auto;
+
+/* Enable scroll if needed */
+background: rgba(75, 81, 74, .6);
+padding-top: 50px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+
+margin: 5% auto 15% auto;
+
+/* 5% from the top, 15% from the bottom and centered */
+width: 80%;
+
+/* Could be more or less, depending on screen size */
+}
+
+/* Clear floats */
+.clearfix::after {
+content: "";
+clear: both;
+display: table;
+}

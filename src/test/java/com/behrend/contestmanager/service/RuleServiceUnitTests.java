@@ -71,14 +71,17 @@ public class RuleServiceUnitTests {
     public void givenRules_whenGetByName_thenReturnRuleWithName() {
         
         // given
-        given(ruleRepository.findRuleByName(rule.getName())).willReturn(rule);
+        given(ruleRepository.findRulesByName(rule.getName())).willReturn(List.of(rule));
 
         // when
-        Rule foundRule = ruleService.findRuleByName(rule.getName());
+        List<Rule> foundRules = ruleService.findRulesByName(rule.getName());
 
         // then
-        Assertions.assertNotNull(foundRule);
-        Assertions.assertEquals(foundRule.getName(), rule.getName());
+        Assertions.assertNotNull(foundRules);
+        Assertions.assertEquals(1, foundRules.size());
+        for (Rule ruleItem : foundRules){
+            Assertions.assertEquals(ruleItem.getName(), rule.getName());
+        }
     }
 
     @Test

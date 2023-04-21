@@ -94,5 +94,6 @@ public class PageController {
     @GetMapping(value = "/CoordinatorTools", produces = "application/json")
     public String coordinatorTools(){return "CoordinatorTools";}
 
-
+    @GetMapping(value = "/TournamentRunner", produces = "application/json")
+    public String tournamentRunners(){return "TournamentRunner";}
 }

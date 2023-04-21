@@ -40,6 +40,14 @@ public class SearchController {
         
         System.out.printf("%s  |  %s", type, filter);
 
+        if (type.equals("all")) {
+            players.addAll(playerService.findAllPlayers());
+        }
+
+        if (type.equals("pname")) {
+            players.addAll(playerService.findPlayersByName(filter));
+        }
+
         if (type.equals("pssname"))
         {
             players.addAll(playerService.findPlayersBySkipperName(filter));
@@ -96,11 +104,14 @@ public class SearchController {
                                        @RequestParam(name = "searchFilter") String filter) {
         ArrayList<Ruleset> rulesets = new ArrayList<Ruleset>();
         
-        if (type.equals("rname"))
+        if (type.equals("all")) {
+            rulesets.addAll(rulesetService.findAllRulesets());
+        }
+        else if (type.equals("rname"))
         {
             rulesets.addAll(rulesetService.findRulesetsByName(filter));
         }
-        if (type.equals("rorigin"))
+        else if (type.equals("rorigin"))
         {
             rulesets.addAll(rulesetService.findRulesetsByOrigin(filter));
         }
@@ -141,7 +152,7 @@ public class SearchController {
         }
         if (type.equals("ruleName")) {
             try {
-                Rule rule = ruleService.findRuleByName(filter);
+                List<Rule> rule = ruleService.findRulesByName(filter);
                 String ruleAsJson = mapper.writeValueAsString(rule);
                 return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(ruleAsJson);
             }

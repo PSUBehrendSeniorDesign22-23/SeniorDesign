@@ -32,8 +32,23 @@ public class RuleServiceImpl implements RuleService {
     }
 
     @Override
-    public Rule findRuleByName(String name) {
-        return ruleRepository.findRuleByName(name);
+    public List<Rule> findRulesByName(String name) {
+        return ruleRepository.findRulesByName(name);
+    }
+
+    @Override 
+    public Rule findRuleByNameAndAttribute(String name, String attribute) {
+        Rule foundRule = null;
+
+        List<Rule> rulesWithName = ruleRepository.findRulesByName(name);
+        for (Rule rule : rulesWithName) {
+            if (rule.getAttribute().equals(attribute)) {
+                foundRule = rule;
+                break;
+            }
+        }
+
+        return foundRule;
     }
 
     // Update

@@ -4,8 +4,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.behrend.contestmanager.repository.PlayerRepository;
+import com.behrend.contestmanager.repository.UserRepository;
 import com.behrend.contestmanager.models.Player;
+import com.behrend.contestmanager.models.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -13,6 +16,9 @@ public class PlayerServiceImpl implements PlayerService {
     
     @Autowired
     private PlayerRepository playerRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     // Create
     @Override
@@ -29,7 +35,7 @@ public class PlayerServiceImpl implements PlayerService {
     // Read
     @Override
     public Player findPlayerById(long playerId) {
-        return playerRepository.findById(playerId).get();
+        return playerRepository.findById(playerId).orElse(null);
     }
 
     @Override
@@ -38,8 +44,32 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
+    public List<Player> findPlayersByName(String name) {
+        ArrayList<Player> players = new ArrayList<>();
+
+        ArrayList<User> users = new ArrayList<>();
+        
+        users.addAll(userRepository.findByFirstName(name));
+        users.addAll(userRepository.findByLastName(name));
+
+        for (User user : users) {
+            Player player = findPlayerByUserId(user.getUserId());
+            if (player != null) {
+                players.add(player);
+            }
+        }
+
+        return players;
+    }
+
+    @Override
     public List<Player> findPlayersBySkipperName(String skipperName) {
         return playerRepository.findAllBySkipperName(skipperName);
+    }
+
+    @Override
+    public Player findPlayerByUserId(long userId) {
+        return playerRepository.findByUserId(userId);
     }
 
     // Update

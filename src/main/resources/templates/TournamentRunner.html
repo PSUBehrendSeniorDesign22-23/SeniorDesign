@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <title>Tournament Runner - Mountain Man's Millstone</title>
+    <link rel="stylesheet" th:href="@{/css/TournamentRunner.css}">
+    <script type="text/javascript" th:src="@{/js/TournamentRunner.js}" defer></script>
+  </head>
+
+  <body class="parallax" onLoad="preload()">
+
+    <!-- The Modal (contains the tournament selection) -->
+    <div id="idSelect" class="modal">
+      <div class="centerTextBox">
+        <h1 class="primaryTextCenter">Select Tournament to Run</h1>
+        <form action="/action_page.php">
+          <select name="tournaments" id="tournaments">
+            <option value="none">--</option>
+          </select>
+        </form>
+        <br><br>
+        <div class="clearfix">
+          <button type="button" class="formButton" style="background-color: #008000;" onClick=initializeTournament()>Select</button>
+          <br><br>
+          <button type="button" style="background-color: #f44336;" class="formButton" onClick="window.location='/CoordinatorTools'">Exit</button>
+        </div>
+      </div>
+    </div>
+
+    <br>
+    <div class="textBox" style="width: 95%">
+      <h1 id="matchNum" class="primaryTextCenter">--</h1>
+    </div>
+    <br>
+
+    <br>
+    <div class="textBox" style="width: 95%">
+      <h1 class="primaryTextCenter">Player Rankings</h1>
+      <table style="width:100%">
+        <tr>
+          <td>Player Status</td>
+          <td>Player Name</td>
+          <td>Tournament W-L Record</td>
+          <td>Stones</td>
+          <td>Chips</td>
+        </tr>
+        <tr>
+          <td>Challenger</td>
+          <td id="challengerName">--</td>
+          <td id="challengerRatio">*-*</td>
+          <td id="challengerStones">--</td>
+          <td id="challengerChips">--</td>
+        </tr>
+        <tr>
+          <td>Defender</td>
+          <td id="defenderName">--</td>
+          <td id="defenderRatio">*-*</td>
+          <td id="defenderStones">--</td>
+          <td id="defenderChips">--</td>
+        </tr>
+      </table>
+    </div>
+    <br>
+
+    <br>
+    <div class="textBox" style="width: 95%">
+      <h1 class="primaryTextCenter">Rules</h1>
+      <table style="width:100%" id="ruleInfo">
+        <tr>
+          <td class="primaryTextCenter">Rule Name</td>
+          <td class="primaryTextCenter">Rule Value</td>
+        </tr>
+      </table>
+    </div>
+    <br>
+
+    <div class="centerTextBox" style="width: 95%">
+      <h1 class="primaryTextCenter" id="challengerRecord">-- Match Record</h1>
+
+      <h1 id="p1Score" class="primaryTextCenter">0</h1>
+      <button class="formButton" onclick="verifyScore('challenger')">Add Score</button>
+
+      <h1 class="primaryTextCenter" id="defenderRecord">-- Match Record</h1>
+
+      <h1 id="p2Score" class="primaryTextCenter">0</h1>
+      <button class="formButton" onclick="verifyScore('defender')">Add Score</button>
+    </div>
+
+    <!-- The Modal (contains the summary section) -->
+    <div id="idSummary" class="modal" style="display: none;">
+      <div class="centerTextBox">
+        <h1 class="primaryTextCenter">Tournament Summary</h1>
+        <table id="idSummaryTable" style="width:100%">
+        
+        </table>
+        <br><br>
+        <div class="clearfix">
+          <button type="button" style="background-color: #f44336;" class="formButton" onClick="window.location='/CoordinatorTools'">Exit</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- The Modal (contains the match confirmation) -->
+    <div id="idConfirm" class="modal" style="display: none;">
+      <div class="centerTextBox">
+        <h1 class="primaryTextCenter">Match Completed</h1>
+        
+        <br><br>
+        <div class="clearfix">
+          <button type="button" class="formButton" style="background-color: #008000;" onClick=initializeTournament()>Confirm</button>
+        </div>
+      </div>
+    </div>
+
+  </body>
+
+</html>
