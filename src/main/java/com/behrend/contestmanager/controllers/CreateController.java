@@ -178,28 +178,46 @@ public class CreateController {
         return ResponseEntity.ok("{\"operation\": \"success\"}");
     }
 
-    @PostMapping(value = "/match/create", params = {"defenderId", "challengerId", "tournamentId", "defenderScore", "challengerScore"})
+    @PostMapping(value = "/match/create", consumes = "application/json")
     @ResponseBody
-    public ResponseEntity<String> createMatch(@RequestParam(name = "defenderId") long defenderId,
-                                              @RequestParam(name = "challengerId") long challengerId,
-                                              @RequestParam(name = "tournamentId") long tournamentId,
-                                              @RequestParam(name = "defenderScore", required = false) int defenderScore,
-                                              @RequestParam(name = "challengerScore", required = false) int challengerScore) {
+    public ResponseEntity<String> createMatch(@RequestBody Map<String, String> inputMap) {
 
         Match match = new Match();
+
+        long defenderId;
+        long challengerId;
+        long tournamentId;
+
+        int defenderScore;
+        int challengerScore;
+
+        try {
+            defenderId = Long.parseLong(inputMap.get("defenderId"));
+            challengerId = Long.parseLong(inputMap.get("challengerId"));
+            tournamentId = Long.parseLong(inputMap.get("tournamentId"));
+            defenderScore = Integer.parseInt(inputMap.get("defenderScore"));
+            challengerScore = Integer.parseInt(inputMap.get("challengerScore"));
+        }
+        catch (Exception e) {
+            return ResponseEntity.internalServerError().body("{\"operation:\"\"failure\",\"message\":\"Values must be numerical\"}");
+        }
         
+        if (defenderId == challengerId) {
+            return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Defender and Challenger cannot be the same\"}")
+        }
+
         Player defender = playerService.findPlayerById(defenderId);
         Player challenger = playerService.findPlayerById(challengerId);
         Tournament tournament = tournamentService.findTournamentById(tournamentId);
 
         if (defender == null) {
-            return new ResponseEntity<>("Player with ID: " + defenderId + " does not exist", HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Player with ID: " + defenderId + " does not exist\"}");
         }
         if (challenger == null) {
-            return new ResponseEntity<>("Player with ID: " + challengerId + " does not exist", HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Player with ID: " + challengerId + " does not exist\"}");
         }
         if (tournament == null) {
-            return new ResponseEntity<>("Tournament with ID: " + tournamentId + " does not exist", HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body("{\"operation:\"\"failure\",\"message\":\"Tournament with ID: " + tournamentId + " does not exist\"}");
         }
 
         match.setDefender(defender);
