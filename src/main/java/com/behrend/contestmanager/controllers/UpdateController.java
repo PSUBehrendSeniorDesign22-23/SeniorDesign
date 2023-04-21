@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.apache.tomcat.util.digester.Rules;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -42,7 +43,7 @@ public class UpdateController {
             playerId = Long.parseLong(inputMap.get("playerId"));
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body("Unable to parse player ID");
+            return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Unable to parse player ID\"}");
         }
 
         String skipperName = inputMap.get("skipperName");
@@ -54,7 +55,7 @@ public class UpdateController {
                 rank = Integer.parseInt(rankString);
             }
             catch (Exception e) {
-                return ResponseEntity.badRequest().body("");
+                return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Rank must be a number\"}");
             }
         }
 
@@ -67,15 +68,7 @@ public class UpdateController {
             return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Player not found\"}");
         }
 
-        String playerAsJson;
-        try {
-            playerAsJson = JsonMapper(player);
-        }
-        catch (Exception e) {
-            return ResponseEntity.internalServerError().body("{\"operation\":\"failure\",\"message\":\"Error updating player\"}");
-        }
-
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body("{\"operation\":\"success\",\"message\":\"Player updated\"}");
     }
 
     @PatchMapping(value = "/tournament/update", consumes = "application/json")
@@ -89,7 +82,7 @@ public class UpdateController {
             tournamentId = Long.parseLong(inputMap.get("tournamentId"));
         }
         catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error parsing tournament ID");
+            return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Unable to parse tournament ID\"}");
         }
 
         
@@ -107,7 +100,7 @@ public class UpdateController {
                 tournament.setDate(tournamentDate);
             }
             catch (Exception e) {
-                return ResponseEntity.badRequest().body("Unable to parse date");
+                return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Unable to parse date\"}");
             }
         }
         
@@ -120,17 +113,17 @@ public class UpdateController {
                 rulesetId = Long.parseLong(inputMap.get("tournamentRulesetId"));
             }
             catch (Exception e) {
-                return ResponseEntity.badRequest().body("Unable to parse ruleset ID");
+                return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Unable to parse ruleset Id\"}");
             }
 
             ruleset = rulesetService.findRulesetById(rulesetId);
             if (ruleset == null) {
-                return ResponseEntity.badRequest().body("Ruleset does not exist");
+                return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Ruleset with ID " + rulesetId + " does not exist\"}");
             }
             tournament.setRuleset(ruleset);
         }
 
-        
+        inputMap.remove("tournamentId");
         inputMap.remove("tournamentName");
         inputMap.remove("tournamentLocation");
         inputMap.remove("tournamentDate");
@@ -144,7 +137,7 @@ public class UpdateController {
                 playerIds.add(Long.parseLong(inputMap.get(key)));
             }
             catch (Exception e) {
-                return ResponseEntity.badRequest().body("Error parsing player IDs");
+                return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Error parsing player IDs\"}");
             }
         }
 
@@ -152,7 +145,7 @@ public class UpdateController {
         for (long id : playerIds) {
             Player player = playerService.findPlayerById(id);
             if (player == null) {
-                return ResponseEntity.badRequest().body("Player with ID " + id + " does not exist");
+                return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Player with ID " + id + " does not exist\"}");
             }
             playerList.add(player);
         }
@@ -162,18 +155,65 @@ public class UpdateController {
         tournament = tournamentService.updateTournament(tournament, tournamentId);
 
         if (tournament == null) {
-            return ResponseEntity.badRequest().body("Tournament not found");
+            return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Tournament not found\"}");
         }
                                                 
-        String tournamentAsJson;
+        return ResponseEntity.ok().body("{\"operation\":\"success\",\"message\":\"Tournament updated\"}");
+    }
+
+    @PatchMapping(value = "/ruleset/update", consumes = "application/json")
+    @ResponseBody
+    public ResponseEntity<String> updateRuleset(@RequestBody Map<String, String> inputMap) {
+
+        Ruleset ruleset = new Ruleset();
+
+        long rulesetId;
         try {
-            tournamentAsJson = JsonMapper(tournament);
+            rulesetId = Long.parseLong(inputMap.get("rulesetId"));
         }
         catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error updating tournament");
+            return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Unable to parse ruleset Id\"}");
         }
 
-        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(tournamentAsJson);
+        String rulesetName = inputMap.get("rulesetName");
+        String rulesetOrigin = inputMap.get("rulesetOrigin");
+
+        ruleset.setName(rulesetName);
+        ruleset.setOrigin(rulesetOrigin);
+
+        inputMap.remove("rulesetId");
+        inputMap.remove("rulesetName");
+        inputMap.remove("rulesetOrigin");
+
+        ArrayList<Rule> rules = new ArrayList<>();
+        for (String ruleName : inputMap.keySet()) {
+            Rule rule;
+            String attribute = inputMap.get(ruleName);
+
+            // Check for empty value
+            if (attribute.equals("")) {
+                return ResponseEntity.badRequest().body("{\"operation\":\"failure\",\"message\":\"Attribute with key " + ruleName + " is empty\"}");
+            }
+
+            // Check if the rule already exists
+            rule = ruleService.findRuleByNameAndAttribute(ruleName, attribute);
+
+            // If it does not exist, create it
+            if (rule == null) {
+                rule = new Rule();
+                rule.setName(ruleName);
+                rule.setAttribute(attribute);
+                rule = ruleService.saveRule(rule);
+            }
+            // Add rule to list of rules
+            rules.add(rule);
+        }
+
+        ruleset.setRules(rules);
+        
+        ruleset = rulesetService.updateRuleset(ruleset, rulesetId);
+
+        return ResponseEntity.ok().body("{\"operation\":\"success\",\"message\":\"Ruleset updated\"}");
     }
 
     @PatchMapping(value = "/rule/update")

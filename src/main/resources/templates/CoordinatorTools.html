@@ -117,7 +117,7 @@
         <label for="edittdate">Tournament Date: </label>
         <input type="date" id="edittdate" name="edittdate"><br><br>
         <label for="rulesetSelector">Tournament Ruleset: </label>
-        <select name="rulesetSelector" class="rulesetSelector"></select><br>
+        <select name="rulesetSelector" id="tournamentEditRulesetSelector" class="rulesetSelector"></select><br>
         <button type="button" class="formButton" onclick="addPlayerEditSelector()">Add Player</button>
         <button type="button" class="formButton" onclick="removePlayerEditSelector()">Remove Player</button>
         <br>
@@ -135,7 +135,7 @@
     <div class="hiddenTextBox" id="rulesetEdit">
       <form method="POST" id="rulesetEditForm">
         <label for="rulesetSelector">Tournament Ruleset: </label>
-        <select name="rulesetSelector" class="rulesetSelector"></select><br><br>
+        <select name="rulesetSelector" id="rulesetEditRulesetSelector" class="rulesetSelector"></select><br><br>
         <label for="editrname">Ruleset Name: </label>
         <input type="text" id="editrname" name="editrname"><br><br>
         <label for="editrorigin">Ruleset Origin: </label>
@@ -149,7 +149,7 @@
         <label for="rule1EditValue">Rule 1 Value:</label>
         <input type="text" id="rule1EditValue" name="rule1EditValue">
         <br><br>
-        <input type="submit" value="Submit" class="formButton">
+        <input type="submit" value="Submit" class="formButton" onclick="editRuleset()">
       </form>
     </div>
     <br>

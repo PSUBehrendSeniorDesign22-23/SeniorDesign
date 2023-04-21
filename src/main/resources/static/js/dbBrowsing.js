@@ -517,7 +517,7 @@ function editPlayer() {
   }
 
   fetch("/player/update", {
-    method: "POST",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json"
     },
@@ -530,8 +530,9 @@ function editPlayer() {
 
 function editRuleset() {
   let rulesetAttributes = {
-    "rulesetName": document.getElementById("editrname"),
-    "rulesetOrigin": document.getElementById("editrorigin"),
+    "rulesetId": document.getElementById("rulesetEditRulesetSelector").value,
+    "rulesetName": document.getElementById("editrname").value,
+    "rulesetOrigin": document.getElementById("editrorigin").value
   }
 
   for (let i = 1; i <= ruleEditInputCount; i++) {
@@ -541,7 +542,7 @@ function editRuleset() {
   }
 
   fetch("/ruleset/update", {
-    method: "POST",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json"
     },
@@ -554,20 +555,26 @@ function editRuleset() {
 
 function editTournament() {
 
-
+  let tournamentAttributes = {
+    "tournamentId": document.getElementById("tournamentSelector").value,
+    "tournamentName": document.getElementById("edittname").value,
+    "tournamentLocation": document.getElementById("edittloc").value,
+    "tournamentDate": document.getElementById("edittdate").value,
+    "tournamentRulesetId": document.getElementById("tournamentEditRulesetSelector").value
+  }
 
   for (let i = 1; i <= playerCount; i++) {
-    let playerKey = "player" + i + "Select";
+    let playerKey = "player" + i + "EditSelect";
     let playerId = document.getElementById(playerKey).value
     tournamentAttributes[playerKey] = playerId
   }
 
   fetch("/tournament/update", {
-    method: "POST",
+    method: "PATCH",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify(playerAttributes)
+    body: JSON.stringify(tournamentAttributes)
   })
   .then(res => res.json()).then(data => {
     showSnackbar(data["operation"])
@@ -646,7 +653,7 @@ function addRuleEditInput() {
   newRuleValueLabel.appendChild( document.createTextNode( '\u00A0' ) );
 
   let newRuleValueInput = document.createElement("input")
-  newRuleValueInput.id = "rule" + ruleEditInputCount + "Value"
+  newRuleValueInput.id = "rule" + ruleEditInputCount + "EditValue"
   newRuleValueInput.type = "text"
   newRuleValueInput.name = "rule" + ruleEditInputCount 
 
